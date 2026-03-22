@@ -14,7 +14,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ================= NAVBAR ================= */
 .site-header {
   position: sticky;
   top: 0;
@@ -62,13 +61,11 @@ body {
   color: #ffffff;
 }
 
-/* ================= LAYOUT ================= */
 .container {
   width: min(95%, 1600px);
   margin: 48px auto;
 }
 
-/* ================= HERO ================= */
 .hero {
   max-width: 900px;
   padding: 40px 0 20px;
@@ -86,7 +83,6 @@ body {
   color: #b7c0cc;
 }
 
-/* ================= PAGE HEADER ================= */
 .page-header {
   margin-bottom: 32px;
 }
@@ -102,14 +98,12 @@ body {
   line-height: 1.6;
 }
 
-/* ================= GRID ================= */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 32px;
 }
 
-/* ================= CARD ================= */
 .card {
   background: #161b22;
   border: 1px solid #2b3440;
@@ -132,7 +126,6 @@ body {
   line-height: 1.5;
 }
 
-/* ================= VIDEO ================= */
 .video-wrapper {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -149,7 +142,6 @@ body {
   display: block;
 }
 
-/* ================= INFO BOX ================= */
 .info-box {
   background: #161b22;
   border: 1px solid #2b3440;
@@ -167,7 +159,6 @@ body {
   line-height: 1.6;
 }
 
-/* ================= CONTACT ================= */
 .contact-section {
   max-width: 760px;
   background: #161b22;
@@ -247,54 +238,6 @@ body {
   display: none;
 }
 
-/* ================= BLOG POST LIST OPTIONAL ================= */
-.blog-list {
-  display: grid;
-  gap: 20px;
-}
-
-.blog-card {
-  background: #161b22;
-  border: 1px solid #2b3440;
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.blog-card h2 {
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-}
-
-.blog-card p {
-  color: #b7c0cc;
-  line-height: 1.6;
-}
-
-/* ================= ADMIN OPTIONAL ================= */
-.admin-panel {
-  max-width: 900px;
-  display: grid;
-  gap: 20px;
-}
-
-.admin-card {
-  background: #161b22;
-  border: 1px solid #2b3440;
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.admin-card h2 {
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-}
-
-.admin-card p {
-  color: #b7c0cc;
-  line-height: 1.6;
-}
-
-/* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
   .nav-container {
     min-height: auto;
@@ -335,9 +278,7 @@ body {
 
   .contact-section,
   .info-box,
-  .card,
-  .blog-card,
-  .admin-card {
+  .card {
     padding: 18px;
   }
 }
