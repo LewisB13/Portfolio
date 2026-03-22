@@ -13,5 +13,10 @@ const videos = [
     title: "Learning Resource",
     description: "Add more video cards here later as your site grows.",
     embedUrl: "https://www.youtube-nocookie.com/embed/ysz5S6PUM-U?rel=0"
+  },
+  {
+    title: "RGH TUT 1",
+    description: "Add more video cards here later as your site grows.",
+    embedUrl: "https://youtu.be/ycouQTalNt4"
   }
 ];
