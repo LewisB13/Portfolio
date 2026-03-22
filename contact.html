@@ -28,36 +28,39 @@
 
   <section class="contact-section">
     <form id="contact-form" class="contact-form">
+
       <div class="form-row">
-        <label for="name">Name</label>
-        <input id="name" type="text" name="name" required />
+        <label>Name</label>
+        <input type="text" name="name" required>
       </div>
 
       <div class="form-row">
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" required />
+        <label>Email</label>
+        <input type="email" name="email" required>
       </div>
 
       <div class="form-row">
-        <label for="phone">Phone (optional)</label>
-        <input id="phone" type="tel" name="phone" />
+        <label>Phone (optional)</label>
+        <input type="tel" name="phone">
+      </div>
+
+      <!-- 🔥 NEW SUBJECT FIELD -->
+      <div class="form-row">
+        <label>Subject</label>
+        <input type="text" name="subject" placeholder="What is this about?" required>
       </div>
 
       <div class="form-row">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="6" required></textarea>
+        <label>Message</label>
+        <textarea name="message" rows="6" required></textarea>
       </div>
 
-      <input
-        type="text"
-        name="company"
-        class="hidden-field"
-        tabindex="-1"
-        autocomplete="off"
-      />
+      <!-- spam protection -->
+      <input type="text" name="company" class="hidden-field">
 
       <button type="submit" id="submit-btn">Send Message</button>
       <p id="status" class="form-status"></p>
+
     </form>
   </section>
 </main>
@@ -83,8 +86,8 @@ form.addEventListener("submit", function(e) {
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value || "Not provided",
-    message: form.message.value,
-    subject: "New portfolio message from " + form.name.value
+    subject: form.subject.value,
+    message: form.message.value
   })
   .then(() => {
     status.textContent = "Message sent successfully ✔";
