@@ -3,22 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio Videos</title>
+  <title>Lewis Barrett Portfolio</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="logo">Lewis Barrett Portfolio</div>
+
+      <nav class="navbar">
+        <a href="#tutorials">Tutorials</a>
+        <a href="#contact">Contact</a>
+        <a href="#blog">Blog</a>
+      </nav>
+    </div>
+  </header>
+
   <main class="container">
-    <h1 class="page-title">Video Showcase</h1>
+    <h1 class="page-title">Lewis Barrett Portfolio</h1>
 
-    <section class="grid">
-
+    <section class="grid" id="tutorials">
       <article class="card">
         <div class="video-wrapper">
           <iframe
             src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0"
             title="Video 1"
             loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
         </div>
@@ -29,9 +42,11 @@
       <article class="card">
         <div class="video-wrapper">
           <iframe
-            src="https://www.youtube-nocookie.com/embed/3JZ_D3ELwOQ?rel=0"
+            src="https://www.youtube-nocookie.com/embed/M7lc1UVf-VE?rel=0"
             title="Video 2"
             loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
         </div>
@@ -42,18 +57,27 @@
       <article class="card">
         <div class="video-wrapper">
           <iframe
-            src="https://www.youtube-nocookie.com/embed/tgbNymZ7vqY?rel=0"
+            src="https://www.youtube-nocookie.com/embed/ysz5S6PUM-U?rel=0"
             title="Video 3"
             loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
         </div>
         <h2>Project Three</h2>
         <p>Auto-scaling grid keeps everything clean.</p>
       </article>
+    </section>
 
-      <!-- Duplicate cards as needed -->
-      
+    <section class="info-section" id="contact">
+      <h2>Contact</h2>
+      <p>Email: your@email.com</p>
+    </section>
+
+    <section class="info-section" id="blog">
+      <h2>Blog</h2>
+      <p>Coming soon.</p>
     </section>
   </main>
 
