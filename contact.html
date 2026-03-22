@@ -22,71 +22,79 @@
 </header>
 
 <main class="container">
+
   <section class="page-header">
     <h1>Contact</h1>
-    <p>If you'd like to get in touch, send me a message below.</p>
+    <p>Send me a message below.</p>
   </section>
 
   <section class="contact-section">
+
     <form id="contact-form" class="contact-form">
+
       <div class="form-row">
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" placeholder="Your name" required />
+        <label>Name</label>
+        <input type="text" name="name" required>
       </div>
 
       <div class="form-row">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="Your email" required />
+        <label>Email</label>
+        <input type="email" name="email" required>
       </div>
 
       <div class="form-row">
-        <label for="phone">Phone (optional)</label>
-        <input id="phone" name="phone" type="tel" placeholder="Your phone number" />
+        <label>Phone (optional)</label>
+        <input type="tel" name="phone">
       </div>
 
       <div class="form-row">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="6" placeholder="Your message" required></textarea>
+        <label>Message</label>
+        <textarea name="message" rows="6" required></textarea>
       </div>
 
-      <input type="text" name="company" class="hidden-field" tabindex="-1" autocomplete="off" />
+      <!-- spam protection -->
+      <input type="text" name="company" style="display:none">
 
       <button type="submit" id="submit-btn">Send Message</button>
-      <p id="form-status" class="form-status"></p>
+
+      <p id="status"></p>
+
     </form>
+
   </section>
+
 </main>
 
 <script>
-  emailjs.init({
-    publicKey: "c1kQc6SrlPO-zgEW#d"
+emailjs.init({
+  publicKey: "c1kQc6SrlPO-zgEW#d"
+});
+
+const form = document.getElementById("contact-form");
+const status = document.getElementById("status");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  if (form.company.value) return;
+
+  status.textContent = "Sending...";
+
+  emailjs.send("portfolio", "portfoliociontact", {
+    name: form.name.value,
+    email: form.email.value,
+    phone: form.phone.value || "Not provided",
+    message: form.message.value
+  })
+  .then(() => {
+    status.textContent = "Message sent successfully ✔";
+    form.reset();
+  })
+  .catch((error) => {
+    console.error(error);
+    status.textContent = "Failed to send message ❌";
   });
-
-  const form = document.getElementById("contact-form");
-  const statusText = document.getElementById("form-status");
-  const submitBtn = document.getElementById("submit-btn");
-
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    if (form.company.value) {
-      return;
-    }
-
-    statusText.textContent = "Sending...";
-    submitBtn.disabled = true;
-
-    try {
-      await emailjs.sendForm("portfolio", "portfoliociontact", form);
-      statusText.textContent = "Message sent successfully.";
-      form.reset();
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      statusText.textContent = "Failed to send message. Open F12 → Console.";
-    } finally {
-      submitBtn.disabled = false;
-    }
-  });
+});
 </script>
 
 </body>
