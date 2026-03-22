@@ -17,6 +17,6 @@ const videos = [
   {
     title: "RGH TUT 1",
     description: "Add more video cards here later as your site grows.",
-    embedUrl: "https://www.youtube.com/embed/8lAcIlOdGwg?si=3pyPbGMGGpY8YAWE"
+    embedUrl: "https://www.youtube-nocookie.com/embed/8lAcIlOdGwg?rel=0"
   }
 ];
