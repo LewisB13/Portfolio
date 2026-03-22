@@ -6,13 +6,7 @@
   <title>Contact | Lewis Barrett Portfolio</title>
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function () {
-      emailjs.init("c1kQc6SrlPO-zgEW#d");
-    })();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -28,73 +22,71 @@
 </header>
 
 <main class="container">
-
   <section class="page-header">
     <h1>Contact</h1>
     <p>If you'd like to get in touch, send me a message below.</p>
   </section>
 
   <section class="contact-section">
-
     <form id="contact-form" class="contact-form">
-
       <div class="form-row">
-        <label>Name</label>
-        <input type="text" name="name" required>
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" placeholder="Your name" required />
       </div>
 
       <div class="form-row">
-        <label>Email</label>
-        <input type="email" name="email" required>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Your email" required />
       </div>
 
       <div class="form-row">
-        <label>Phone (optional)</label>
-        <input type="tel" name="phone">
+        <label for="phone">Phone (optional)</label>
+        <input id="phone" name="phone" type="tel" placeholder="Your phone number" />
       </div>
 
       <div class="form-row">
-        <label>Message</label>
-        <textarea name="message" rows="6" required></textarea>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" placeholder="Your message" required></textarea>
       </div>
 
-      <!-- anti-spam -->
-      <input type="text" name="company" class="hidden-field">
+      <input type="text" name="company" class="hidden-field" tabindex="-1" autocomplete="off" />
 
-      <button type="submit">Send Message</button>
-
+      <button type="submit" id="submit-btn">Send Message</button>
       <p id="form-status" class="form-status"></p>
-
     </form>
-
   </section>
-
 </main>
 
 <script>
-const form = document.getElementById("contact-form");
-const statusText = document.getElementById("form-status");
-
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // spam protection
-  if (form.company.value) return;
-
-  statusText.textContent = "Sending...";
-
-  emailjs.sendForm(
-    "portfolio",
-    "portfoliociontact",
-    form
-  ).then(function () {
-    statusText.textContent = "Message sent successfully ✔";
-    form.reset();
-  }).catch(function (error) {
-    statusText.textContent = "Failed to send message.";
-    console.log(error);
+  emailjs.init({
+    publicKey: "c1kQc6SrlPO-zgEW#d"
   });
-});
+
+  const form = document.getElementById("contact-form");
+  const statusText = document.getElementById("form-status");
+  const submitBtn = document.getElementById("submit-btn");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    if (form.company.value) {
+      return;
+    }
+
+    statusText.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+      await emailjs.sendForm("portfolio", "portfoliociontact", form);
+      statusText.textContent = "Message sent successfully.";
+      form.reset();
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      statusText.textContent = "Failed to send message. Open F12 → Console.";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 </script>
 
 </body>
