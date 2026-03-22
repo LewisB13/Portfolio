@@ -48,7 +48,13 @@
         <textarea id="message" name="message" rows="6" required></textarea>
       </div>
 
-      <input type="text" name="company" class="hidden-field" tabindex="-1" autocomplete="off" />
+      <input
+        type="text"
+        name="company"
+        class="hidden-field"
+        tabindex="-1"
+        autocomplete="off"
+      />
 
       <button type="submit" id="submit-btn">Send Message</button>
       <p id="status" class="form-status"></p>
@@ -77,15 +83,16 @@ form.addEventListener("submit", function(e) {
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value || "Not provided",
-    message: form.message.value
+    message: form.message.value,
+    subject: "New portfolio message from " + form.name.value
   })
   .then(() => {
-    status.textContent = "Message sent successfully.";
+    status.textContent = "Message sent successfully ✔";
     form.reset();
   })
   .catch((error) => {
-    console.error("EmailJS error:", error);
-    status.textContent = "Failed to send message.";
+    console.error(error);
+    status.textContent = "Failed to send message ❌";
   })
   .finally(() => {
     submitBtn.disabled = false;
