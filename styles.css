@@ -1,3 +1,6 @@
+/* ===============================
+   RESET / BASE
+=============================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,7 +17,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ================= NAVBAR ================= */
+/* ===============================
+   HEADER / NAVBAR
+=============================== */
 .site-header {
   position: sticky;
   top: 0;
@@ -62,13 +67,32 @@ body {
   color: #ffffff;
 }
 
-/* ================= LAYOUT ================= */
+/* ===============================
+   GLOBAL LAYOUT
+=============================== */
 .container {
   width: min(95%, 1600px);
   margin: 48px auto;
 }
 
-/* ================= HERO (HOME PAGE) ================= */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+
+.page-header p {
+  max-width: 850px;
+  color: #b7c0cc;
+  line-height: 1.6;
+}
+
+/* ===============================
+   HOME PAGE / HERO
+=============================== */
 .hero-home {
   max-width: 950px;
   padding: 72px 0 40px;
@@ -92,23 +116,30 @@ body {
   margin-bottom: 0;
 }
 
-/* ================= PAGE HEADER ================= */
-.page-header {
-  margin-bottom: 32px;
+/* ===============================
+   SHARED INFO BOX
+=============================== */
+.info-box {
+  max-width: 850px;
+  background: #161b22;
+  border: 1px solid #2b3440;
+  border-radius: 16px;
+  padding: 24px;
 }
 
-.page-header h1 {
-  font-size: 2.4rem;
+.info-box h2 {
+  font-size: 1.35rem;
   margin-bottom: 12px;
 }
 
-.page-header p {
-  max-width: 850px;
+.info-box p {
   color: #b7c0cc;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-/* ================= CATEGORY CARDS ================= */
+/* ===============================
+   TUTORIAL CATEGORIES
+=============================== */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -148,7 +179,9 @@ body {
   font-size: 0.92rem;
 }
 
-/* ================= VIDEO PANEL ================= */
+/* ===============================
+   VIDEO / BLOG PANEL TOP
+=============================== */
 .video-panel {
   margin-top: 8px;
 }
@@ -166,7 +199,9 @@ body {
   font-size: 1.6rem;
 }
 
-/* ================= SORT BAR ================= */
+/* ===============================
+   SORT BAR
+=============================== */
 .sort-bar {
   display: flex;
   align-items: center;
@@ -192,14 +227,15 @@ body {
   border-color: #4f8cff;
 }
 
-/* ================= GRID ================= */
+/* ===============================
+   SHARED GRID / CARDS
+=============================== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 32px;
 }
 
-/* ================= CARD ================= */
 .card {
   background: #161b22;
   border: 1px solid #2b3440;
@@ -229,7 +265,9 @@ body {
   margin-bottom: 10px;
 }
 
-/* ================= VIDEO ================= */
+/* ===============================
+   VIDEO EMBEDS
+=============================== */
 .video-wrapper {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -245,35 +283,35 @@ body {
   border: 0;
 }
 
-/* ================= BLOG ================= */
+/* ===============================
+   BLOG LIST
+=============================== */
 .blog-list {
   display: grid;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 32px;
 }
 
-.blog-card {
-  background: #161b22;
-  border: 1px solid #2b3440;
-  border-radius: 16px;
-  padding: 24px;
-}
-
+.blog-card h3,
 .blog-card h2 {
-  font-size: 1.25rem;
-  margin-bottom: 10px;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
 }
 
 .blog-card p {
   color: #b7c0cc;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .blog-date {
   color: #8b96a5;
   font-size: 0.9rem;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
+/* ===============================
+   LINKS / BLOG BUTTONS
+=============================== */
 .read-more {
   display: inline-block;
   margin-top: 14px;
@@ -286,9 +324,31 @@ body {
   color: #b7c0cc;
 }
 
-/* ================= POST PAGE ================= */
+.blog-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.blog-button:hover {
+  color: #b7c0cc;
+}
+
+.back-button {
+  margin-bottom: 18px;
+}
+
+/* ===============================
+   SINGLE BLOG POST
+=============================== */
 .post-page {
   max-width: 850px;
+  margin: 0 auto;
   background: #161b22;
   border: 1px solid #2b3440;
   border-radius: 16px;
@@ -306,7 +366,9 @@ body {
   margin-bottom: 16px;
 }
 
-/* ================= CONTACT ================= */
+/* ===============================
+   CONTACT
+=============================== */
 .contact-section {
   max-width: 760px;
   background: #161b22;
@@ -372,7 +434,9 @@ body {
   display: none;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ===============================
+   RESPONSIVE
+=============================== */
 @media (max-width: 900px) {
   .nav-container {
     flex-direction: column;
@@ -381,6 +445,10 @@ body {
   }
 
   .grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  .blog-list {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 
@@ -394,11 +462,24 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .blog-list {
+    grid-template-columns: 1fr;
+  }
+
   .hero-home h1 {
     font-size: 2rem;
   }
 
   .hero-home p {
     font-size: 1rem;
+  }
+
+  .video-panel-top {
+    align-items: flex-start;
+  }
+
+  .sort-bar {
+    width: 100%;
+    justify-content: space-between;
   }
 }

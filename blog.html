@@ -21,13 +21,27 @@
   <main class="container">
     <section class="page-header">
       <h1>Blog</h1>
-      <p>Posts and updates will go here.</p>
+      <p>Posts, notes, and updates from my learning journey.</p>
     </section>
 
-    <section class="info-box">
-      <h2>First Post</h2>
-      <p>Coming soon.</p>
+    <section class="video-panel">
+      <div class="video-panel-top">
+        <h2>Latest Posts</h2>
+
+        <div class="sort-bar">
+          <label for="blog-sort">Sort by</label>
+          <select id="blog-sort">
+            <option value="latest">Latest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </div>
+      </div>
+
+      <section id="blog-view"></section>
     </section>
   </main>
+
+  <script src="blog/posts.js"></script>
+  <script src="blog/blog.js"></script>
 </body>
 </html>
