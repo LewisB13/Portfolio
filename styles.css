@@ -68,22 +68,28 @@ body {
   margin: 48px auto;
 }
 
-/* ================= HERO ================= */
-.hero {
-  max-width: 900px;
-  padding: 40px 0 20px;
+/* ================= HERO (HOME PAGE) ================= */
+.hero-home {
+  max-width: 950px;
+  padding: 72px 0 40px;
 }
 
-.hero h1 {
-  font-size: 3rem;
+.hero-home h1 {
+  font-size: 3.2rem;
   font-weight: 700;
-  margin-bottom: 18px;
+  line-height: 1.1;
+  margin-bottom: 28px;
 }
 
-.hero p {
+.hero-home p {
   font-size: 1.08rem;
-  line-height: 1.7;
+  line-height: 1.9;
   color: #b7c0cc;
+  margin-bottom: 22px;
+}
+
+.hero-home p:last-child {
+  margin-bottom: 0;
 }
 
 /* ================= PAGE HEADER ================= */
@@ -115,7 +121,6 @@ body {
   border: 1px solid #2b3440;
   border-radius: 16px;
   padding: 22px;
-  text-align: left;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   color: #ffffff;
@@ -139,7 +144,6 @@ body {
 }
 
 .category-card-count {
-  display: block;
   color: #8b96a5;
   font-size: 0.92rem;
 }
@@ -239,7 +243,6 @@ body {
   width: 100%;
   height: 100%;
   border: 0;
-  display: block;
 }
 
 /* ================= BLOG ================= */
@@ -303,24 +306,6 @@ body {
   margin-bottom: 16px;
 }
 
-/* ================= INFO BOX ================= */
-.info-box {
-  background: #161b22;
-  border: 1px solid #2b3440;
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.info-box h2 {
-  margin-bottom: 10px;
-  font-size: 1.4rem;
-}
-
-.info-box p {
-  color: #b7c0cc;
-  line-height: 1.6;
-}
-
 /* ================= CONTACT ================= */
 .contact-section {
   max-width: 760px;
@@ -356,17 +341,12 @@ body {
   border-radius: 10px;
   padding: 14px;
   font-size: 0.95rem;
-  outline: none;
-}
-
-.form-row input::placeholder,
-.form-row textarea::placeholder {
-  color: #7f8894;
 }
 
 .form-row input:focus,
 .form-row textarea:focus {
   border-color: #4f8cff;
+  outline: none;
 }
 
 .contact-form button {
@@ -376,25 +356,16 @@ body {
   border: none;
   border-radius: 10px;
   padding: 12px 20px;
-  font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
 .contact-form button:hover {
   background: #3f77db;
 }
 
-.contact-form button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 .form-status {
   margin-top: 10px;
   color: #b7c0cc;
-  font-size: 0.95rem;
-  min-height: 20px;
 }
 
 .hidden-field {
@@ -404,31 +375,17 @@ body {
 /* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
   .nav-container {
-    min-height: auto;
-    padding: 16px 0;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .navbar {
-    gap: 18px;
+    padding: 16px 0;
   }
 
   .grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 
-  .hero h1 {
-    font-size: 2.4rem;
-  }
-
-  .page-header h1,
-  .post-page h1 {
-    font-size: 2rem;
-  }
-
-  .video-panel-top {
-    align-items: flex-start;
+  .hero-home h1 {
+    font-size: 2.5rem;
   }
 }
 
@@ -437,27 +394,11 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .hero h1,
-  .page-header h1,
-  .post-page h1 {
-    font-size: 1.8rem;
+  .hero-home h1 {
+    font-size: 2rem;
   }
 
-  .contact-section,
-  .info-box,
-  .card,
-  .blog-card,
-  .post-page,
-  .category-card {
-    padding: 18px;
-  }
-
-  .sort-bar {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .sort-bar select {
-    width: 100%;
+  .hero-home p {
+    font-size: 1rem;
   }
 }
