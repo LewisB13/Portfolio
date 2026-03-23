@@ -21,21 +21,29 @@
   <main class="container">
     <section class="page-header">
       <h1>Tutorials</h1>
-      <p>Videos, walkthroughs, and learning resources.</p>
+      <p>Select a category to view videos.</p>
     </section>
 
-    <section class="sort-bar">
-      <label for="video-sort">Sort by</label>
-      <select id="video-sort">
-        <option value="latest">Latest first</option>
-        <option value="oldest">Oldest first</option>
-      </select>
-    </section>
+    <section class="category-grid" id="category-grid"></section>
 
-    <section class="grid" id="video-grid"></section>
+    <section class="video-panel">
+      <div class="video-panel-top">
+        <h2 id="selected-category-title">Python Tutorials</h2>
+
+        <div class="sort-bar">
+          <label for="video-sort">Sort by</label>
+          <select id="video-sort">
+            <option value="latest">Latest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </div>
+      </div>
+
+      <section class="grid" id="video-grid"></section>
+    </section>
   </main>
 
-  <script src="./videos.js"></script>
-  <script src="./tutorials.js"></script>
+  <script src="videos.js"></script>
+  <script src="tutorials.js"></script>
 </body>
 </html>
