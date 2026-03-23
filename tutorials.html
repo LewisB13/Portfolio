@@ -24,34 +24,18 @@
       <p>Videos, walkthroughs, and learning resources.</p>
     </section>
 
+    <section class="sort-bar">
+      <label for="video-sort">Sort by</label>
+      <select id="video-sort">
+        <option value="latest">Latest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
+    </section>
+
     <section class="grid" id="video-grid"></section>
   </main>
 
-  <script src="videos.js"></script>
-  <script>
-    const videoGrid = document.getElementById("video-grid");
-
-    videos.forEach((video) => {
-      const card = document.createElement("article");
-      card.className = "card";
-
-      card.innerHTML = `
-        <div class="video-wrapper">
-          <iframe
-            src="${video.embedUrl}"
-            title="${video.title}"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <h2>${video.title}</h2>
-        <p>${video.description}</p>
-      `;
-
-      videoGrid.appendChild(card);
-    });
-  </script>
+  <script src="./videos.js"></script>
+  <script src="./tutorials.js"></script>
 </body>
 </html>

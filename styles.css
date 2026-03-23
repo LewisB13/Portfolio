@@ -98,6 +98,32 @@ body {
   line-height: 1.6;
 }
 
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sort-bar label {
+  color: #d7dce3;
+  font-size: 0.95rem;
+}
+
+.sort-bar select {
+  background: #161b22;
+  color: #ffffff;
+  border: 1px solid #2b3440;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.sort-bar select:focus {
+  border-color: #4f8cff;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
@@ -126,6 +152,12 @@ body {
   line-height: 1.5;
 }
 
+.video-date {
+  color: #8b96a5;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
 .video-wrapper {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -140,6 +172,65 @@ body {
   height: 100%;
   border: 0;
   display: block;
+}
+
+.blog-list {
+  display: grid;
+  gap: 20px;
+}
+
+.blog-card {
+  background: #161b22;
+  border: 1px solid #2b3440;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.blog-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.blog-card p {
+  color: #b7c0cc;
+  line-height: 1.6;
+}
+
+.blog-date {
+  color: #8b96a5;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 14px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.read-more:hover {
+  color: #b7c0cc;
+}
+
+.post-page {
+  max-width: 850px;
+  background: #161b22;
+  border: 1px solid #2b3440;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.post-page h1 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.post-page p {
+  color: #b7c0cc;
+  line-height: 1.7;
+  margin-bottom: 16px;
 }
 
 .info-box {
@@ -258,7 +349,8 @@ body {
     font-size: 2.4rem;
   }
 
-  .page-header h1 {
+  .page-header h1,
+  .post-page h1 {
     font-size: 2rem;
   }
 }
@@ -268,17 +360,17 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .hero h1 {
-    font-size: 2rem;
-  }
-
-  .page-header h1 {
+  .hero h1,
+  .page-header h1,
+  .post-page h1 {
     font-size: 1.8rem;
   }
 
   .contact-section,
   .info-box,
-  .card {
+  .card,
+  .blog-card,
+  .post-page {
     padding: 18px;
   }
 }
