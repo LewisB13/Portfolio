@@ -89,10 +89,10 @@ const videos = [
 
   {
     category: "Personal Projects",
-    title: "What is a HomeLab and How Do I Get Started?",
-    description: "Good inspiration-style project/lab video.",
-    url: "https://www.youtube.com/watch?v=gPGf4Y8nQqM",
-    date: "2026-03-23"
+    title: "Xenia Emulator Tutorial Unlockk XBLA and Indie Games ToF ull Version (August 2023)"
+    description: "I walk you through unlocking a trial game on xeneia emulator",
+    url: "https://www.youtube.com/watch?v=t22i79eR43E&lc=Ugw-3SLJFhcVfHP5tSF4AaABAg",
+    date: "2024-07-30"
   },
   {
     category: "Personal Projects",
