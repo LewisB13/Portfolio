@@ -45,10 +45,10 @@ const videos = [
 
   {
     category: "Virtual Machines",
-    title: "How to use VirtualBox - Tutorial for Beginners",
-    description: "VirtualBox setup and usage tutorial.",
-    url: "https://www.youtube.com/watch?v=nvdnQX9UkMY",
-    date: "2026-03-25"
+    title: "How to Install Android OS on Vmware Workstation on Windows 10 (2020)",
+    description: "VMWARE Running Android",
+    url: "https://www.youtube.com/watch?v=fRxCOExD-uw&t=166s",
+    date: "2020-11-25"
   },
   {
     category: "Virtual Machines",
