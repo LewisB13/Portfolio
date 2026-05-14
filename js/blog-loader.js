@@ -1,79 +1,74 @@
+const BLOG_FOLDER_API =
+  "https://api.github.com/repos/LewisB13/Portfolio/contents/content/blog";
+
+function getFrontmatterValue(frontmatter, key) {
+  return (
+    frontmatter
+      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+      ?.trim() || ""
+  );
+}
+
 async function loadBlogPosts() {
-
   const container = document.getElementById("blog-posts");
+  container.innerHTML = "<p>Loading posts...</p>";
 
-  const posts = [
-    "first-post",
-    "building-my-portfolio-website"
-  ];
+  try {
+    const fileResponse = await fetch(BLOG_FOLDER_API);
+    const files = await fileResponse.json();
 
-  container.innerHTML = "";
+    const markdownFiles = files.filter((file) => file.name.endsWith(".md"));
 
-  for (const slug of posts) {
+    const posts = await Promise.all(
+      markdownFiles.map(async (file) => {
+        const response = await fetch(file.download_url);
+        const text = await response.text();
 
-    try {
+        const parts = text.split("---");
+        const frontmatter = parts[1] || "";
+        const body = parts.slice(2).join("---").trim();
 
-      const response = await fetch(`content/blog/${slug}.md`);
+        const slug = file.name.replace(".md", "");
 
-      if (!response.ok) {
-        console.error(`Could not load: ${slug}.md`);
-        continue;
-      }
+        return {
+          slug,
+          title: getFrontmatterValue(frontmatter, "title") || "Untitled",
+          date: getFrontmatterValue(frontmatter, "date"),
+          body
+        };
+      })
+    );
 
-      const text = await response.text();
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      const parts = text.split("---");
+    container.innerHTML = "";
 
-      if (parts.length < 3) {
-        console.error(`Bad frontmatter in: ${slug}.md`);
-        continue;
-      }
-
-      const frontmatter = parts[1];
-
-      const body = parts.slice(2).join("---").trim();
-
-      const title =
-        frontmatter.match(/title:\s*(.*)/)?.[1]
-          ?.replaceAll('"', "")
-          .trim() || "Untitled";
-
-      const date =
-        frontmatter.match(/date:\s*(.*)/)?.[1]
-          ?.trim() || "";
-
+    posts.forEach((post) => {
       const preview = marked
-        .parse(body)
+        .parse(post.body)
         .replace(/<[^>]*>/g, "")
         .replace(/\s+/g, " ")
         .trim()
         .slice(0, 180);
 
       const article = document.createElement("article");
-
       article.classList.add("card", "blog-card");
 
       article.innerHTML = `
         <p class="video-category">Blog</p>
-
-        <h3>${title}</h3>
-
-        <p class="video-meta">${date}</p>
-
+        <h3>${post.title}</h3>
+        <p class="video-meta">${post.date}</p>
         <p>${preview}...</p>
-
-        <a class="read-more" href="post.html?post=${slug}">
+        <a class="read-more" href="post.html?post=${post.slug}">
           Read post →
         </a>
       `;
 
       container.appendChild(article);
-
-    } catch (error) {
-
-      console.error(`Error loading ${slug}:`, error);
-
-    }
+    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Could not load posts.</p>";
   }
 }
 
