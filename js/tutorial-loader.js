@@ -21,32 +21,46 @@ function getFrontmatterList(frontmatter, key) {
     .filter(Boolean);
 }
 
+function getYouTubeEmbed(url) {
+  if (!url) return "";
+
+  if (url.includes("youtube.com/watch?v=")) {
+    return url.replace("watch?v=", "embed/");
+  }
+
+  if (url.includes("youtu.be/")) {
+    const id = url.split("youtu.be/")[1].split("?")[0];
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  return "";
+}
+
 async function loadTutorials() {
   const container = document.getElementById("tutorials-list");
+  container.innerHTML = "<p>Loading tutorials...</p>";
 
   try {
-    const response = await fetch(TUTORIALS_API);
-    const files = await response.json();
+    const fileResponse = await fetch(TUTORIALS_API);
+    const files = await fileResponse.json();
 
     const markdownFiles = files.filter((file) => file.name.endsWith(".md"));
 
     const tutorials = await Promise.all(
       markdownFiles.map(async (file) => {
-        const tutorialResponse = await fetch(file.download_url);
-        const text = await tutorialResponse.text();
+        const response = await fetch(file.download_url);
+        const text = await response.text();
 
         const parts = text.split("---");
         const frontmatter = parts[1] || "";
         const body = parts.slice(2).join("---").trim();
 
         return {
-          slug: file.name.replace(".md", ""),
           title: getFrontmatterValue(frontmatter, "title") || "Untitled",
           date: getFrontmatterValue(frontmatter, "date"),
           category: getFrontmatterValue(frontmatter, "category"),
           difficulty: getFrontmatterValue(frontmatter, "difficulty"),
           youtube: getFrontmatterValue(frontmatter, "youtube"),
-          thumbnail: getFrontmatterValue(frontmatter, "thumbnail"),
           description: getFrontmatterValue(frontmatter, "description"),
           tags: getFrontmatterList(frontmatter, "tags"),
           body
@@ -59,47 +73,62 @@ async function loadTutorials() {
     container.innerHTML = "";
 
     tutorials.forEach((tutorial) => {
-      const card = document.createElement("article");
-      card.classList.add("card", "tutorial-card");
+      const article = document.createElement("article");
+      article.classList.add("card", "blog-card");
 
-      const tagsHtml = tutorial.tags
-        .map((tag) => `<span class="tag">#${tag}</span>`)
-        .join("");
+      const embedUrl = getYouTubeEmbed(tutorial.youtube);
 
-      card.innerHTML = `
-        ${
-          tutorial.thumbnail
-            ? `<img src="${tutorial.thumbnail}" alt="${tutorial.title}" class="tutorial-thumbnail">`
-            : ""
-        }
-
+      article.innerHTML = `
         <p class="video-category">${tutorial.category || "Tutorial"}</p>
 
         <h3>${tutorial.title}</h3>
 
         <p class="video-meta">
-          ${tutorial.difficulty || "Beginner"} 
+          ${tutorial.difficulty || "Beginner"}
           ${tutorial.date ? `• ${new Date(tutorial.date).toLocaleDateString()}` : ""}
         </p>
 
-        <p>${tutorial.description || "No description added yet."}</p>
+        <p>${tutorial.description || "Click to read this tutorial."}</p>
 
-        <div class="tags">
-          ${tagsHtml}
+        <button class="read-more tutorial-toggle">
+          Read tutorial ↓
+        </button>
+
+        <div class="tutorial-expanded" style="display: none;">
+          ${
+            embedUrl
+              ? `
+                <div class="video-wrapper">
+                  <iframe
+                    src="${embedUrl}"
+                    title="${tutorial.title}"
+                    frameborder="0"
+                    allowfullscreen>
+                  </iframe>
+                </div>
+              `
+              : ""
+          }
+
+          <div class="markdown-body">
+            ${marked.parse(tutorial.body)}
+          </div>
         </div>
-
-        ${
-          tutorial.youtube
-            ? `<a href="${tutorial.youtube}" target="_blank" rel="noopener">Watch Video →</a><br>`
-            : ""
-        }
-
-        <a class="read-more" href="tutorial.html?tutorial=${tutorial.slug}">
-          Read Tutorial →
-        </a>
       `;
 
-      container.appendChild(card);
+      const button = article.querySelector(".tutorial-toggle");
+      const expanded = article.querySelector(".tutorial-expanded");
+
+      button.addEventListener("click", () => {
+        const isOpen = expanded.style.display === "block";
+
+        expanded.style.display = isOpen ? "none" : "block";
+        button.textContent = isOpen
+          ? "Read tutorial ↓"
+          : "Close tutorial ↑";
+      });
+
+      container.appendChild(article);
     });
   } catch (error) {
     console.error(error);
