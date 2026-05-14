@@ -1,58 +1,60 @@
 async function loadBlogPosts() {
-    const container = document.getElementById("blog-posts");
+  const container = document.getElementById("blog-posts");
 
-    const posts = [
-        "first-post",
-        "building-my-portfolio-website"
-    ];
+  const posts = [
+    "first-post",
+    "building-my-portfolio-website"
+  ];
 
-    for (const slug of posts) {
-        try {
-            const response = await fetch(`content/blog/${slug}.md`);
+  container.innerHTML = "";
 
-            if (!response.ok) {
-                console.error(`Could not load post: ${slug}.md`);
-                continue;
-            }
+  for (const slug of posts) {
+    try {
+      const response = await fetch(`content/blog/${slug}.md`);
 
-            const text = await response.text();
+      if (!response.ok) {
+        console.error(`Could not load: ${slug}.md`);
+        continue;
+      }
 
-            const match = text.match(/---([\s\S]*?)---([\s\S]*)/);
+      const text = await response.text();
 
-            if (!match) {
-                console.error(`No frontmatter found in: ${slug}.md`);
-                continue;
-            }
+      const parts = text.split("---");
 
-            const frontmatter = match[1];
-            const body = match[2];
+      if (parts.length < 3) {
+        console.error(`Bad frontmatter in: ${slug}.md`);
+        continue;
+      }
 
-            const title =
-                frontmatter.match(/title:\s*["']?(.*?)["']?\n/)?.[1] || "Untitled";
+      const frontmatter = parts[1];
+      const body = parts.slice(2).join("---").trim();
 
-            const date =
-                frontmatter.match(/date:\s*(.*)/)?.[1] || "";
+      const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]+?)["']?(?=\sdate:|\stags:|$)/);
+      const dateMatch = frontmatter.match(/date:\s*([^\s]+.*?)?(?=\stags:|$)/);
 
-            const article = document.createElement("article");
-            article.classList.add("video-card");
+      const title = titleMatch ? titleMatch[1].trim() : "Untitled";
+      const date = dateMatch ? dateMatch[1].trim() : "";
 
-            article.innerHTML = `
-                <div class="video-card-content">
-                    <p class="video-category">Blog</p>
-                    <h3>${title}</h3>
-                    <p class="video-meta">${date}</p>
-                    <div class="blog-body">
-                        ${marked.parse(body)}
-                    </div>
-                </div>
-            `;
+      const article = document.createElement("article");
+      article.classList.add("video-card");
 
-            container.appendChild(article);
+      article.innerHTML = `
+        <div class="video-card-content">
+          <p class="video-category">Blog</p>
+          <h3>${title}</h3>
+          <p class="video-meta">${date}</p>
+          <div class="blog-body">
+            ${marked.parse(body)}
+          </div>
+        </div>
+      `;
 
-        } catch (error) {
-            console.error(`Error loading post: ${slug}`, error);
-        }
+      container.appendChild(article);
+
+    } catch (error) {
+      console.error(`Error loading ${slug}:`, error);
     }
+  }
 }
 
 loadBlogPosts();
