@@ -10,62 +10,34 @@
 </head>
 
 <body>
-
   <header class="site-header">
     <div class="nav-container">
-
-      <a href="index.html" class="logo">
-        Lewis Barrett Portfolio
-      </a>
+      <a href="index.html" class="logo">Lewis Barrett Portfolio</a>
 
       <nav class="navbar">
         <a href="tutorials.html">Tutorials</a>
         <a href="contact.html">Contact</a>
         <a href="blog.html" class="active">Blog</a>
       </nav>
-
     </div>
   </header>
 
   <main class="container">
-
     <section class="page-header">
       <h1>Blog</h1>
-
-      <p>
-        Posts, notes, and updates from my learning journey.
-      </p>
+      <p>Posts, notes, and updates from my learning journey.</p>
     </section>
 
     <section class="video-panel">
-
       <div class="video-panel-top">
-
         <h2>Latest Posts</h2>
-
-        <div class="sort-bar">
-          <label for="blog-sort">Sort by</label>
-
-          <select id="blog-sort">
-            <option value="latest">Latest first</option>
-            <option value="oldest">Oldest first</option>
-          </select>
-        </div>
-
       </div>
 
-      <!-- Decap CMS blog posts render here -->
       <section id="blog-posts"></section>
-
     </section>
-
   </main>
 
-  <!-- Markdown parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-  <!-- Blog loader -->
   <script src="js/blog-loader.js"></script>
-
 </body>
 </html>
