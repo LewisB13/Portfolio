@@ -8,6 +8,7 @@ media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:
+
   - name: "blog"
     label: "Blog Posts"
     folder: "content/blog"
@@ -15,10 +16,22 @@ collections:
     slug: "{{slug}}"
 
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
 
   - name: "videos"
     label: "Videos"
@@ -27,10 +40,21 @@ collections:
     slug: "{{slug}}"
 
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "YouTube URL", name: "youtube", widget: "string" }
-      - { label: "Category", name: "category", widget: "string" }
-      - { label: "Description", name: "body", widget: "markdown" }
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "YouTube URL"
+        name: "youtube"
+        widget: "string"
+
+      - label: "Category"
+        name: "category"
+        widget: "string"
+
+      - label: "Description"
+        name: "body"
+        widget: "markdown"
 
   - name: "projects"
     label: "Projects"
@@ -39,8 +63,25 @@ collections:
     slug: "{{slug}}"
 
     fields:
-      - { label: "Project Name", name: "title", widget: "string" }
-      - { label: "Tech Stack", name: "tech", widget: "list", required: false }
-      - { label: "GitHub Link", name: "github", widget: "string", required: false }
-      - { label: "Live Demo", name: "demo", widget: "string", required: false }
-      - { label: "Description", name: "body", widget: "markdown" }
+      - label: "Project Name"
+        name: "title"
+        widget: "string"
+
+      - label: "Tech Stack"
+        name: "tech"
+        widget: "list"
+        required: false
+
+      - label: "GitHub Link"
+        name: "github"
+        widget: "string"
+        required: false
+
+      - label: "Live Demo"
+        name: "demo"
+        widget: "string"
+        required: false
+
+      - label: "Description"
+        name: "body"
+        widget: "markdown"
