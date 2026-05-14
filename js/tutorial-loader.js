@@ -22,12 +22,12 @@ function getYouTubeEmbed(url) {
 
   if (url.includes("youtube.com/watch?v=")) {
     const id = url.split("v=")[1].split("&")[0];
-    return `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+    return `https://www.youtube.com/embed/${id}`;
   }
 
   if (url.includes("youtu.be/")) {
     const id = url.split("youtu.be/")[1].split("?")[0];
-    return `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+    return `https://www.youtube.com/embed/${id}`;
   }
 
   return "";
@@ -36,22 +36,18 @@ function getYouTubeEmbed(url) {
 function formatDate(dateString) {
   if (!dateString) return "";
 
-  const date = new Date(dateString);
-
-  return date.toLocaleDateString("en-IE", {
+  return new Date(dateString).toLocaleDateString("en-IE", {
     day: "numeric",
     month: "long",
     year: "numeric"
   });
 }
 
-function getCategories() {
-  const categories = tutorials.map((tutorial) => tutorial.category || "Uncategorised");
-  return ["All Tutorials", ...new Set(categories)];
-}
-
 function renderCategories() {
-  const categories = getCategories();
+  const categories = [
+    "All Tutorials",
+    ...new Set(tutorials.map((tutorial) => tutorial.category || "Uncategorised"))
+  ];
 
   categoryGrid.innerHTML = "";
 
@@ -61,52 +57,52 @@ function renderCategories() {
         ? tutorials.length
         : tutorials.filter((tutorial) => tutorial.category === category).length;
 
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = `category-card${category === activeCategory ? " active" : ""}`;
+    const button = document.createElement("button");
+    button.className = `category-card ${category === activeCategory ? "active" : ""}`;
+    button.type = "button";
 
-    card.innerHTML = `
+    button.innerHTML = `
       <span class="category-card-title">${category}</span>
       <span class="category-card-count">${count} tutorial${count === 1 ? "" : "s"}</span>
     `;
 
-    card.addEventListener("click", () => {
+    button.addEventListener("click", () => {
       activeCategory = category;
       renderCategories();
-      renderTutorials(tutorialSort.value);
+      renderTutorials();
     });
 
-    categoryGrid.appendChild(card);
+    categoryGrid.appendChild(button);
   });
 }
 
-function renderTutorials(order = "latest") {
-  selectedCategoryTitle.textContent = activeCategory;
+function renderTutorials() {
+  const sortOrder = tutorialSort ? tutorialSort.value : "latest";
 
+  selectedCategoryTitle.textContent = activeCategory;
   tutorialsList.innerHTML = "";
 
-  let filteredTutorials =
+  let filtered =
     activeCategory === "All Tutorials"
       ? tutorials
       : tutorials.filter((tutorial) => tutorial.category === activeCategory);
 
-  filteredTutorials = [...filteredTutorials].sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-
-    return order === "oldest" ? dateA - dateB : dateB - dateA;
+  filtered.sort((a, b) => {
+    return sortOrder === "oldest"
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date);
   });
 
-  if (filteredTutorials.length === 0) {
+  if (filtered.length === 0) {
     tutorialsList.innerHTML = "<p>No tutorials found.</p>";
     return;
   }
 
-  filteredTutorials.forEach((tutorial) => {
-    const embedUrl = getYouTubeEmbed(tutorial.youtube);
-
+  filtered.forEach((tutorial) => {
     const card = document.createElement("article");
     card.className = "card blog-card";
+
+    const embedUrl = getYouTubeEmbed(tutorial.youtube);
 
     card.innerHTML = `
       ${
@@ -145,9 +141,9 @@ function renderTutorials(order = "latest") {
     const body = card.querySelector(".blog-body");
 
     button.addEventListener("click", () => {
-      const isHidden = body.hasAttribute("hidden");
+      const isClosed = body.hasAttribute("hidden");
 
-      if (isHidden) {
+      if (isClosed) {
         body.removeAttribute("hidden");
         button.textContent = "Close tutorial ↑";
       } else {
@@ -165,15 +161,20 @@ async function loadTutorials() {
   categoryGrid.innerHTML = "<p>Loading categories...</p>";
 
   try {
-    const fileResponse = await fetch(TUTORIALS_API);
-    const files = await fileResponse.json();
+    const response = await fetch(TUTORIALS_API);
+
+    if (!response.ok) {
+      throw new Error("Could not fetch tutorials folder");
+    }
+
+    const files = await response.json();
 
     const markdownFiles = files.filter((file) => file.name.endsWith(".md"));
 
     tutorials = await Promise.all(
       markdownFiles.map(async (file) => {
-        const response = await fetch(file.download_url);
-        const text = await response.text();
+        const tutorialResponse = await fetch(file.download_url);
+        const text = await tutorialResponse.text();
 
         const parts = text.split("---");
         const frontmatter = parts[1] || "";
@@ -192,18 +193,16 @@ async function loadTutorials() {
     );
 
     renderCategories();
-    renderTutorials("latest");
+    renderTutorials();
   } catch (error) {
     console.error(error);
     categoryGrid.innerHTML = "";
-    tutorialsList.innerHTML = "<p>Could not load tutorials.</p>";
+    tutorialsList.innerHTML = `<p>Could not load tutorials: ${error.message}</p>`;
   }
 }
 
 if (tutorialSort) {
-  tutorialSort.addEventListener("change", function () {
-    renderTutorials(this.value);
-  });
+  tutorialSort.addEventListener("change", renderTutorials);
 }
 
 loadTutorials();
