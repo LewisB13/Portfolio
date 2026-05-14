@@ -4,7 +4,6 @@ backend:
   branch: main
   base_url: https://decap-auth.lewisb13.workers.dev
 
-
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
@@ -87,12 +86,12 @@ collections:
         name: "body"
         widget: "markdown"
 
-
   - name: "tutorials"
     label: "Tutorials"
     folder: "content/tutorials"
     create: true
     slug: "{{slug}}"
+
     fields:
       - label: "Title"
         name: "title"
@@ -106,13 +105,12 @@ collections:
         name: "category"
         widget: "select"
         options:
-          - "HTML"
-          - "CSS"
-          - "JavaScript"
-          - "GitHub"
-          - "Sveltia CMS"
-          - "Portfolio"
-          - "Web Development"
+          - "Java"
+          - "Python"
+          - "Home Labs"
+          - "Personal Projects"
+          - "Virtual Machines"
+          - "Other"
 
       - label: "Difficulty"
         name: "difficulty"
