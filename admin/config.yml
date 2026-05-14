@@ -3,7 +3,8 @@ backend:
   repo: lewisb13/Portfolio
   branch: main
   base_url: https://decap-auth.lewisb13.workers.dev
-  auth_endpoint: /auth
+  auth_endpoint: auth
+  site_domain: lewisb.dev
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
