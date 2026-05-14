@@ -86,3 +86,61 @@ collections:
       - label: "Description"
         name: "body"
         widget: "markdown"
+
+
+  - name: "tutorials"
+    label: "Tutorials"
+    folder: "content/tutorials"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "HTML"
+          - "CSS"
+          - "JavaScript"
+          - "GitHub"
+          - "Sveltia CMS"
+          - "Portfolio"
+          - "Web Development"
+
+      - label: "Difficulty"
+        name: "difficulty"
+        widget: "select"
+        options:
+          - "Beginner"
+          - "Intermediate"
+          - "Advanced"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "YouTube Video URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+
+      - label: "Short Description"
+        name: "description"
+        widget: "text"
+
+      - label: "Tutorial Body"
+        name: "body"
+        widget: "markdown"
