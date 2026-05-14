@@ -47,10 +47,12 @@ collections:
       - label: "YouTube URL"
         name: "youtube"
         widget: "string"
+        required: false
 
       - label: "Category"
         name: "category"
         widget: "string"
+        required: false
 
       - label: "Description"
         name: "body"
@@ -100,10 +102,12 @@ collections:
       - label: "Date"
         name: "date"
         widget: "datetime"
+        required: false
 
       - label: "Category"
         name: "category"
         widget: "select"
+        required: false
         options:
           - "Java"
           - "Python"
@@ -115,6 +119,7 @@ collections:
       - label: "Difficulty"
         name: "difficulty"
         widget: "select"
+        required: false
         options:
           - "Beginner"
           - "Intermediate"
@@ -138,6 +143,7 @@ collections:
       - label: "Short Description"
         name: "description"
         widget: "text"
+        required: false
 
       - label: "Tutorial Body"
         name: "body"
