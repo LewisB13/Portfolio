@@ -3,8 +3,6 @@ backend:
   repo: lewisb13/Portfolio
   branch: main
   base_url: https://decap-auth.lewisb13.workers.dev
-  auth_endpoint: auth
-  site_domain: lewisb.dev
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -15,6 +13,7 @@ collections:
     folder: "content/blog"
     create: true
     slug: "{{slug}}"
+
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
@@ -26,6 +25,7 @@ collections:
     folder: "content/videos"
     create: true
     slug: "{{slug}}"
+
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "YouTube URL", name: "youtube", widget: "string" }
@@ -37,6 +37,7 @@ collections:
     folder: "content/projects"
     create: true
     slug: "{{slug}}"
+
     fields:
       - { label: "Project Name", name: "title", widget: "string" }
       - { label: "Tech Stack", name: "tech", widget: "list", required: false }
