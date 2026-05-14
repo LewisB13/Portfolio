@@ -1,43 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+async function loadBlogPosts() {
+  const container = document.getElementById("blog-posts");
 
-  <title>Blog | Lewis Barrett Portfolio</title>
+  const posts = [
+    "first-post",
+    "building-my-portfolio-website"
+  ];
 
-  <link rel="stylesheet" href="styles.css" />
-</head>
+  container.innerHTML = "";
 
-<body>
-  <header class="site-header">
-    <div class="nav-container">
-      <a href="index.html" class="logo">Lewis Barrett Portfolio</a>
+  for (const slug of posts) {
+    try {
+      const response = await fetch(`content/blog/${slug}.md`);
 
-      <nav class="navbar">
-        <a href="tutorials.html">Tutorials</a>
-        <a href="contact.html">Contact</a>
-        <a href="blog.html" class="active">Blog</a>
-      </nav>
-    </div>
-  </header>
+      if (!response.ok) {
+        console.error(`Could not load: ${slug}.md`);
+        continue;
+      }
 
-  <main class="container">
-    <section class="page-header">
-      <h1>Blog</h1>
-      <p>Posts, notes, and updates from my learning journey.</p>
-    </section>
+      const text = await response.text();
+      const parts = text.split("---");
 
-    <section class="video-panel">
-      <div class="video-panel-top">
-        <h2>Latest Posts</h2>
-      </div>
+      if (parts.length < 3) {
+        console.error(`Bad frontmatter in: ${slug}.md`);
+        continue;
+      }
 
-      <section id="blog-posts"></section>
-    </section>
-  </main>
+      const frontmatter = parts[1];
+      const body = parts.slice(2).join("---").trim();
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="js/blog-loader.js"></script>
-</body>
-</html>
+      const title =
+        frontmatter.match(/title:\s*(.*)/)?.[1]?.replaceAll('"', "").trim() ||
+        "Untitled";
+
+      const date =
+        frontmatter.match(/date:\s*(.*)/)?.[1]?.trim() || "";
+
+      const preview = marked
+        .parse(body)
+        .replace(/<[^>]*>/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 180);
+
+      const article = document.createElement("article");
+      article.classList.add("card", "blog-card");
+
+      article.innerHTML = `
+        <p class="video-category">Blog</p>
+        <h3>${title}</h3>
+        <p class="video-meta">${date}</p>
+        <p>${preview}...</p>
+        <a class="read-more" href="post.html?post=${slug}">Read post →</a>
+      `;
+
+      container.appendChild(article);
+    } catch (error) {
+      console.error(`Error loading ${slug}:`, error);
+    }
+  }
+}
+
+loadBlogPosts();
