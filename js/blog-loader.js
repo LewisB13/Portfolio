@@ -1,4 +1,5 @@
 async function loadBlogPosts() {
+
   const container = document.getElementById("blog-posts");
 
   const posts = [
@@ -9,7 +10,9 @@ async function loadBlogPosts() {
   container.innerHTML = "";
 
   for (const slug of posts) {
+
     try {
+
       const response = await fetch(`content/blog/${slug}.md`);
 
       if (!response.ok) {
@@ -18,6 +21,7 @@ async function loadBlogPosts() {
       }
 
       const text = await response.text();
+
       const parts = text.split("---");
 
       if (parts.length < 3) {
@@ -26,14 +30,17 @@ async function loadBlogPosts() {
       }
 
       const frontmatter = parts[1];
+
       const body = parts.slice(2).join("---").trim();
 
       const title =
-        frontmatter.match(/title:\s*(.*)/)?.[1]?.replaceAll('"', "").trim() ||
-        "Untitled";
+        frontmatter.match(/title:\s*(.*)/)?.[1]
+          ?.replaceAll('"', "")
+          .trim() || "Untitled";
 
       const date =
-        frontmatter.match(/date:\s*(.*)/)?.[1]?.trim() || "";
+        frontmatter.match(/date:\s*(.*)/)?.[1]
+          ?.trim() || "";
 
       const preview = marked
         .parse(body)
@@ -43,19 +50,29 @@ async function loadBlogPosts() {
         .slice(0, 180);
 
       const article = document.createElement("article");
+
       article.classList.add("card", "blog-card");
 
       article.innerHTML = `
         <p class="video-category">Blog</p>
+
         <h3>${title}</h3>
+
         <p class="video-meta">${date}</p>
+
         <p>${preview}...</p>
-        <a class="read-more" href="post.html?post=${slug}">Read post →</a>
+
+        <a class="read-more" href="post.html?post=${slug}">
+          Read post →
+        </a>
       `;
 
       container.appendChild(article);
+
     } catch (error) {
+
       console.error(`Error loading ${slug}:`, error);
+
     }
   }
 }
