@@ -10,14 +10,31 @@ function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
       .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
-      ?.trim() || ""
+      ?.replace(/^["']|["']$/g, "")
+      .trim() || ""
   );
+}
+
+function getPostTimestamp(dateString) {
+  if (!dateString) return 0;
+
+  const cleanDate = dateString
+    .replace(/^["']|["']$/g, "")
+    .trim();
+
+  const timestamp = Date.parse(cleanDate);
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
 }
 
 function formatDate(dateString) {
   if (!dateString) return "";
 
-  return new Date(dateString).toLocaleDateString("en-IE", {
+  const timestamp = getPostTimestamp(dateString);
+
+  if (!timestamp) return dateString;
+
+  return new Date(timestamp).toLocaleDateString("en-IE", {
     day: "numeric",
     month: "long",
     year: "numeric"
@@ -28,9 +45,12 @@ function renderPosts() {
   const sortOrder = blogSort ? blogSort.value : "latest";
 
   const sortedPosts = [...posts].sort((a, b) => {
+    const dateA = getPostTimestamp(a.date);
+    const dateB = getPostTimestamp(b.date);
+
     return sortOrder === "oldest"
-      ? new Date(a.date) - new Date(b.date)
-      : new Date(b.date) - new Date(a.date);
+      ? dateA - dateB
+      : dateB - dateA;
   });
 
   container.innerHTML = "";
@@ -42,7 +62,7 @@ function renderPosts() {
 
   sortedPosts.forEach((post) => {
     const preview = marked
-      .parse(post.body)
+      .parse(post.body || "")
       .replace(/<[^>]*>/g, "")
       .replace(/\s+/g, " ")
       .trim()
