@@ -114,6 +114,7 @@ collections:
           - "Home Labs"
           - "Personal Projects"
           - "Virtual Machines"
+          - "Web Dev"
           - "Other"
 
       - label: "Difficulty"
