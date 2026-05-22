@@ -5,7 +5,7 @@ category: Java
 difficulty: ''
 tags: []
 youtube: https://youtu.be/C2mfsJojZcE
-thumbnail: ''
+thumbnail: /images/uploads/ChatGPT Image May 22, 2026, 12_17_19 AM.png
 description: ''
 ---
 
