@@ -6,12 +6,13 @@ difficulty: ''
 tags: []
 youtube: https://youtu.be/PTecb1cR5wo
 thumbnail: /images/uploads/java variables.png
-description: |-
-  In this beginner-friendly Java tutorial, I introduce user input using the Scanner class.
-
-  The lesson demonstrates how programs can receive information directly from users and store that information inside variables. Students learn how to work with String, int, double, and char values while building their first interactive Java applications.
-
-  Practical examples are used throughout the tutorial to help reinforce the concepts and build confidence when working with Scanner and user input.
-
-  Topics covered include importing Scanner, creating Scanner objects, reading user input, storing values in variables, and displaying the results back to the user.
+description: ''
 ---
+
+In this beginner-friendly Java tutorial, I introduce user input using the Scanner class.
+
+The lesson demonstrates how programs can receive information directly from users and store that information inside variables. Students learn how to work with String, int, double, and char values while building their first interactive Java applications.
+
+Practical examples are used throughout the tutorial to help reinforce the concepts and build confidence when working with Scanner and user input.
+
+Topics covered include importing Scanner, creating Scanner objects, reading user input, storing values in variables, and displaying the results back to the user.
