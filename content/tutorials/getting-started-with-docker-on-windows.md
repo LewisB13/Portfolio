@@ -1,7 +1,7 @@
 ---
 title: Getting Started with Docker on Windows
 date: 2026-05-24T08:36:00
-category: ''
+category: Home Labs
 difficulty: ''
 tags: []
 youtube: https://youtu.be/4ilwCjXr_Iw
