@@ -150,4 +150,3 @@ collections:
       - label: "Tutorial Body"
         name: "body"
         widget: "markdown"
-        required: false
