@@ -5,7 +5,7 @@ category: ''
 difficulty: ''
 tags: []
 youtube: https://youtu.be/4ilwCjXr_Iw
-thumbnail: ''
+thumbnail: /images/uploads/docker.png
 description: |-
   This beginner tutorial walks through installing Docker Desktop on Windows and running your first container from scratch.
 
