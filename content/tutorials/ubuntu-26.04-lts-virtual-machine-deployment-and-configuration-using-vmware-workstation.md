@@ -5,7 +5,7 @@ category: Virtual Machines
 difficulty: ''
 tags: []
 youtube: https://youtu.be/EIC0OABW3eo
-thumbnail: ''
+thumbnail: /images/uploads/ubuntu install thumbnail.png
 description: ''
 ---
 
