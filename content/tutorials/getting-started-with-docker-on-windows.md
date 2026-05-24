@@ -15,7 +15,6 @@ It’s designed for developers who are completely new to Docker and want a clear
 
 By the end, you’ll understand:
 
-
 This project is part of my growing DevOps and backend development portfolio.
 
 🔗 GitHub: lewisb13
