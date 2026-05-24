@@ -115,6 +115,7 @@ collections:
           - "Personal Projects"
           - "Virtual Machines"
           - "Web Dev"
+          - "Linux"          
           - "Other"
 
       - label: "Difficulty"
