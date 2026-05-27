@@ -3,10 +3,13 @@ const NOTES_API =
 
 const notesList = document.getElementById("notes-list");
 const categorySelect = document.getElementById("notes-category");
+const searchInput = document.getElementById("notes-search");
 
 let notes = [];
 let activeCategory = "All";
+let searchQuery = "";
 
+// ================= FRONTMATTER HELPERS =================
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
@@ -15,6 +18,7 @@ function getFrontmatterValue(frontmatter, key) {
   );
 }
 
+// ================= DATE FORMAT =================
 function formatDate(dateString) {
   if (!dateString) return "";
 
@@ -25,22 +29,39 @@ function formatDate(dateString) {
   });
 }
 
+// ================= RENDER NOTES =================
 function renderNotes() {
   notesList.innerHTML = "";
 
-  let filtered = notes;
+  let filtered = [...notes];
 
+  // CATEGORY FILTER
   if (activeCategory !== "All") {
-    filtered = notes.filter(
+    filtered = filtered.filter(
       (note) => (note.category || "Other").trim() === activeCategory
     );
   }
 
+  // SEARCH FILTER
+  if (searchQuery.trim() !== "") {
+    const q = searchQuery.toLowerCase();
+
+    filtered = filtered.filter((note) => {
+      return (
+        (note.title || "").toLowerCase().includes(q) ||
+        (note.body || "").toLowerCase().includes(q) ||
+        (note.category || "").toLowerCase().includes(q)
+      );
+    });
+  }
+
+  // EMPTY STATE
   if (filtered.length === 0) {
     notesList.innerHTML = "<p>No notes found.</p>";
     return;
   }
 
+  // RENDER CARDS
   filtered.forEach((note) => {
     const card = document.createElement("article");
     card.className = "card blog-card";
@@ -53,11 +74,7 @@ function renderNotes() {
     card.innerHTML = `
       <p class="video-category">${note.category || "Other"}</p>
 
-      <h3 class="note-title">
-        <a href="note.html?note=${note.slug}" target="_blank">
-          ${note.title}
-        </a>
-      </h3>
+      <h3 class="note-title">${note.title}</h3>
 
       <p class="blog-date">
         ${formatDate(note.date)}
@@ -71,11 +88,16 @@ function renderNotes() {
         Read More ↓
       </button>
 
+      <a class="read-more" href="notes.html?note=${note.slug}" target="_blank">
+        Open in new tab ↗
+      </a>
+
       <div class="note-body" hidden>
         ${marked.parse(note.body)}
       </div>
     `;
 
+    // TOGGLE BODY
     const button = card.querySelector(".blog-button");
     const body = card.querySelector(".note-body");
     const previewEl = card.querySelector(".note-preview");
@@ -98,14 +120,22 @@ function renderNotes() {
   });
 }
 
+// ================= LOAD NOTES =================
 async function loadNotes() {
   notesList.innerHTML = "<p>Loading notes...</p>";
 
   try {
     const response = await fetch(NOTES_API);
 
+    if (!response.ok) {
+      throw new Error("Could not fetch notes folder");
+    }
+
     const files = await response.json();
-    const markdownFiles = files.filter(f => f.name.endsWith(".md"));
+
+    const markdownFiles = files.filter((file) =>
+      file.name.endsWith(".md")
+    );
 
     notes = await Promise.all(
       markdownFiles.map(async (file) => {
@@ -127,12 +157,15 @@ async function loadNotes() {
     );
 
     renderNotes();
-  } catch (err) {
-    console.error(err);
-    notesList.innerHTML = "<p>Failed to load notes.</p>";
+  } catch (error) {
+    console.error(error);
+    notesList.innerHTML = `<p>Could not load notes: ${error.message}</p>`;
   }
 }
 
+// ================= EVENTS =================
+
+// category dropdown
 if (categorySelect) {
   categorySelect.addEventListener("change", (e) => {
     activeCategory = e.target.value;
@@ -140,4 +173,13 @@ if (categorySelect) {
   });
 }
 
+// search input
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    searchQuery = e.target.value;
+    renderNotes();
+  });
+}
+
+// init
 loadNotes();

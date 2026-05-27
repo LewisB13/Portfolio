@@ -561,3 +561,25 @@ p {
 .note-title a:hover {
   text-decoration: underline;
 }
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+#notes-search {
+  margin-left: auto;
+  background: #161b22;
+  border: 1px solid #2b3440;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  min-width: 220px;
+}
+
+#notes-search:focus {
+  outline: none;
+  border-color: #4f8cff;
+}

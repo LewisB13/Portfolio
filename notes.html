@@ -35,22 +35,32 @@
       <h1>Notes</h1>
       <p>Quick technical notes, ideas, and reference snippets.</p>
 
-      <div class="sort-bar">
-        <label for="notes-category">Category:</label>
-        <select id="notes-category">
-          <option value="All">All</option>
-          <option value="Linux">Linux</option>
-          <option value="Networking">Networking</option>
-          <option value="Docker">Docker</option>
-          <option value="Homelab">Homelab</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Security">Security</option>
-          <option value="Programming">Programming</option>
-          <option value="Cheatsheets">Cheatsheets</option>
-          <option value="Ideas">Ideas</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+<div class="sort-bar">
+
+  <label for="notes-category">Category:</label>
+
+  <select id="notes-category">
+    <option value="All">All Notes</option>
+    <option value="Linux">Linux</option>
+    <option value="Networking">Networking</option>
+    <option value="Docker">Docker</option>
+    <option value="Homelab">Homelab</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Security">Security</option>
+    <option value="Programming">Programming</option>
+    <option value="Cheatsheets">Cheatsheets</option>
+    <option value="Ideas">Ideas</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <!-- SEARCH BOX -->
+  <input
+    type="text"
+    id="notes-search"
+    placeholder="Search notes..."
+  />
+
+</div>
     </section>
 
     <section>
