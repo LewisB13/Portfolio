@@ -25,6 +25,7 @@ cd ~                # go to home directory
 cd /                # go to root directory
 ````
 
+
 ***
 
 # 📂 File & Directory Management
@@ -42,6 +43,7 @@ mv file1 folder/        # move file
 mv oldname newname      # rename file
 ```
 
+
 ***
 
 # 📄 Viewing Files
@@ -56,6 +58,7 @@ tail file.txt           # last 10 lines
 tail -f log.txt         # live log monitoring
 ```
 
+
 ***
 
 # 🔍 Searching & Filtering
@@ -68,6 +71,7 @@ find . -name "*.txt"           # find files by name
 find / -type f -name "test"    # search system-wide
 ```
 
+
 ***
 
 # ⚙️ Permissions
@@ -79,6 +83,7 @@ chmod 644 file           # read/write owner only
 chown user file          # change owner
 chown user:group file    # change owner + group
 ```
+
 
 ***
 
@@ -96,6 +101,7 @@ top                 # process viewer
 htop                # improved process viewer
 ```
 
+
 ***
 
 # 🌐 Networking
@@ -110,6 +116,7 @@ netstat -tulnp           # open ports (legacy systems)
 ss -tulnp                # modern alternative
 ```
 
+
 ***
 
 # ⚡ Process Management
@@ -121,6 +128,7 @@ kill PID             # terminate process
 kill -9 PID          # force kill
 pkill name           # kill by process name
 ```
+
 
 ***
 
@@ -134,6 +142,7 @@ sudo apt remove nginx      # remove package
 sudo apt autoremove        # clean unused packages
 ```
 
+
 ***
 
 # 📦 Package Management (RHEL/CentOS/Fedora)
@@ -143,6 +152,7 @@ sudo dnf install nginx     # install package
 sudo dnf update            # update system
 sudo dnf remove nginx      # remove package
 ```
+
 
 ***
 
@@ -154,6 +164,7 @@ ssh -i key.pem user@host  # connect using key
 scp file user@host:/path  # copy file to server
 scp user@host:/file .     # copy file from server
 ```
+
 
 ***
 
@@ -169,6 +180,7 @@ history       # show command history
 clear         # clear terminal
 ```
 
+
 ***
 
 # 🧰 Disk & Storage
@@ -179,6 +191,7 @@ fdisk -l          # disk partitions
 mount             # show mounted drives
 umount /dev/sda1  # unmount drive
 ```
+
 
 ***
 
