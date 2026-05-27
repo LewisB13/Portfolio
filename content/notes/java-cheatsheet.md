@@ -165,7 +165,7 @@ myCar.drive();
 
 ***
 
-## 11. Constructors
+11. Constructors
 
 ```plain
 class Person {
