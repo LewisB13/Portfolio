@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Lewis Barrett Portfolio</title>
+  <title>Notes | Lewis Barrett Portfolio</title>
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -18,9 +19,9 @@
 
       <nav class="navbar">
         <a href="index.html">Home</a>
-        <a href="projects.html" class="active">Projects</a>
+        <a href="projects.html">Projects</a>
         <a href="tutorials.html">Tutorials</a>
-        <a href="notes.html">Notes</a>
+        <a href="notes.html" class="active">Notes</a>
         <a href="contact.html">Contact</a>
         <a href="https://github.com/lewisb13" target="_blank">GitHub</a>
       </nav>
@@ -34,56 +35,26 @@
     <!-- ================= PAGE HEADER ================= -->
     <section class="page-header">
 
-      <h1>Projects</h1>
+      <h1>Notes</h1>
 
       <p>
-        A collection of homelab builds, software experiments, and infrastructure projects.
-        Focused on Linux systems, Docker, automation, and real-world problem solving.
+        Quick technical notes, ideas, and reference snippets from my learning and homelab work.
       </p>
 
     </section>
 
-    <!-- ================= PROJECT GRID ================= -->
+    <!-- ================= NOTES GRID ================= -->
     <section>
-
-      <div class="grid">
-
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>SearXNG Self-Hosted Search</h2>
-          <p>
-            Deployed a privacy-focused search engine using Docker in a self-hosted environment.
-            Focused on container orchestration and service configuration.
-          </p>
-          <p class="video-meta">Docker • Linux • Self-hosting</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
-        </div>
-
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>Docker Homelab Stack</h2>
-          <p>
-            Built a multi-service homelab using Docker Compose to manage services in a Linux server environment.
-          </p>
-          <p class="video-meta">Docker • DevOps • Linux</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
-        </div>
-
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>Linux Server Setup Lab</h2>
-          <p>
-            Hands-on server configuration including SSH, permissions, package management, and system hardening.
-          </p>
-          <p class="video-meta">Linux • SysAdmin • Networking</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
-        </div>
-
+      <div id="notes-list" class="grid">
+        <p>Loading notes...</p>
       </div>
-
     </section>
 
   </main>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="./js/notes-loader.js"></script>
 
 </body>
 
