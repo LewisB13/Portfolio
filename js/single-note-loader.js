@@ -11,6 +11,16 @@ function getFrontmatterValue(frontmatter, key) {
   );
 }
 
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  return new Date(dateString).toLocaleDateString("en-IE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
 async function loadSingleNote() {
   const slug = getNoteSlug();
   const container = document.getElementById("note-content");
@@ -20,7 +30,8 @@ async function loadSingleNote() {
     return;
   }
 
-  const url = `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
+  const url =
+    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
 
   try {
     const response = await fetch(url);
@@ -49,8 +60,6 @@ async function loadSingleNote() {
         ${marked.parse(body)}
       </div>
     `;
-
-    document.title = `${title} | Notes`;
   } catch (error) {
     console.error(error);
     container.innerHTML = "<p>Could not load note.</p>";
