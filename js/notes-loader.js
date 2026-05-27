@@ -2,8 +2,10 @@ const NOTES_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/notes";
 
 const notesList = document.getElementById("notes-list");
+const categorySelect = document.getElementById("notes-category");
 
 let notes = [];
+let activeCategory = "All";
 
 function getFrontmatterValue(frontmatter, key) {
   return (
@@ -26,12 +28,20 @@ function formatDate(dateString) {
 function renderNotes() {
   notesList.innerHTML = "";
 
-  if (notes.length === 0) {
+  let filtered = notes;
+
+  if (activeCategory !== "All") {
+    filtered = notes.filter((note) => {
+      return (note.category || "Other").trim() === activeCategory;
+    });
+  }
+
+  if (filtered.length === 0) {
     notesList.innerHTML = "<p>No notes found.</p>";
     return;
   }
 
-  notes.forEach((note) => {
+  filtered.forEach((note) => {
     const card = document.createElement("article");
     card.className = "card blog-card";
 
@@ -41,6 +51,8 @@ function renderNotes() {
       .slice(0, 180);
 
     card.innerHTML = `
+      <p class="video-category">${note.category || "Other"}</p>
+
       <h3>${note.title}</h3>
 
       <p class="blog-date">
@@ -108,8 +120,10 @@ async function loadNotes() {
         const body = parts.slice(2).join("---").trim();
 
         return {
+          slug: file.name.replace(".md", ""),
           title: getFrontmatterValue(frontmatter, "title") || "Untitled",
           date: getFrontmatterValue(frontmatter, "date"),
+          category: getFrontmatterValue(frontmatter, "category"),
           body
         };
       })
@@ -120,6 +134,13 @@ async function loadNotes() {
     console.error(error);
     notesList.innerHTML = `<p>Could not load notes: ${error.message}</p>`;
   }
+}
+
+if (categorySelect) {
+  categorySelect.addEventListener("change", (e) => {
+    activeCategory = e.target.value;
+    renderNotes();
+  });
 }
 
 loadNotes();
