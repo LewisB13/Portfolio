@@ -1,5 +1,5 @@
 ---
-title: Getting Started with Docker on Windows
+title: Getting Started with Docker on Windows Install And Setup beginer
 date: 2026-05-24T08:36:00
 category: Home Labs
 difficulty: ''
