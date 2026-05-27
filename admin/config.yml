@@ -9,54 +9,7 @@ public_folder: "/images/uploads"
 
 collections:
 
-  - name: "blog"
-    label: "Blog Posts"
-    folder: "content/blog"
-    create: true
-    slug: "{{slug}}"
-
-    fields:
-      - label: "Title"
-        name: "title"
-        widget: "string"
-
-      - label: "Date"
-        name: "date"
-        widget: "datetime"
-
-      - label: "Tags"
-        name: "tags"
-        widget: "list"
-        required: false
-
-      - label: "Body"
-        name: "body"
-        widget: "markdown"
-
-  - name: "videos"
-    label: "Videos"
-    folder: "content/videos"
-    create: true
-    slug: "{{slug}}"
-
-    fields:
-      - label: "Title"
-        name: "title"
-        widget: "string"
-
-      - label: "YouTube URL"
-        name: "youtube"
-        widget: "string"
-        required: false
-
-      - label: "Category"
-        name: "category"
-        widget: "string"
-        required: false
-
-      - label: "Description"
-        name: "body"
-        widget: "markdown"
+ 
 
   - name: "projects"
     label: "Projects"
@@ -150,3 +103,36 @@ collections:
       - label: "Tutorial Body"
         name: "body"
         widget: "markdown"
+
+  - name: "notes"
+    label: "Notes"
+    folder: "content/notes"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        required: false
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+
+      - label: "Visibility"
+        name: "visibility"
+        widget: "select"
+        required: false
+        options:
+          - "public"
+          - "private"
