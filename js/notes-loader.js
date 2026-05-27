@@ -31,9 +31,9 @@ function renderNotes() {
   let filtered = notes;
 
   if (activeCategory !== "All") {
-    filtered = notes.filter((note) => {
-      return (note.category || "Other").trim() === activeCategory;
-    });
+    filtered = notes.filter(
+      (note) => (note.category || "Other").trim() === activeCategory
+    );
   }
 
   if (filtered.length === 0) {
@@ -63,9 +63,13 @@ function renderNotes() {
         ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
-      <button class="read-more blog-button">
-        Read More ↓
-      </button>
+      <div class="note-actions">
+        <button class="read-more blog-button">Expand ↓</button>
+
+        <a class="read-more" href="notes.html?note=${note.slug}" target="_blank">
+          Open in new tab ↗
+        </a>
+      </div>
 
       <div class="note-body" hidden>
         ${marked.parse(note.body)}
@@ -86,7 +90,7 @@ function renderNotes() {
       } else {
         body.setAttribute("hidden", "");
         previewEl.style.display = "block";
-        button.textContent = "Read More ↓";
+        button.textContent = "Expand ↓";
       }
     });
 

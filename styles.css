@@ -541,3 +541,14 @@ p {
 .card a {
   overflow-wrap: anywhere;
 }
+.note-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.note-preview {
+  opacity: 0.85;
+  line-height: 1.6;
+}
