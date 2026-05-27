@@ -59,11 +59,12 @@ function renderCategories() {
     const btn = document.createElement("button");
     btn.className = `category-card ${category === activeCategory ? "active" : ""}`;
 
-    btn.innerHTML = `
-      <span class="category-card-title">${category}</span>
-      <span class="category-card-count">${count} Tutorials</span>
-    `;
-
+btn.innerHTML = `
+  <span class="category-card-title">${category}</span>
+  <span class="category-card-count">
+    ${count} ${count === 1 ? "Tutorial" : "Tutorials"}
+  </span>
+`;
     btn.onclick = () => {
       activeCategory = category;
       renderCategories();
