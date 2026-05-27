@@ -5,11 +5,6 @@ const notesList = document.getElementById("notes-list");
 
 let notes = [];
 
-function getNoteSlug() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("note");
-}
-
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
@@ -28,9 +23,6 @@ function formatDate(dateString) {
   });
 }
 
-/* =========================
-   LIST VIEW
-========================= */
 function renderNotes() {
   notesList.innerHTML = "";
 
@@ -55,59 +47,41 @@ function renderNotes() {
         ${formatDate(note.date)}
       </p>
 
-      <p>${preview}${preview.length >= 180 ? "..." : ""}</p>
+      <p class="note-preview">
+        ${preview}${preview.length >= 180 ? "..." : ""}
+      </p>
 
-      <a class="read-more" href="notes.html?note=${note.slug}">
-        Read More →
-      </a>
+      <button class="read-more blog-button">
+        Read More ↓
+      </button>
+
+      <div class="note-body" hidden>
+        ${marked.parse(note.body)}
+      </div>
     `;
+
+    const button = card.querySelector(".blog-button");
+    const body = card.querySelector(".note-body");
+    const previewEl = card.querySelector(".note-preview");
+
+    button.addEventListener("click", () => {
+      const isClosed = body.hasAttribute("hidden");
+
+      if (isClosed) {
+        body.removeAttribute("hidden");
+        previewEl.style.display = "none";
+        button.textContent = "Close ↑";
+      } else {
+        body.setAttribute("hidden", "");
+        previewEl.style.display = "block";
+        button.textContent = "Read More ↓";
+      }
+    });
 
     notesList.appendChild(card);
   });
 }
 
-/* =========================
-   SINGLE NOTE VIEW
-========================= */
-async function loadSingleNote(slug) {
-  notesList.innerHTML = "<p>Loading note...</p>";
-
-  try {
-    const response = await fetch(
-      `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`
-    );
-
-    if (!response.ok) throw new Error("Note not found");
-
-    const text = await response.text();
-
-    const parts = text.split("---");
-    const frontmatter = parts[1] || "";
-    const body = parts.slice(2).join("---").trim();
-
-    const title = getFrontmatterValue(frontmatter, "title") || "Untitled";
-    const date = getFrontmatterValue(frontmatter, "date");
-
-    notesList.innerHTML = `
-      <a class="read-more" href="notes.html">← Back</a>
-
-      <p class="blog-date">${formatDate(date)}</p>
-
-      <h1>${title}</h1>
-
-      <div class="markdown-body">
-        ${marked.parse(body)}
-      </div>
-    `;
-  } catch (error) {
-    console.error(error);
-    notesList.innerHTML = "<p>Could not load note.</p>";
-  }
-}
-
-/* =========================
-   LOAD NOTES FROM GITHUB
-========================= */
 async function loadNotes() {
   notesList.innerHTML = "<p>Loading notes...</p>";
 
@@ -134,7 +108,6 @@ async function loadNotes() {
         const body = parts.slice(2).join("---").trim();
 
         return {
-          slug: file.name.replace(".md", ""),
           title: getFrontmatterValue(frontmatter, "title") || "Untitled",
           date: getFrontmatterValue(frontmatter, "date"),
           body
@@ -149,13 +122,4 @@ async function loadNotes() {
   }
 }
 
-/* =========================
-   ROUTER (IMPORTANT)
-========================= */
-const slug = getNoteSlug();
-
-if (slug) {
-  loadSingleNote(slug);
-} else {
-  loadNotes();
-}
+loadNotes();
