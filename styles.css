@@ -505,3 +505,39 @@ p {
   width: 100%;
   max-width: 100%;
 }
+
+/* ===============================
+   NOTES / MARKDOWN HARD FIX
+=============================== */
+
+/* keeps markdown inside card bounds */
+.card .markdown-body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* prevents ANY long text from escaping */
+.card .markdown-body * {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* code blocks stay inside card */
+.card pre {
+  max-width: 100%;
+  overflow-x: auto;
+  background: #0b0f14;
+  border: 1px solid #2b3440;
+  border-radius: 12px;
+}
+
+/* inline code wrapping fix */
+.card code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* very long URLs or strings safety net */
+.card a {
+  overflow-wrap: anywhere;
+}
