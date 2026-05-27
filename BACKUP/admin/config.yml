@@ -1,0 +1,152 @@
+backend:
+  name: github
+  repo: lewisb13/Portfolio
+  branch: main
+  base_url: https://decap-auth.lewisb13.workers.dev
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+
+  - name: "videos"
+    label: "Videos"
+    folder: "content/videos"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "YouTube URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "string"
+        required: false
+
+      - label: "Description"
+        name: "body"
+        widget: "markdown"
+
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Project Name"
+        name: "title"
+        widget: "string"
+
+      - label: "Tech Stack"
+        name: "tech"
+        widget: "list"
+        required: false
+
+      - label: "GitHub Link"
+        name: "github"
+        widget: "string"
+        required: false
+
+      - label: "Live Demo"
+        name: "demo"
+        widget: "string"
+        required: false
+
+      - label: "Description"
+        name: "body"
+        widget: "markdown"
+
+  - name: "tutorials"
+    label: "Tutorials"
+    folder: "content/tutorials"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "Java"
+          - "Python"
+          - "Home Labs"
+          - "Personal Projects"
+          - "Virtual Machines"
+          - "Web Dev"
+          - "Linux"          
+          - "Other"
+
+      - label: "Difficulty"
+        name: "difficulty"
+        widget: "select"
+        required: false
+        options:
+          - "Beginner"
+          - "Intermediate"
+          - "Advanced"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "YouTube Video URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+
+      - label: "Short Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Tutorial Body"
+        name: "body"
+        widget: "markdown"

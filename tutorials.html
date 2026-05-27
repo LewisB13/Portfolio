@@ -10,33 +10,51 @@
 
 <body>
 
+  <!-- ================= HEADER ================= -->
   <header class="site-header">
     <div class="nav-container">
+
       <a href="index.html" class="logo">Lewis Barrett Portfolio</a>
 
       <nav class="navbar">
-        <!-- <a href="index.html">Home</a> -->
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
         <a href="tutorials.html" class="active">Tutorials</a>
-        <a href="blog.html">Blog</a>
-        <a href="https://www.github.com/lewisb13" target="_blank">GitHub</a>
-
+        <a href="notes.html">Notes</a>
         <a href="contact.html">Contact</a>
+        <a href="https://www.github.com/lewisb13" target="_blank">GitHub</a>
       </nav>
+
     </div>
   </header>
 
+  <!-- ================= MAIN ================= -->
   <main class="container">
+
+    <!-- ================= PAGE INTRO ================= -->
     <section class="page-header">
       <h1>Tutorials</h1>
-      <p>Guides, walkthroughs, and lessons from what I’m building.</p>
+      <p>
+        Guides, walkthroughs, and lessons based on real projects I’m building in Java, Linux, Docker,
+        and self-hosted systems. Everything here is practical, not theoretical.
+      </p>
     </section>
 
-    <section class="category-grid" id="tutorial-category-grid">
-      <p>Loading categories...</p>
+    <!-- ================= CATEGORY SECTION ================= -->
+    <section>
+
+      <section class="category-grid" id="tutorial-category-grid">
+        <p>Loading categories...</p>
+      </section>
+
     </section>
 
+    <!-- ================= CONTENT PANEL ================= -->
     <section class="video-panel">
+
+      <!-- HEADER / CONTROLS ROW -->
       <div class="video-panel-top">
+
         <h2 id="selected-category-title">Latest Tutorials</h2>
 
         <div class="sort-bar">
@@ -46,16 +64,24 @@
             <option value="oldest">Oldest first</option>
           </select>
         </div>
+
       </div>
 
-      <div id="tutorials-list" class="grid">
+      <!-- ================= TUTORIAL GRID ================= -->
+      <section id="tutorials-list" class="grid">
+
         <p>Loading tutorials...</p>
-      </div>
+
+      </section>
+
     </section>
+
   </main>
 
+  <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="js/tutorial-loader.js"></script>
+
 </body>
 
 </html>
