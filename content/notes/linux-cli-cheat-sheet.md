@@ -1,6 +1,7 @@
 ---
 title: Linux CLI Cheat Sheet
 date: 2026-05-27T03:17:00
+category: Linux
 tags: []
 visibility: ''
 ---
