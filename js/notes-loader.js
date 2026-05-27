@@ -53,7 +53,11 @@ function renderNotes() {
     card.innerHTML = `
       <p class="video-category">${note.category || "Other"}</p>
 
-      <h3>${note.title}</h3>
+      <h3 class="note-title">
+        <a href="notes.html?note=${note.slug}" target="_blank">
+          ${note.title}
+        </a>
+      </h3>
 
       <p class="blog-date">
         ${formatDate(note.date)}
@@ -63,13 +67,9 @@ function renderNotes() {
         ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
-      <div class="note-actions">
-        <button class="read-more blog-button">Expand ↓</button>
-
-        <a class="read-more" href="notes.html?note=${note.slug}" target="_blank">
-          Open in new tab ↗
-        </a>
-      </div>
+      <button class="read-more blog-button">
+        Read More ↓
+      </button>
 
       <div class="note-body" hidden>
         ${marked.parse(note.body)}
@@ -90,7 +90,7 @@ function renderNotes() {
       } else {
         body.setAttribute("hidden", "");
         previewEl.style.display = "block";
-        button.textContent = "Expand ↓";
+        button.textContent = "Read More ↓";
       }
     });
 

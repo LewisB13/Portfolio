@@ -552,3 +552,12 @@ p {
   opacity: 0.85;
   line-height: 1.6;
 }
+
+.note-title a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.note-title a:hover {
+  text-decoration: underline;
+}
