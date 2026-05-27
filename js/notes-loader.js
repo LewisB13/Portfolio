@@ -54,7 +54,7 @@ function renderNotes() {
       <p class="video-category">${note.category || "Other"}</p>
 
       <h3 class="note-title">
-        <a href="notes.html?note=${note.slug}" target="_blank">
+        <a href="note.html?note=${note.slug}" target="_blank">
           ${note.title}
         </a>
       </h3>
@@ -104,15 +104,8 @@ async function loadNotes() {
   try {
     const response = await fetch(NOTES_API);
 
-    if (!response.ok) {
-      throw new Error("Could not fetch notes folder");
-    }
-
     const files = await response.json();
-
-    const markdownFiles = files.filter((file) =>
-      file.name.endsWith(".md")
-    );
+    const markdownFiles = files.filter(f => f.name.endsWith(".md"));
 
     notes = await Promise.all(
       markdownFiles.map(async (file) => {
@@ -134,9 +127,9 @@ async function loadNotes() {
     );
 
     renderNotes();
-  } catch (error) {
-    console.error(error);
-    notesList.innerHTML = `<p>Could not load notes: ${error.message}</p>`;
+  } catch (err) {
+    console.error(err);
+    notesList.innerHTML = "<p>Failed to load notes.</p>";
   }
 }
 

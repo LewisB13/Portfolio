@@ -30,23 +30,17 @@ async function loadSingleNote() {
     return;
   }
 
-  const url =
-    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
+  const url = `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
 
   try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Note not found");
-    }
-
-    const text = await response.text();
+    const res = await fetch(url);
+    const text = await res.text();
 
     const parts = text.split("---");
     const frontmatter = parts[1] || "";
     const body = parts.slice(2).join("---").trim();
 
-    const title = getFrontmatterValue(frontmatter, "title") || "Untitled";
+    const title = getFrontmatterValue(frontmatter, "title");
     const date = getFrontmatterValue(frontmatter, "date");
 
     container.innerHTML = `
@@ -60,8 +54,8 @@ async function loadSingleNote() {
         ${marked.parse(body)}
       </div>
     `;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     container.innerHTML = "<p>Could not load note.</p>";
   }
 }
