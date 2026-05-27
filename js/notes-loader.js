@@ -49,7 +49,7 @@ function renderNotes() {
 
       <p>${preview}${preview.length >= 180 ? "..." : ""}</p>
 
-      <a class="read-more" href="note.html?note=${note.slug}">
+      <a class="read-more" href="notes.html?note=${note.slug}">
         Read More →
       </a>
     `;
