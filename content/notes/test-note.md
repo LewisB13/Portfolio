@@ -1,6 +1,7 @@
 ---
 title: test note
 date: 2026-05-27T03:16:00
+category: Networking
 tags: []
 visibility: ''
 ---
