@@ -61,7 +61,7 @@ function renderCategories() {
 
     btn.innerHTML = `
       <span class="category-card-title">${category}</span>
-      <span class="category-card-count">${count}</span>
+      <span class="category-card-count">${count} Tutorials</span>
     `;
 
     btn.onclick = () => {
