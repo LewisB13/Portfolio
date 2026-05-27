@@ -406,3 +406,100 @@ p {
     justify-content: space-between;
   }
 }
+
+/* ===============================
+   BUTTON SYSTEM (ONLY ADDITION)
+=============================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #4f8cff;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #3f77db;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #2b3440;
+  color: #ffffff;
+}
+
+.btn-outline:hover {
+  border-color: #4f8cff;
+  color: #4f8cff;
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+/* ===============================
+   CARD CONTENT SAFETY FIX
+=============================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ensures spacing stays inside card */
+.card > * {
+  max-width: 100%;
+}
+
+/* prevents long content (links, markdown, etc.) overflowing */
+.card p,
+.card a,
+.card h1,
+.card h2,
+.card h3,
+.card h4 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* keeps buttons inside and aligned */
+.card .btn {
+  align-self: flex-start;
+}
+
+/* adds consistent spacing between elements */
+.card h1,
+.card h2,
+.card h3,
+.card p,
+.card .video-wrapper,
+.card button,
+.card a {
+  margin-top: 10px;
+}
+
+/* prevents iframe/video from pushing layout weirdly */
+.video-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
