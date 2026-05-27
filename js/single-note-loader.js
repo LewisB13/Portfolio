@@ -1,19 +1,16 @@
 function getNoteSlug() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("note");
+  return new URLSearchParams(window.location.search).get("note");
 }
 
 function getFrontmatterValue(frontmatter, key) {
   return (
-    frontmatter
-      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+    frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
       ?.trim() || ""
   );
 }
 
 function formatDate(dateString) {
   if (!dateString) return "";
-
   return new Date(dateString).toLocaleDateString("en-IE", {
     day: "numeric",
     month: "long",
@@ -30,7 +27,8 @@ async function loadSingleNote() {
     return;
   }
 
-  const url = `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
+  const url =
+    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/notes/${slug}.md`;
 
   try {
     const res = await fetch(url);
@@ -44,9 +42,9 @@ async function loadSingleNote() {
     const date = getFrontmatterValue(frontmatter, "date");
 
     container.innerHTML = `
-      <a href="notes.html" class="read-more">← Back</a>
+      <a href="notes.html">← Back</a>
 
-      <p class="blog-date">${formatDate(date)}</p>
+      <p>${formatDate(date)}</p>
 
       <h1>${title}</h1>
 
@@ -54,8 +52,9 @@ async function loadSingleNote() {
         ${marked.parse(body)}
       </div>
     `;
-  } catch (err) {
-    console.error(err);
+
+    document.title = title;
+  } catch (e) {
     container.innerHTML = "<p>Could not load note.</p>";
   }
 }

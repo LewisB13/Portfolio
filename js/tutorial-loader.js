@@ -4,17 +4,26 @@ const TUTORIALS_API =
 const tutorialsList = document.getElementById("tutorials-list");
 const categoryGrid = document.getElementById("tutorial-category-grid");
 const tutorialSort = document.getElementById("tutorial-sort");
+const searchInput = document.getElementById("tutorial-search");
 const selectedCategoryTitle = document.getElementById("selected-category-title");
 
 let tutorials = [];
 let activeCategory = "All Tutorials";
+let searchQuery = "";
 
 function getFrontmatterValue(frontmatter, key) {
   return (
-    frontmatter
-      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
-      ?.trim() || ""
+    frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]?.trim() || ""
   );
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleDateString("en-IE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 }
 
 function getYouTubeEmbed(url) {
@@ -33,59 +42,59 @@ function getYouTubeEmbed(url) {
   return "";
 }
 
-function formatDate(dateString) {
-  if (!dateString) return "";
-
-  return new Date(dateString).toLocaleDateString("en-IE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-}
-
 function renderCategories() {
   const categories = [
     "All Tutorials",
-    ...new Set(tutorials.map((tutorial) => tutorial.category || "Uncategorised"))
+    ...new Set(tutorials.map(t => t.category || "Uncategorised"))
   ];
 
   categoryGrid.innerHTML = "";
 
-  categories.forEach((category) => {
+  categories.forEach(category => {
     const count =
       category === "All Tutorials"
         ? tutorials.length
-        : tutorials.filter((tutorial) => tutorial.category === category).length;
+        : tutorials.filter(t => t.category === category).length;
 
-    const button = document.createElement("button");
-    button.className = `category-card ${category === activeCategory ? "active" : ""}`;
-    button.type = "button";
+    const btn = document.createElement("button");
+    btn.className = `category-card ${category === activeCategory ? "active" : ""}`;
 
-    button.innerHTML = `
+    btn.innerHTML = `
       <span class="category-card-title">${category}</span>
-      <span class="category-card-count">${count} tutorial${count === 1 ? "" : "s"}</span>
+      <span class="category-card-count">${count}</span>
     `;
 
-    button.addEventListener("click", () => {
+    btn.onclick = () => {
       activeCategory = category;
       renderCategories();
       renderTutorials();
-    });
+    };
 
-    categoryGrid.appendChild(button);
+    categoryGrid.appendChild(btn);
   });
 }
 
 function renderTutorials() {
-  const sortOrder = tutorialSort ? tutorialSort.value : "latest";
-
-  selectedCategoryTitle.textContent = activeCategory;
   tutorialsList.innerHTML = "";
 
-  let filtered =
-    activeCategory === "All Tutorials"
-      ? tutorials
-      : tutorials.filter((tutorial) => tutorial.category === activeCategory);
+  let filtered = tutorials;
+
+  // CATEGORY FILTER
+  if (activeCategory !== "All Tutorials") {
+    filtered = filtered.filter(t => t.category === activeCategory);
+  }
+
+  // SEARCH FILTER
+  if (searchQuery.trim()) {
+    filtered = filtered.filter(t =>
+      (t.title + " " + (t.description || "") + " " + (t.category || ""))
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // SORT
+  const sortOrder = tutorialSort?.value || "latest";
 
   filtered.sort((a, b) => {
     return sortOrder === "oldest"
@@ -93,64 +102,53 @@ function renderTutorials() {
       : new Date(b.date) - new Date(a.date);
   });
 
-  if (filtered.length === 0) {
+  if (!filtered.length) {
     tutorialsList.innerHTML = "<p>No tutorials found.</p>";
     return;
   }
 
-  filtered.forEach((tutorial) => {
+  filtered.forEach(t => {
     const card = document.createElement("article");
-    card.className = "card blog-card";
+    card.className = "card";
 
-    const embedUrl = getYouTubeEmbed(tutorial.youtube);
+    const embed = getYouTubeEmbed(t.youtube);
 
     card.innerHTML = `
-      ${
-        embedUrl
-          ? `
-            <div class="video-wrapper">
-              <iframe
-                src="${embedUrl}"
-                title="${tutorial.title}"
-                allowfullscreen>
-              </iframe>
-            </div>
-          `
-          : ""
+      ${embed ? `
+        <div class="video-wrapper">
+          <iframe src="${embed}" allowfullscreen></iframe>
+        </div>` : ""
       }
 
-      <h3>${tutorial.title}</h3>
+      <h3>${t.title}</h3>
 
-      <p class="blog-date">
-        ${formatDate(tutorial.date)}
-        ${tutorial.difficulty ? ` • ${tutorial.difficulty}` : ""}
+      <p class="video-meta">
+        ${formatDate(t.date)} ${t.difficulty ? "• " + t.difficulty : ""}
       </p>
 
-      <p>${tutorial.description || "Click below to read this tutorial."}</p>
+      <p>${t.description || ""}</p>
 
-      <button class="blog-button read-more" type="button">
-        Read More ↓
-      </button>
+      <button class="btn btn-outline btn-sm">Read More</button>
 
-      <div class="blog-body" hidden>
-        ${marked.parse(tutorial.body)}
+      <div class="markdown-body" hidden>
+        ${marked.parse(t.body)}
       </div>
     `;
 
-    const button = card.querySelector(".blog-button");
-    const body = card.querySelector(".blog-body");
+    const btn = card.querySelector("button");
+    const body = card.querySelector(".markdown-body");
 
-    button.addEventListener("click", () => {
-      const isClosed = body.hasAttribute("hidden");
+    btn.onclick = () => {
+      const open = body.hasAttribute("hidden");
 
-      if (isClosed) {
+      if (open) {
         body.removeAttribute("hidden");
-        button.textContent = "Close  ↑";
+        btn.textContent = "Close ↑";
       } else {
         body.setAttribute("hidden", "");
-        button.textContent = "Read More ↓";
+        btn.textContent = "Read More";
       }
-    });
+    };
 
     tutorialsList.appendChild(card);
   });
@@ -158,51 +156,43 @@ function renderTutorials() {
 
 async function loadTutorials() {
   tutorialsList.innerHTML = "<p>Loading tutorials...</p>";
-  categoryGrid.innerHTML = "<p>Loading categories...</p>";
 
-  try {
-    const response = await fetch(TUTORIALS_API);
+  const res = await fetch(TUTORIALS_API);
+  const files = await res.json();
 
-    if (!response.ok) {
-      throw new Error("Could not fetch tutorials folder");
-    }
-
-    const files = await response.json();
-
-    const markdownFiles = files.filter((file) => file.name.endsWith(".md"));
-
-    tutorials = await Promise.all(
-      markdownFiles.map(async (file) => {
-        const tutorialResponse = await fetch(file.download_url);
-        const text = await tutorialResponse.text();
+  tutorials = await Promise.all(
+    files
+      .filter(f => f.name.endsWith(".md"))
+      .map(async file => {
+        const r = await fetch(file.download_url);
+        const text = await r.text();
 
         const parts = text.split("---");
-        const frontmatter = parts[1] || "";
-        const body = parts.slice(2).join("---").trim();
+        const fm = parts[1] || "";
+        const body = parts.slice(2).join("---");
 
         return {
-          title: getFrontmatterValue(frontmatter, "title") || "Untitled",
-          date: getFrontmatterValue(frontmatter, "date"),
-          category: getFrontmatterValue(frontmatter, "category"),
-          difficulty: getFrontmatterValue(frontmatter, "difficulty"),
-          youtube: getFrontmatterValue(frontmatter, "youtube"),
-          description: getFrontmatterValue(frontmatter, "description"),
+          title: getFrontmatterValue(fm, "title"),
+          date: getFrontmatterValue(fm, "date"),
+          category: getFrontmatterValue(fm, "category"),
+          difficulty: getFrontmatterValue(fm, "difficulty"),
+          youtube: getFrontmatterValue(fm, "youtube"),
+          description: getFrontmatterValue(fm, "description"),
           body
         };
       })
-    );
+  );
 
-    renderCategories();
-    renderTutorials();
-  } catch (error) {
-    console.error(error);
-    categoryGrid.innerHTML = "";
-    tutorialsList.innerHTML = `<p>Could not load tutorials: ${error.message}</p>`;
-  }
+  renderCategories();
+  renderTutorials();
 }
 
-if (tutorialSort) {
-  tutorialSort.addEventListener("change", renderTutorials);
-}
+// EVENTS
+tutorialSort?.addEventListener("change", renderTutorials);
+
+searchInput?.addEventListener("input", e => {
+  searchQuery = e.target.value;
+  renderTutorials();
+});
 
 loadTutorials();

@@ -5,12 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorials | Lewis Barrett</title>
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
 
-  <!-- ================= HEADER ================= -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="nav-container">
 
@@ -28,57 +29,58 @@
     </div>
   </header>
 
-  <!-- ================= MAIN ================= -->
+  <!-- MAIN -->
   <main class="container">
 
-    <!-- ================= PAGE INTRO ================= -->
     <section class="page-header">
       <h1>Tutorials</h1>
       <p>
-        Guides, walkthroughs, and lessons based on real projects I’m building in Java, Linux, Docker,
-        and self-hosted systems. Everything here is practical, not theoretical.
+        Guides, walkthroughs, and lessons based on real projects in Linux, Docker, Java, and self-hosting.
       </p>
     </section>
 
-    <!-- ================= CATEGORY SECTION ================= -->
-    <section>
-
-      <section class="category-grid" id="tutorial-category-grid">
-        <p>Loading categories...</p>
-      </section>
-
+    <!-- CATEGORY GRID (UNCHANGED) -->
+    <section class="category-grid" id="tutorial-category-grid">
+      <p>Loading categories...</p>
     </section>
 
-    <!-- ================= CONTENT PANEL ================= -->
+    <!-- CONTROLS BAR -->
     <section class="video-panel">
 
-      <!-- HEADER / CONTROLS ROW -->
       <div class="video-panel-top">
 
         <h2 id="selected-category-title">Latest Tutorials</h2>
 
+        <!-- RIGHT CONTROLS -->
         <div class="sort-bar">
+
           <label for="tutorial-sort">Sort</label>
+
           <select id="tutorial-sort">
             <option value="latest">Latest first</option>
             <option value="oldest">Oldest first</option>
           </select>
+
+          <input
+            id="tutorial-search"
+            class="tutorial-search"
+            type="text"
+            placeholder="Search tutorials..."
+          />
+
         </div>
 
       </div>
 
-      <!-- ================= TUTORIAL GRID ================= -->
+      <!-- LIST -->
       <section id="tutorials-list" class="grid">
-
         <p>Loading tutorials...</p>
-
       </section>
 
     </section>
 
   </main>
 
-  <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="js/tutorial-loader.js"></script>
 

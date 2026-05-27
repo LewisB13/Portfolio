@@ -11,7 +11,7 @@
 
 <body>
 
-  <!-- HEADER -->
+  <!-- ================= HEADER ================= -->
   <header class="site-header">
     <div class="nav-container">
 
@@ -29,44 +29,44 @@
     </div>
   </header>
 
+  <!-- ================= MAIN ================= -->
   <main class="container">
 
     <section class="page-header">
+
       <h1>Notes</h1>
+
       <p>Quick technical notes, ideas, and reference snippets.</p>
 
-<div class="sort-bar">
+      <div class="sort-bar">
 
-  <label for="notes-category">Category:</label>
+        <select id="notes-category">
+          <option value="All">All Notes</option>
+          <option value="Linux">Linux</option>
+          <option value="Networking">Networking</option>
+          <option value="Docker">Docker</option>
+          <option value="Homelab">Homelab</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Security">Security</option>
+          <option value="Programming">Programming</option>
+          <option value="Cheatsheets">Cheatsheets</option>
+          <option value="Ideas">Ideas</option>
+          <option value="Other">Other</option>
+        </select>
 
-  <select id="notes-category">
-    <option value="All">All Notes</option>
-    <option value="Linux">Linux</option>
-    <option value="Networking">Networking</option>
-    <option value="Docker">Docker</option>
-    <option value="Homelab">Homelab</option>
-    <option value="Web Development">Web Development</option>
-    <option value="Security">Security</option>
-    <option value="Programming">Programming</option>
-    <option value="Cheatsheets">Cheatsheets</option>
-    <option value="Ideas">Ideas</option>
-    <option value="Other">Other</option>
-  </select>
+        <input
+          id="notes-search"
+          class="tutorial-search"
+          type="text"
+          placeholder="Search notes..."
+        />
 
-  <!-- SEARCH BOX -->
-  <input
-    type="text"
-    id="notes-search"
-    placeholder="Search notes..."
-  />
+      </div>
 
-</div>
     </section>
 
-    <section>
-      <div id="notes-list" class="grid">
-        <p>Loading notes...</p>
-      </div>
+    <section id="notes-list" class="grid">
+      <p>Loading notes...</p>
     </section>
 
   </main>
