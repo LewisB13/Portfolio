@@ -129,7 +129,7 @@ function renderTutorials() {
       <p>${tutorial.description || "Click below to read this tutorial."}</p>
 
       <button class="blog-button read-more" type="button">
-        Read tutorial ↓
+        Read More ↓
       </button>
 
       <div class="blog-body" hidden>
@@ -145,10 +145,10 @@ function renderTutorials() {
 
       if (isClosed) {
         body.removeAttribute("hidden");
-        button.textContent = "Close tutorial ↑";
+        button.textContent = "Close  ↑";
       } else {
         body.setAttribute("hidden", "");
-        button.textContent = "Read tutorial ↓";
+        button.textContent = "Read More ↓";
       }
     });
 
