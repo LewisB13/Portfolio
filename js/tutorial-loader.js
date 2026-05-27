@@ -59,7 +59,7 @@ function renderCategories() {
     const btn = document.createElement("button");
     btn.className = `category-card ${category === activeCategory ? "active" : ""}`;
 
-btn.innerHTML = `
+    btn.innerHTML = `
   <span class="category-card-title">${category}</span>
   <span class="category-card-count">
     ${count} ${count === 1 ? "Tutorial" : "Tutorials"}
