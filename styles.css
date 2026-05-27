@@ -230,11 +230,13 @@ p {
    LINKS
 =============================== */
 .read-more {
+  background: #161b22;
   display: inline-block;
   margin-top: 14px;
   color: #fff;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
+  width: auto;
 }
 
 /* ===============================
