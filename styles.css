@@ -375,3 +375,136 @@ p {
   box-shadow: 0 0 0 2px rgba(79,140,255,0.15);
 }
 
+
+/* ===============================
+   CONTACT PAGE
+=============================== */
+
+.contact-section {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-form {
+  width: 100%;
+  max-width: 760px;
+
+  background: #161b22;
+  border: 1px solid #2b3440;
+  border-radius: 20px;
+
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.contact-form:hover {
+  border-color: #4f8cff;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+
+  background: #0d1117;
+  color: #ffffff;
+
+  border: 1px solid #2b3440;
+  border-radius: 12px;
+
+  padding: 14px 16px;
+
+  font-size: 0.95rem;
+  font-family: inherit;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #7d8590;
+}
+
+#submit-btn {
+  background: #4f8cff;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 14px 20px;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+#submit-btn:hover {
+  transform: translateY(-2px);
+  background: #6aa0ff;
+}
+
+#submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-status {
+  min-height: 24px;
+  font-size: 0.95rem;
+  color: #b7c0cc;
+}
+
+.hidden-field {
+  display: none;
+}
+
+/* ===============================
+   MOBILE
+=============================== */
+
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+}

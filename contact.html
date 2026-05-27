@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Contact | Lewis Barrett Portfolio</title>
+
   <link rel="stylesheet" href="styles.css" />
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -16,7 +18,9 @@
   <header class="site-header">
     <div class="nav-container">
 
-      <a href="index.html" class="logo">Lewis Barrett Portfolio</a>
+      <a href="index.html" class="logo">
+        Lewis Barrett Portfolio
+      </a>
 
       <nav class="navbar">
         <a href="index.html">Home</a>
@@ -24,7 +28,9 @@
         <a href="tutorials.html">Tutorials</a>
         <a href="notes.html">Notes</a>
         <a href="contact.html" class="active">Contact</a>
-        <a href="https://github.com/lewisb13" target="_blank">GitHub</a>
+        <a href="https://github.com/lewisb13" target="_blank">
+          GitHub
+        </a>
       </nav>
 
     </div>
@@ -33,46 +39,89 @@
   <!-- ================= MAIN ================= -->
   <main class="container">
 
-    <!-- ================= HEADER ================= -->
+    <!-- ================= PAGE HEADER ================= -->
     <section class="page-header">
       <h1>Contact</h1>
-      <p>Send me a message and I’ll get back to you.</p>
+      <p>
+        Send me a message and I’ll get back to you as soon as possible.
+      </p>
     </section>
 
-    <!-- ================= FORM ================= -->
+    <!-- ================= CONTACT FORM ================= -->
     <section class="contact-section">
 
       <form id="contact-form" class="contact-form">
 
         <div class="form-row">
-          <label>Name</label>
-          <input type="text" name="name" required>
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Your name"
+            required
+          />
         </div>
 
         <div class="form-row">
-          <label>Email</label>
-          <input type="email" name="email" required>
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
         </div>
 
         <div class="form-row">
-          <label>Phone (optional)</label>
-          <input type="tel" name="phone">
+          <label for="phone">Phone (optional)</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Optional"
+          />
         </div>
 
         <div class="form-row">
-          <label>Subject</label>
-          <input type="text" name="subject" required>
+          <label for="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            placeholder="What is this about?"
+            required
+          />
         </div>
 
         <div class="form-row">
-          <label>Message</label>
-          <textarea name="message" rows="6" required></textarea>
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            placeholder="Write your message here..."
+            required
+          ></textarea>
         </div>
 
-        <!-- spam protection -->
-        <input type="text" name="company" class="hidden-field">
+        <!-- Spam Protection -->
+        <input
+          type="text"
+          name="company"
+          class="hidden-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
 
-        <button type="submit" id="submit-btn">Send Message</button>
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn btn-primary"
+        >
+          Send Message
+        </button>
 
         <p id="status" class="form-status"></p>
 
@@ -95,6 +144,7 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      // Honeypot spam protection
       if (form.company.value) return;
 
       status.textContent = "Sending...";
@@ -107,20 +157,22 @@
         subject: form.subject.value,
         message: form.message.value
       })
-        .then(() => {
-          status.textContent = "Message sent successfully ✔";
-          form.reset();
-        })
-        .catch((error) => {
-          console.error(error);
-          status.textContent = "Failed to send message ❌";
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-        });
+
+      .then(() => {
+        status.textContent = "Message sent successfully ✔";
+        form.reset();
+      })
+
+      .catch((error) => {
+        console.error(error);
+        status.textContent = "Failed to send message ❌";
+      })
+
+      .finally(() => {
+        submitBtn.disabled = false;
+      });
     });
   </script>
 
 </body>
-
 </html>
