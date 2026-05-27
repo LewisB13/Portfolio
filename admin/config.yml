@@ -104,7 +104,7 @@ collections:
         name: "body"
         widget: "markdown"
 
-  - name: "notes"
+  - n  - name: "notes"
     label: "Notes"
     folder: "content/notes"
     create: true
@@ -119,6 +119,22 @@ collections:
         name: "date"
         widget: "datetime"
         required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "Linux"
+          - "Networking"
+          - "Docker"
+          - "Homelab"
+          - "Web Development"
+          - "Security"
+          - "Programming"
+          - "Cheatsheets"
+          - "Ideas"
+          - "Other"
 
       - label: "Tags"
         name: "tags"
