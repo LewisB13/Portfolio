@@ -9,8 +9,6 @@ public_folder: "/images/uploads"
 
 collections:
 
- 
-
   - name: "projects"
     label: "Projects"
     folder: "content/projects"
@@ -68,7 +66,7 @@ collections:
           - "Personal Projects"
           - "Virtual Machines"
           - "Web Dev"
-          - "Linux"          
+          - "Linux"
           - "Other"
 
       - label: "Difficulty"
@@ -104,7 +102,7 @@ collections:
         name: "body"
         widget: "markdown"
 
-  - n  - name: "notes"
+  - name: "notes"
     label: "Notes"
     folder: "content/notes"
     create: true
