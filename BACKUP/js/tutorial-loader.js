@@ -145,7 +145,7 @@ function renderTutorials() {
 
       if (isClosed) {
         body.removeAttribute("hidden");
-        button.textContent = "Close tutorial ↑";
+        button.textContent = "Close ↑";
       } else {
         body.setAttribute("hidden", "");
         button.textContent = "Read More ↓";
