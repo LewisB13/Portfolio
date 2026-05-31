@@ -1,5 +1,5 @@
 ---
-title: MotoPi – Lightweight Network Monitor
+title: MotoPi – Lightweight Ride Analysis tool
 date: 2026-05-31T01:55:00
 category: Tools
 tags: []
