@@ -2,14 +2,19 @@ const PROJECTS_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/projects";
 
 const projectsList = document.getElementById("projects-list");
-const categorySelect = document.getElementById("project-category");
+const categoryGrid = document.getElementById("project-category-grid");
+const projectSort = document.getElementById("project-sort");
+const projectSearch = document.getElementById("project-search");
+const selectedCategoryTitle = document.getElementById("selected-category-title");
 
 let projects = [];
-let activeCategory = "All";
+let activeCategory = "All Projects";
+let searchQuery = "";
 
 function getFrontmatterValue(frontmatter, key) {
   return (
-    frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+    frontmatter
+      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
       ?.trim() || ""
   );
 }
@@ -24,16 +29,75 @@ function formatDate(dateString) {
   });
 }
 
+function renderCategories() {
+  const categories = [
+    "All Projects",
+    ...new Set(
+      projects.map((p) => p.category || "Uncategorised")
+    )
+  ];
+
+  categoryGrid.innerHTML = "";
+
+  categories.forEach((category) => {
+    const count =
+      category === "All Projects"
+        ? projects.length
+        : projects.filter((p) => p.category === category).length;
+
+    const btn = document.createElement("button");
+    btn.className = `category-card ${
+      category === activeCategory ? "active" : ""
+    }`;
+
+    btn.type = "button";
+
+    btn.innerHTML = `
+      <span class="category-card-title">${category}</span>
+      <span class="category-card-count">${count} project${count === 1 ? "" : "s"}</span>
+    `;
+
+    btn.addEventListener("click", () => {
+      activeCategory = category;
+      renderCategories();
+      renderProjects();
+    });
+
+    categoryGrid.appendChild(btn);
+  });
+}
+
 function renderProjects() {
+  const sortOrder = projectSort ? projectSort.value : "latest";
+
+  selectedCategoryTitle.textContent = activeCategory;
+
   projectsList.innerHTML = "";
 
-  let filtered = projects;
+  let filtered =
+    activeCategory === "All Projects"
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
 
-  if (activeCategory !== "All") {
-    filtered = projects.filter((project) => {
-      return (project.category || "Other").trim() === activeCategory;
+  // SEARCH
+  if (searchQuery.trim() !== "") {
+    const q = searchQuery.toLowerCase();
+
+    filtered = filtered.filter((p) => {
+      return (
+        (p.title || "").toLowerCase().includes(q) ||
+        (p.description || "").toLowerCase().includes(q) ||
+        (p.category || "").toLowerCase().includes(q)
+      );
     });
   }
+
+  // SORT
+  filtered.sort((a, b) => {
+    return sortOrder === "oldest"
+      ? new Date(a.date) - new Date(b.date)
+      : new Date(b.date) - new Date(a.date);
+  });
 
   if (filtered.length === 0) {
     projectsList.innerHTML = "<p>No projects found.</p>";
@@ -70,30 +134,38 @@ function renderProjects() {
         Read More ↓
       </button>
 
-      <a class="read-more" href="${project.github || "#"}" target="_blank">
-        GitHub ↗
-      </a>
+      ${
+        project.github
+          ? `<a class="read-more" href="${project.github}" target="_blank">GitHub ↗</a>`
+          : ""
+      }
+
+      ${
+        project.demo
+          ? `<a class="read-more" href="${project.demo}" target="_blank">Live Demo ↗</a>`
+          : ""
+      }
 
       <div class="note-body" hidden>
         ${marked.parse(project.body)}
       </div>
     `;
 
-    const button = card.querySelector(".blog-button");
+    const btn = card.querySelector(".blog-button");
     const body = card.querySelector(".note-body");
     const previewEl = card.querySelector(".note-preview");
 
-    button.addEventListener("click", () => {
-      const isClosed = body.hasAttribute("hidden");
+    btn.addEventListener("click", () => {
+      const closed = body.hasAttribute("hidden");
 
-      if (isClosed) {
+      if (closed) {
         body.removeAttribute("hidden");
         previewEl.style.display = "none";
-        button.textContent = "Close ↑";
+        btn.textContent = "Close ↑";
       } else {
         body.setAttribute("hidden", "");
         previewEl.style.display = "block";
-        button.textContent = "Read More ↓";
+        btn.textContent = "Read More ↓";
       }
     });
 
@@ -103,40 +175,54 @@ function renderProjects() {
 
 async function loadProjects() {
   projectsList.innerHTML = "<p>Loading projects...</p>";
+  categoryGrid.innerHTML = "<p>Loading categories...</p>";
 
-  const response = await fetch(PROJECTS_API);
-  const files = await response.json();
+  try {
+    const res = await fetch(PROJECTS_API);
+    const files = await res.json();
 
-  const markdownFiles = files.filter((file) =>
-    file.name.endsWith(".md")
-  );
+    const markdownFiles = files.filter((f) =>
+      f.name.endsWith(".md")
+    );
 
-  projects = await Promise.all(
-    markdownFiles.map(async (file) => {
-      const res = await fetch(file.download_url);
-      const text = await res.text();
+    projects = await Promise.all(
+      markdownFiles.map(async (file) => {
+        const r = await fetch(file.download_url);
+        const text = await r.text();
 
-      const parts = text.split("---");
-      const frontmatter = parts[1] || "";
-      const body = parts.slice(2).join("---").trim();
+        const parts = text.split("---");
+        const frontmatter = parts[1] || "";
+        const body = parts.slice(2).join("---").trim();
 
-      return {
-        slug: file.name.replace(".md", ""),
-        title: getFrontmatterValue(frontmatter, "title"),
-        date: getFrontmatterValue(frontmatter, "date"),
-        category: getFrontmatterValue(frontmatter, "category"),
-        github: getFrontmatterValue(frontmatter, "github"),
-        body
-      };
-    })
-  );
+        return {
+          slug: file.name.replace(".md", ""),
+          title: getFrontmatterValue(frontmatter, "title"),
+          date: getFrontmatterValue(frontmatter, "date"),
+          category: getFrontmatterValue(frontmatter, "category"),
+          github: getFrontmatterValue(frontmatter, "github"),
+          demo: getFrontmatterValue(frontmatter, "demo"),
+          description: getFrontmatterValue(frontmatter, "description"),
+          body
+        };
+      })
+    );
 
-  renderProjects();
+    renderCategories();
+    renderProjects();
+  } catch (err) {
+    console.error(err);
+    categoryGrid.innerHTML = "";
+    projectsList.innerHTML = "<p>Failed to load projects.</p>";
+  }
 }
 
-if (categorySelect) {
-  categorySelect.addEventListener("change", (e) => {
-    activeCategory = e.target.value;
+if (projectSort) {
+  projectSort.addEventListener("change", renderProjects);
+}
+
+if (projectSearch) {
+  projectSearch.addEventListener("input", (e) => {
+    searchQuery = e.target.value;
     renderProjects();
   });
 }
