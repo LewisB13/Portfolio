@@ -4,14 +4,14 @@ function getProjectSlug() {
 
 function getFrontmatterValue(frontmatter, key) {
   return (
-    frontmatter.match(
-      new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m")
-    )?.[1]?.trim() || ""
+    frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+      ?.trim() || ""
   );
 }
 
 function formatDate(dateString) {
   if (!dateString) return "";
+
   return new Date(dateString).toLocaleDateString("en-IE", {
     day: "numeric",
     month: "long",
@@ -41,32 +41,26 @@ async function loadSingleProject() {
 
     const title = getFrontmatterValue(frontmatter, "title");
     const date = getFrontmatterValue(frontmatter, "date");
-    const category = getFrontmatterValue(frontmatter, "category");
     const github = getFrontmatterValue(frontmatter, "github");
-    const demo = getFrontmatterValue(frontmatter, "demo");
 
     document.title = title;
 
     container.innerHTML = `
-      <a class="read-more" href="projects.html">← Back to Projects</a>
-
-      <p class="video-category">${category || ""}</p>
-
-      <h1>${title}</h1>
+      <a class="read-more" href="projects.html">← Back</a>
 
       <p class="blog-date">${formatDate(date)}</p>
 
+      <h1>${title}</h1>
+
       <div class="note-actions">
         ${github ? `<a class="read-more" href="${github}" target="_blank">GitHub ↗</a>` : ""}
-        ${demo ? `<a class="read-more" href="${demo}" target="_blank">Live Demo ↗</a>` : ""}
       </div>
 
       <div class="markdown-body">
-        ${marked.parse(body || "")}
+        ${marked.parse(body)}
       </div>
     `;
   } catch (err) {
-    console.error(err);
     container.innerHTML = "<p>Could not load project.</p>";
   }
 }

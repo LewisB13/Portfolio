@@ -3,22 +3,20 @@ const PROJECTS_API =
 
 const projectsList = document.getElementById("projects-list");
 const categorySelect = document.getElementById("project-category");
-const searchInput = document.getElementById("project-search");
 
 let projects = [];
 let activeCategory = "All";
-let searchQuery = "";
 
 function getFrontmatterValue(frontmatter, key) {
   return (
-    frontmatter.match(
-      new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m")
-    )?.[1]?.trim() || ""
+    frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+      ?.trim() || ""
   );
 }
 
 function formatDate(dateString) {
   if (!dateString) return "";
+
   return new Date(dateString).toLocaleDateString("en-IE", {
     day: "numeric",
     month: "long",
@@ -26,27 +24,18 @@ function formatDate(dateString) {
   });
 }
 
-function filterProjects() {
-  const q = searchQuery.toLowerCase();
-
-  return projects.filter((project) => {
-    const categoryMatch =
-      activeCategory === "All" || project.category === activeCategory;
-
-    const searchMatch =
-      (project.title || "").toLowerCase().includes(q) ||
-      (project.body || "").toLowerCase().includes(q);
-
-    return categoryMatch && searchMatch;
-  });
-}
-
 function renderProjects() {
   projectsList.innerHTML = "";
 
-  const filtered = filterProjects();
+  let filtered = projects;
 
-  if (!filtered.length) {
+  if (activeCategory !== "All") {
+    filtered = projects.filter((project) => {
+      return (project.category || "Other").trim() === activeCategory;
+    });
+  }
+
+  if (filtered.length === 0) {
     projectsList.innerHTML = "<p>No projects found.</p>";
     return;
   }
@@ -77,42 +66,34 @@ function renderProjects() {
         ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
-      <button class="read-more toggle">
+      <button class="read-more blog-button">
         Read More ↓
       </button>
 
+      <a class="read-more" href="${project.github || "#"}" target="_blank">
+        GitHub ↗
+      </a>
+
       <div class="note-body" hidden>
-        ${marked.parse(project.body || "")}
+        ${marked.parse(project.body)}
       </div>
-
-      ${
-        project.github
-          ? `<a class="read-more" href="${project.github}" target="_blank">GitHub ↗</a>`
-          : ""
-      }
-
-      ${
-        project.demo
-          ? `<a class="read-more" href="${project.demo}" target="_blank">Live Demo ↗</a>`
-          : ""
-      }
     `;
 
-    const btn = card.querySelector(".toggle");
+    const button = card.querySelector(".blog-button");
     const body = card.querySelector(".note-body");
     const previewEl = card.querySelector(".note-preview");
 
-    btn.addEventListener("click", () => {
-      const open = body.hasAttribute("hidden");
+    button.addEventListener("click", () => {
+      const isClosed = body.hasAttribute("hidden");
 
-      if (open) {
+      if (isClosed) {
         body.removeAttribute("hidden");
         previewEl.style.display = "none";
-        btn.textContent = "Close ↑";
+        button.textContent = "Close ↑";
       } else {
         body.setAttribute("hidden", "");
         previewEl.style.display = "block";
-        btn.textContent = "Read More ↓";
+        button.textContent = "Read More ↓";
       }
     });
 
@@ -123,15 +104,17 @@ function renderProjects() {
 async function loadProjects() {
   projectsList.innerHTML = "<p>Loading projects...</p>";
 
-  const res = await fetch(PROJECTS_API);
-  const files = await res.json();
+  const response = await fetch(PROJECTS_API);
+  const files = await response.json();
 
-  const mdFiles = files.filter((f) => f.name.endsWith(".md"));
+  const markdownFiles = files.filter((file) =>
+    file.name.endsWith(".md")
+  );
 
   projects = await Promise.all(
-    mdFiles.map(async (file) => {
-      const r = await fetch(file.download_url);
-      const text = await r.text();
+    markdownFiles.map(async (file) => {
+      const res = await fetch(file.download_url);
+      const text = await res.text();
 
       const parts = text.split("---");
       const frontmatter = parts[1] || "";
@@ -139,11 +122,10 @@ async function loadProjects() {
 
       return {
         slug: file.name.replace(".md", ""),
-        title: getFrontmatterValue(frontmatter, "title") || "Untitled",
+        title: getFrontmatterValue(frontmatter, "title"),
         date: getFrontmatterValue(frontmatter, "date"),
         category: getFrontmatterValue(frontmatter, "category"),
         github: getFrontmatterValue(frontmatter, "github"),
-        demo: getFrontmatterValue(frontmatter, "demo"),
         body
       };
     })
@@ -152,14 +134,11 @@ async function loadProjects() {
   renderProjects();
 }
 
-categorySelect?.addEventListener("change", (e) => {
-  activeCategory = e.target.value;
-  renderProjects();
-});
-
-searchInput?.addEventListener("input", (e) => {
-  searchQuery = e.target.value.toLowerCase();
-  renderProjects();
-});
+if (categorySelect) {
+  categorySelect.addEventListener("change", (e) => {
+    activeCategory = e.target.value;
+    renderProjects();
+  });
+}
 
 loadProjects();

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Lewis Barrett Portfolio</title>
+  <title>Project | Lewis Barrett Portfolio</title>
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -19,7 +19,7 @@
 
       <nav class="navbar">
         <a href="index.html">Home</a>
-        <a href="projects.html" class="active">Projects</a>
+        <a href="projects.html">Projects</a>
         <a href="tutorials.html">Tutorials</a>
         <a href="notes.html">Notes</a>
         <a href="contact.html">Contact</a>
@@ -32,31 +32,15 @@
   <!-- ================= MAIN ================= -->
   <main class="container">
 
-    <!-- ================= PAGE HEADER ================= -->
-    <section class="page-header">
-      <h1>Projects</h1>
-      <p>
-        A collection of homelab builds, Linux tools, Docker systems, and software experiments.
-      </p>
-    </section>
-
-    <!-- ================= CATEGORY SELECT ================= -->
-    <section class="controls">
-      <select id="project-category">
-        <option value="All">All</option>
-      </select>
-    </section>
-
-    <!-- ================= PROJECT LIST ================= -->
-    <section id="projects-list" class="grid">
-      <p>Loading projects...</p>
+    <section id="project-content" class="card">
+      <p>Loading project...</p>
     </section>
 
   </main>
 
   <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="js/projects-loader.js"></script>
+  <script src="js/single-project-loader.js"></script>
 
 </body>
 
