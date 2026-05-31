@@ -11,12 +11,23 @@ let projects = [];
 let activeCategory = "All Projects";
 let searchQuery = "";
 
+/* =========================
+   HELPERS
+========================= */
+
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
       .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
       ?.trim() || ""
   );
+}
+
+/* 🔥 FIX: force absolute URLs */
+function fixUrl(url) {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  return "https://" + url;
 }
 
 function formatDate(dateString) {
@@ -28,6 +39,10 @@ function formatDate(dateString) {
     year: "numeric"
   });
 }
+
+/* =========================
+   CATEGORIES
+========================= */
 
 function renderCategories() {
   const categories = [
@@ -43,9 +58,7 @@ function renderCategories() {
     const count =
       category === "All Projects"
         ? projects.length
-        : projects.filter(
-            (project) => project.category === category
-          ).length;
+        : projects.filter((p) => p.category === category).length;
 
     const button = document.createElement("button");
 
@@ -57,7 +70,6 @@ function renderCategories() {
 
     button.innerHTML = `
       <span class="category-card-title">${category}</span>
-
       <span class="category-card-count">
         ${count} project${count === 1 ? "" : "s"}
       </span>
@@ -73,10 +85,12 @@ function renderCategories() {
   });
 }
 
+/* =========================
+   RENDER PROJECTS
+========================= */
+
 function renderProjects() {
-  const sortOrder = projectSort
-    ? projectSort.value
-    : "latest";
+  const sortOrder = projectSort ? projectSort.value : "latest";
 
   selectedCategoryTitle.textContent = activeCategory;
 
@@ -85,15 +99,12 @@ function renderProjects() {
   let filtered =
     activeCategory === "All Projects"
       ? projects
-      : projects.filter(
-          (project) =>
-            project.category === activeCategory
-        );
+      : projects.filter((p) => p.category === activeCategory);
 
   if (searchQuery.trim() !== "") {
-    filtered = filtered.filter((project) => {
-      const search = searchQuery.toLowerCase();
+    const search = searchQuery.toLowerCase();
 
+    filtered = filtered.filter((project) => {
       return (
         project.title.toLowerCase().includes(search) ||
         project.description.toLowerCase().includes(search) ||
@@ -115,7 +126,6 @@ function renderProjects() {
 
   filtered.forEach((project) => {
     const card = document.createElement("article");
-
     card.className = "card blog-card";
 
     const preview = marked
@@ -123,16 +133,16 @@ function renderProjects() {
       .replace(/<[^>]*>/g, "")
       .slice(0, 180);
 
+    const github = fixUrl(project.github);
+    const demo = fixUrl(project.demo);
+
     card.innerHTML = `
       <p class="video-category">
         ${project.category || "Other"}
       </p>
 
       <h3 class="note-title">
-        <a
-          href="project.html?project=${project.slug}"
-          target="_blank"
-        >
+        <a href="project.html?project=${project.slug}" target="_blank">
           ${project.title}
         </a>
       </h3>
@@ -154,30 +164,14 @@ function renderProjects() {
       </button>
 
       ${
-        project.github
-          ? `
-          <a
-            class="read-more"
-            href="${project.github}"
-            target="_blank"
-          >
-            GitHub ↗
-          </a>
-        `
+        github
+          ? `<a class="read-more" href="${github}" target="_blank">GitHub ↗</a>`
           : ""
       }
 
       ${
-        project.demo
-          ? `
-          <a
-            class="read-more"
-            href="${project.demo}"
-            target="_blank"
-          >
-            Live Demo ↗
-          </a>
-        `
+        demo
+          ? `<a class="read-more" href="${demo}" target="_blank">Live Demo ↗</a>`
           : ""
       }
 
@@ -208,17 +202,18 @@ function renderProjects() {
   });
 }
 
+/* =========================
+   LOAD DATA
+========================= */
+
 async function loadProjects() {
   projectsList.innerHTML = "<p>Loading projects...</p>";
-
   categoryGrid.innerHTML = "<p>Loading categories...</p>";
 
   try {
     const response = await fetch(PROJECTS_API);
 
-    if (!response.ok) {
-      throw new Error("Could not fetch projects folder");
-    }
+    if (!response.ok) throw new Error("Could not fetch projects folder");
 
     const files = await response.json();
 
@@ -228,72 +223,42 @@ async function loadProjects() {
 
     projects = await Promise.all(
       markdownFiles.map(async (file) => {
-        const projectResponse = await fetch(
-          file.download_url
-        );
-
-        const text = await projectResponse.text();
+        const res = await fetch(file.download_url);
+        const text = await res.text();
 
         const parts = text.split("---");
-
         const frontmatter = parts[1] || "";
-
         const body = parts.slice(2).join("---").trim();
 
         return {
           slug: file.name.replace(".md", ""),
-
-          title:
-            getFrontmatterValue(frontmatter, "title") ||
-            "Untitled",
-
+          title: getFrontmatterValue(frontmatter, "title") || "Untitled",
           date: getFrontmatterValue(frontmatter, "date"),
-
-          category: getFrontmatterValue(
-            frontmatter,
-            "category"
-          ),
-
-          github: getFrontmatterValue(
-            frontmatter,
-            "github"
-          ),
-
-          demo: getFrontmatterValue(
-            frontmatter,
-            "demo"
-          ),
-
-          description: getFrontmatterValue(
-            frontmatter,
-            "description"
-          ),
-
-          tech: (
-            getFrontmatterValue(frontmatter, "tech") || ""
-          )
+          category: getFrontmatterValue(frontmatter, "category"),
+          github: getFrontmatterValue(frontmatter, "github"),
+          demo: getFrontmatterValue(frontmatter, "demo"),
+          description: getFrontmatterValue(frontmatter, "description"),
+          tech: (getFrontmatterValue(frontmatter, "tech") || "")
             .split(",")
             .map((t) => t.trim())
             .filter(Boolean),
-
           body
         };
       })
     );
 
     renderCategories();
-
     renderProjects();
   } catch (error) {
     console.error(error);
-
     categoryGrid.innerHTML = "";
-
-    projectsList.innerHTML = `
-      <p>Could not load projects: ${error.message}</p>
-    `;
+    projectsList.innerHTML = `<p>Could not load projects: ${error.message}</p>`;
   }
 }
+
+/* =========================
+   EVENTS
+========================= */
 
 if (projectSort) {
   projectSort.addEventListener("change", renderProjects);
