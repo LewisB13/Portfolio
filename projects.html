@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Projects | Lewis Barrett Portfolio</title>
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -12,9 +14,12 @@
 
   <!-- ================= HEADER ================= -->
   <header class="site-header">
+
     <div class="nav-container">
 
-      <a href="index.html" class="logo">Lewis Barrett Portfolio</a>
+      <a href="index.html" class="logo">
+        Lewis Barrett Portfolio
+      </a>
 
       <nav class="navbar">
         <a href="index.html">Home</a>
@@ -22,10 +27,17 @@
         <a href="tutorials.html">Tutorials</a>
         <a href="notes.html">Notes</a>
         <a href="contact.html">Contact</a>
-        <a href="https://github.com/lewisb13" target="_blank">GitHub</a>
+
+        <a
+          href="https://github.com/lewisb13"
+          target="_blank"
+        >
+          GitHub
+        </a>
       </nav>
 
     </div>
+
   </header>
 
   <!-- ================= MAIN ================= -->
@@ -37,53 +49,72 @@
       <h1>Projects</h1>
 
       <p>
-        A collection of homelab builds, software experiments, and infrastructure projects.
-        Focused on Linux systems, Docker, automation, and real-world problem solving.
+        A collection of homelab builds, Linux systems,
+        Docker deployments, automation projects,
+        and software experiments.
       </p>
 
     </section>
 
-    <!-- ================= PROJECT GRID ================= -->
-    <section>
+    <!-- ================= CATEGORY GRID ================= -->
+    <section
+      class="category-grid"
+      id="project-category-grid"
+    >
+      <p>Loading categories...</p>
+    </section>
 
-      <div class="grid">
+    <!-- ================= PROJECT PANEL ================= -->
+    <section class="video-panel">
 
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>SearXNG Self-Hosted Search</h2>
-          <p>
-            Deployed a privacy-focused search engine using Docker in a self-hosted environment.
-            Focused on container orchestration and service configuration.
-          </p>
-          <p class="video-meta">Docker • Linux • Self-hosting</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
-        </div>
+      <!-- ================= TOP BAR ================= -->
+      <div class="video-panel-top">
 
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>Docker Homelab Stack</h2>
-          <p>
-            Built a multi-service homelab using Docker Compose to manage services in a Linux server environment.
-          </p>
-          <p class="video-meta">Docker • DevOps • Linux</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
-        </div>
+        <h2 id="selected-category-title">
+          Latest Projects
+        </h2>
 
-        <!-- PROJECT CARD -->
-        <div class="card">
-          <h2>Linux Server Setup Lab</h2>
-          <p>
-            Hands-on server configuration including SSH, permissions, package management, and system hardening.
-          </p>
-          <p class="video-meta">Linux • SysAdmin • Networking</p>
-          <a class="read-more" href="https://github.com/lewisb13" target="_blank">View Repository →</a>
+        <div class="sort-bar">
+
+          <label for="project-sort">Sort</label>
+
+          <select id="project-sort">
+            <option value="latest">
+              Latest first
+            </option>
+
+            <option value="oldest">
+              Oldest first
+            </option>
+          </select>
+
+          <input
+            type="text"
+            id="project-search"
+            class="tutorial-search"
+            placeholder="Search projects..."
+          />
+
         </div>
 
       </div>
 
+      <!-- ================= PROJECT GRID ================= -->
+      <section
+        id="projects-list"
+        class="grid"
+      >
+        <p>Loading projects...</p>
+      </section>
+
     </section>
 
   </main>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script src="js/project-loader.js"></script>
 
 </body>
 

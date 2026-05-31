@@ -9,6 +9,9 @@ public_folder: "/images/uploads"
 
 collections:
 
+  # =========================================
+  # PROJECTS
+  # =========================================
   - name: "projects"
     label: "Projects"
     folder: "content/projects"
@@ -16,12 +19,34 @@ collections:
     slug: "{{slug}}"
 
     fields:
-      - label: "Project Name"
+      - label: "Project Title"
         name: "title"
         widget: "string"
 
-      - label: "Tech Stack"
-        name: "tech"
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "Linux"
+          - "Docker"
+          - "Networking"
+          - "Security"
+          - "Java"
+          - "Python"
+          - "Web Development"
+          - "Homelab"
+          - "Cloud"
+          - "Tools"
+          - "Other"
+
+      - label: "Tags"
+        name: "tags"
         widget: "list"
         required: false
 
@@ -35,10 +60,31 @@ collections:
         widget: "string"
         required: false
 
-      - label: "Description"
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+
+      - label: "Short Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Project Body"
         name: "body"
         widget: "markdown"
 
+      - label: "Visibility"
+        name: "visibility"
+        widget: "select"
+        required: false
+        options:
+          - "public"
+          - "private"
+
+  # =========================================
+  # TUTORIALS
+  # =========================================
   - name: "tutorials"
     label: "Tutorials"
     folder: "content/tutorials"
@@ -102,6 +148,17 @@ collections:
         name: "body"
         widget: "markdown"
 
+      - label: "Visibility"
+        name: "visibility"
+        widget: "select"
+        required: false
+        options:
+          - "public"
+          - "private"
+
+  # =========================================
+  # NOTES
+  # =========================================
   - name: "notes"
     label: "Notes"
     folder: "content/notes"
