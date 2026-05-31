@@ -18,6 +18,7 @@ public class Main {
 }
 ```
 
+
 ***
 
 ## 2. Variables
@@ -30,6 +31,7 @@ boolean isActive = true;
 String name = "Lewis";
 ```
 
+
 ***
 
 ## 3. Operators
@@ -39,6 +41,7 @@ String name = "Lewis";
 == != > < >= <= // comparison
 && || !         // logical
 ```
+
 
 ***
 
@@ -51,6 +54,7 @@ if (age > 18) {
     System.out.println("Minor");
 }
 ```
+
 
 ***
 
@@ -68,6 +72,7 @@ switch (day) {
         System.out.println("Other day");
 }
 ```
+
 
 ***
 
@@ -101,6 +106,7 @@ for (int num : numbers) {
 }
 ```
 
+
 ***
 
 ## 7. Methods
@@ -117,6 +123,7 @@ Call:
 int result = add(5, 3);
 ```
 
+
 ***
 
 ## 8. Arrays
@@ -126,6 +133,7 @@ int[] nums = {1, 2, 3, 4};
 
 System.out.println(nums[0]);
 ```
+
 
 ***
 
@@ -140,6 +148,7 @@ text.toLowerCase();
 text.charAt(0);
 text.equals("Hello");
 ```
+
 
 ***
 
@@ -163,9 +172,10 @@ myCar.model = "BMW";
 myCar.drive();
 ```
 
+
 ***
 
-## 11. Constructors
+11. Constructors
 
 ```plain
 class Person {
@@ -176,6 +186,7 @@ class Person {
     }
 }
 ```
+
 
 ***
 
@@ -192,6 +203,7 @@ class Dog extends Animal {
 }
 ```
 
+
 ***
 
 ## 13. ArrayList
@@ -207,6 +219,7 @@ list.add("Python");
 list.remove("Java");
 ```
 
+
 ***
 
 ## 14. Exceptions
@@ -218,6 +231,7 @@ try {
     System.out.println("Error occurred");
 }
 ```
+
 
 ***
 
