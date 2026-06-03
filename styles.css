@@ -531,3 +531,16 @@ p {
   line-height: 1.9;
   color: #c2cad5;
 }
+.rate-limit-notice {
+  background: #161b22;
+  border: 1px solid #ffcc00;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.rate-limit-notice h3 {
+  color: #ffcc00;
+  margin-bottom: 10px;
+}

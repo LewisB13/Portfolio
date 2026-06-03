@@ -27,34 +27,35 @@ function formatDate(dateString) {
   });
 }
 
+/* ================= NOTICE ================= */
+function showNotice(message) {
+  notesList.innerHTML = `
+    <div class="rate-limit-notice">
+      <h3>⚠️ Notice</h3>
+      <p>${message}</p>
+      <p>Please try again shortly.</p>
+    </div>
+  `;
+}
+
 /* ================= FILTER ================= */
 function filterNotes() {
-  return notes.filter(note => {
+  let filtered = notes.filter(note => {
     const categoryMatch =
       activeCategory === "All" || note.category === activeCategory;
 
     const searchMatch =
-      (note.title || "").toLowerCase().includes(searchQuery) ||
-      (note.body || "").toLowerCase().includes(searchQuery);
+      note.title.toLowerCase().includes(searchQuery) ||
+      note.body.toLowerCase().includes(searchQuery);
 
     return categoryMatch && searchMatch;
   });
-}
 
-/* ================= CATEGORY BUILDER ================= */
-function buildCategories() {
-  const categories = [...new Set(notes.map(n => n.category))]
-    .filter(Boolean)
-    .sort();
-
-  categorySelect.innerHTML = `<option value="All">All Notes</option>`;
-
-  categories.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.appendChild(option);
+  filtered.sort((a, b) => {
+    return new Date(b.date || 0) - new Date(a.date || 0);
   });
+
+  return filtered;
 }
 
 /* ================= RENDER ================= */
@@ -72,9 +73,8 @@ function renderNotes() {
     const card = document.createElement("article");
     card.className = "card";
 
-    const rawBody = note.body || "";
     const preview = marked
-      .parse(rawBody)
+      .parse(note.body || "")
       .replace(/<[^>]*>/g, "")
       .slice(0, 180);
 
@@ -83,7 +83,7 @@ function renderNotes() {
 
       <h3 class="note-title">
         <a href="note.html?note=${note.slug}">
-          ${note.title || "Untitled"}
+          ${note.title}
         </a>
       </h3>
 
@@ -96,7 +96,7 @@ function renderNotes() {
       <button class="read-more toggle">Read More</button>
 
       <div class="note-body" hidden>
-        ${marked.parse(rawBody)}
+        ${marked.parse(note.body)}
       </div>
     `;
 
@@ -124,20 +124,23 @@ function renderNotes() {
 
 /* ================= LOAD NOTES ================= */
 async function loadNotes() {
+  notesList.innerHTML = "<p>Loading notes...</p>";
+
   try {
-    notesList.innerHTML = "<p>Loading notes...</p>";
-
     const res = await fetch(NOTES_API);
+    const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(`GitHub API error: ${res.status}`);
+    // 🔴 RATE LIMIT CHECK
+    if (data.message && data.message.includes("rate limit")) {
+      showNotice("GitHub API rate limit exceeded.");
+      return;
     }
 
-    const files = await res.json();
-
-    if (!Array.isArray(files)) {
-      throw new Error("GitHub response is not a file list");
+    if (!Array.isArray(data)) {
+      throw new Error("Invalid API response");
     }
+
+    const files = data;
 
     const mdFiles = files.filter(f => f.name.endsWith(".md"));
 
@@ -160,12 +163,11 @@ async function loadNotes() {
       })
     );
 
-    buildCategories();
     renderNotes();
+
   } catch (err) {
     console.error(err);
-    notesList.innerHTML =
-      "<p>Failed to load notes. Check GitHub API or repo path.</p>";
+    showNotice("Failed to load notes. Please try again later.");
   }
 }
 
