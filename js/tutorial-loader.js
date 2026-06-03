@@ -11,12 +11,14 @@ let tutorials = [];
 let activeCategory = "All Tutorials";
 let searchQuery = "";
 
+/* ================= FRONTMATTER ================= */
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]?.trim() || ""
   );
 }
 
+/* ================= DATE ================= */
 function formatDate(dateString) {
   if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-IE", {
@@ -26,6 +28,7 @@ function formatDate(dateString) {
   });
 }
 
+/* ================= YOUTUBE ================= */
 function getYouTubeEmbed(url) {
   if (!url) return "";
 
@@ -42,7 +45,8 @@ function getYouTubeEmbed(url) {
   return "";
 }
 
-function renderCategories() {
+/* ================= CATEGORY BUILDER (FIXED) ================= */
+function buildCategories() {
   const categories = [
     "All Tutorials",
     ...new Set(tutorials.map(t => t.category || "Uncategorised"))
@@ -54,20 +58,21 @@ function renderCategories() {
     const count =
       category === "All Tutorials"
         ? tutorials.length
-        : tutorials.filter(t => t.category === category).length;
+        : tutorials.filter(t => (t.category || "Uncategorised") === category).length;
 
     const btn = document.createElement("button");
     btn.className = `category-card ${category === activeCategory ? "active" : ""}`;
 
     btn.innerHTML = `
-  <span class="category-card-title">${category}</span>
-  <span class="category-card-count">
-    ${count} ${count === 1 ? "Tutorial" : "Tutorials"}
-  </span>
-`;
+      <span class="category-card-title">${category}</span>
+      <span class="category-card-count">
+        ${count} ${count === 1 ? "Tutorial" : "Tutorials"}
+      </span>
+    `;
+
     btn.onclick = () => {
       activeCategory = category;
-      renderCategories();
+      buildCategories();
       renderTutorials();
     };
 
@@ -75,6 +80,7 @@ function renderCategories() {
   });
 }
 
+/* ================= RENDER TUTORIALS ================= */
 function renderTutorials() {
   tutorialsList.innerHTML = "";
 
@@ -82,7 +88,9 @@ function renderTutorials() {
 
   // CATEGORY FILTER
   if (activeCategory !== "All Tutorials") {
-    filtered = filtered.filter(t => t.category === activeCategory);
+    filtered = filtered.filter(
+      t => (t.category || "Uncategorised") === activeCategory
+    );
   }
 
   // SEARCH FILTER
@@ -155,6 +163,7 @@ function renderTutorials() {
   });
 }
 
+/* ================= LOAD TUTORIALS ================= */
 async function loadTutorials() {
   tutorialsList.innerHTML = "<p>Loading tutorials...</p>";
 
@@ -184,11 +193,11 @@ async function loadTutorials() {
       })
   );
 
-  renderCategories();
+  buildCategories();   // ✅ IMPORTANT FIX
   renderTutorials();
 }
 
-// EVENTS
+/* ================= EVENTS ================= */
 tutorialSort?.addEventListener("change", renderTutorials);
 
 searchInput?.addEventListener("input", e => {
@@ -196,4 +205,5 @@ searchInput?.addEventListener("input", e => {
   renderTutorials();
 });
 
+/* ================= INIT ================= */
 loadTutorials();
