@@ -27,10 +27,9 @@ function formatDate(dateString) {
   });
 }
 
-/* ================= FILTER + SORT ================= */
+/* ================= FILTER ================= */
 function filterNotes() {
-  // 1. FILTER FIRST
-  let filtered = notes.filter(note => {
+  return notes.filter(note => {
     const categoryMatch =
       activeCategory === "All" || note.category === activeCategory;
 
@@ -40,13 +39,23 @@ function filterNotes() {
 
     return categoryMatch && searchMatch;
   });
+}
 
-  // 2. SORT ONLY FILTERED RESULTS
-  filtered.sort((a, b) => {
-    return new Date(b.date || 0) - new Date(a.date || 0);
+/* ================= CATEGORY BUILDER (FIXED) ================= */
+function buildCategories() {
+  const categories = [...new Set(notes.map(n => n.category))]
+    .filter(Boolean)
+    .sort();
+
+  // reset dropdown except "All"
+  categorySelect.innerHTML = `<option value="All">All Notes</option>`;
+
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
   });
-
-  return filtered;
 }
 
 /* ================= RENDER ================= */
@@ -84,9 +93,7 @@ function renderNotes() {
         ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
-      <button class="read-more toggle">
-        Read More
-      </button>
+      <button class="read-more toggle">Read More</button>
 
       <div class="note-body" hidden>
         ${marked.parse(note.body)}
@@ -143,16 +150,17 @@ async function loadNotes() {
     })
   );
 
+  buildCategories();   // ✅ IMPORTANT
   renderNotes();
 }
 
 /* ================= EVENTS ================= */
-categorySelect?.addEventListener("change", e => {
+categorySelect.addEventListener("change", e => {
   activeCategory = e.target.value;
   renderNotes();
 });
 
-searchInput?.addEventListener("input", e => {
+searchInput.addEventListener("input", e => {
   searchQuery = e.target.value.toLowerCase();
   renderNotes();
 });
