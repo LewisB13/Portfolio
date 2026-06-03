@@ -4,149 +4,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Contact | Lewis Barrett Portfolio</title>
-
-<link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=2" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/main.js" defer></script>
 </head>
 
 <body>
 
-  <!-- ================= HEADER ================= -->
-  <header class="site-header">
-    <div class="nav-container">
+  <div id="header-placeholder"></div>
 
-      <a href="index.html" class="logo">
-        Lewis Barrett Portfolio
-      </a>
-
-      <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="tutorials.html">Tutorials</a>
-        <a href="notes.html">Notes</a>
-        <a href="contact.html" class="active">Contact</a>
-        <a href="https://github.com/lewisb13" target="_blank">
-          GitHub
-        </a>
-      </nav>
-
-    </div>
-  </header>
-
-  <!-- ================= MAIN ================= -->
   <main class="container">
 
-    <!-- ================= PAGE HEADER ================= -->
-<section class="page-header">
-<h1>Contact</h1>
-<p>
-Have a question, a project in mind, or just want to chat about tech? 
-Fill out the form below and I'll get back to you soon.
-</p>
-</section>
-
-    <!-- ================= CONTACT FORM ================= -->
-    <section class="contact-section">
-
-      <form id="contact-form" class="contact-form">
-
-        <div class="form-row">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Your name"
-            required
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="you@example.com"
-            required
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="phone">Phone (optional)</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="Optional"
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="subject">Subject</label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            placeholder="What is this about?"
-            required
-          />
-        </div>
-
-        <div class="form-row">
-          <label for="message">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="6"
-            placeholder="Write your message here..."
-            required
-          ></textarea>
-        </div>
-
-        <!-- Spam Protection -->
-        <input
-          type="text"
-          name="company"
-          class="hidden-field"
-          tabindex="-1"
-          autocomplete="off"
-        />
-
-        <button
-          type="submit"
-          id="submit-btn"
-          class="btn btn-primary"
-        >
-          Send Message
-        </button>
-
-        <p id="status" class="form-status"></p>
-
-      </form>
-
+    <section class="page-header">
+      <h1>Contact</h1>
+      <p>
+        Have a question, a project in mind, or just want to chat about tech? 
+        Fill out the form below and I'll get back to you soon.
+      </p>
     </section>
 
+    <section class="contact-section">
+      <form id="contact-form" class="contact-form">
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-row">
+          <label for="phone">Phone (optional)</label>
+          <input type="tel" id="phone" name="phone" placeholder="Optional" />
+        </div>
+        <div class="form-row">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="What is this about?" required />
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Write your message here..." required></textarea>
+        </div>
+        <input type="text" name="company" class="hidden-field" tabindex="-1" autocomplete="off" />
+        <button type="submit" id="submit-btn" class="btn btn-primary">Send Message</button>
+        <p id="status" class="form-status"></p>
+      </form>
+    </section>
   </main>
 
-  <!-- ================= EMAIL JS ================= -->
   <script>
-    emailjs.init({
-      publicKey: "c1kQc6SrlPO-zgEWd"
-    });
-
+    emailjs.init({ publicKey: "c1kQc6SrlPO-zgEWd" });
     const form = document.getElementById("contact-form");
     const status = document.getElementById("status");
     const submitBtn = document.getElementById("submit-btn");
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-
-      // Honeypot spam protection
       if (form.company.value) return;
-
       status.textContent = "Sending...";
       submitBtn.disabled = true;
 
@@ -157,22 +72,18 @@ Fill out the form below and I'll get back to you soon.
         subject: form.subject.value,
         message: form.message.value
       })
-
       .then(() => {
         status.textContent = "Message sent successfully ✔";
         form.reset();
       })
-
       .catch((error) => {
         console.error(error);
         status.textContent = "Failed to send message ❌";
       })
-
       .finally(() => {
         submitBtn.disabled = false;
       });
     });
   </script>
-
 </body>
 </html>
