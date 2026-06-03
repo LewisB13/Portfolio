@@ -29,22 +29,21 @@
 
 <main class="container">
 
+  <!-- PAGE HEADER -->
   <section class="page-header">
     <h1>Tutorials</h1>
     <p>Guides and walkthroughs from my homelab and dev work.</p>
   </section>
 
-  <!-- CATEGORY GRID (UNCHANGED) -->
-  <section class="category-grid" id="tutorial-category-grid">
-    <p>Loading categories...</p>
-  </section>
+  <!-- CATEGORY GRID (JS CONTROLLED - MUST BE EMPTY) -->
+  <section class="category-grid" id="tutorial-category-grid"></section>
 
-  <!-- TOP BAR -->
+  <!-- MAIN CONTENT -->
   <section class="video-panel">
 
     <div class="video-panel-top">
 
-      <h2 id="selected-category-title">Latest Tutorials</h2>
+      <h2 id="selected-category-title">All Tutorials</h2>
 
       <div class="sort-bar">
 
@@ -66,6 +65,7 @@
 
     </div>
 
+    <!-- TUTORIAL LIST -->
     <section id="tutorials-list" class="grid">
       <p>Loading tutorials...</p>
     </section>
@@ -74,6 +74,7 @@
 
 </main>
 
+<!-- MARKDOWN + SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="js/tutorial-loader.js"></script>
 

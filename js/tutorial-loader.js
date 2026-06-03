@@ -45,7 +45,7 @@ function getYouTubeEmbed(url) {
   return "";
 }
 
-/* ================= CATEGORY BUILDER (FIXED) ================= */
+/* ================= BUILD CATEGORIES ================= */
 function buildCategories() {
   const categories = [
     "All Tutorials",
@@ -70,46 +70,63 @@ function buildCategories() {
       </span>
     `;
 
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
       activeCategory = category;
+
+      // optional UX upgrade
+      selectedCategoryTitle.textContent = category;
+
       buildCategories();
       renderTutorials();
-    };
+    });
 
     categoryGrid.appendChild(btn);
   });
 }
 
-/* ================= RENDER TUTORIALS ================= */
-function renderTutorials() {
-  tutorialsList.innerHTML = "";
-
+/* ================= FILTER + SORT ================= */
+function getFilteredTutorials() {
   let filtered = tutorials;
 
-  // CATEGORY FILTER
+  // category filter
   if (activeCategory !== "All Tutorials") {
     filtered = filtered.filter(
       t => (t.category || "Uncategorised") === activeCategory
     );
   }
 
-  // SEARCH FILTER
+  // search filter
   if (searchQuery.trim()) {
+    const q = searchQuery.toLowerCase();
     filtered = filtered.filter(t =>
-      (t.title + " " + (t.description || "") + " " + (t.category || ""))
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
+      (
+        (t.title || "") +
+        " " +
+        (t.description || "") +
+        " " +
+        (t.category || "")
+      ).toLowerCase().includes(q)
     );
   }
 
-  // SORT
+  // sort
   const sortOrder = tutorialSort?.value || "latest";
 
   filtered.sort((a, b) => {
-    return sortOrder === "oldest"
-      ? new Date(a.date) - new Date(b.date)
-      : new Date(b.date) - new Date(a.date);
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
+
+    return sortOrder === "oldest" ? dateA - dateB : dateB - dateA;
   });
+
+  return filtered;
+}
+
+/* ================= RENDER ================= */
+function renderTutorials() {
+  tutorialsList.innerHTML = "";
+
+  const filtered = getFilteredTutorials();
 
   if (!filtered.length) {
     tutorialsList.innerHTML = "<p>No tutorials found.</p>";
@@ -123,13 +140,16 @@ function renderTutorials() {
     const embed = getYouTubeEmbed(t.youtube);
 
     card.innerHTML = `
-      ${embed ? `
+      ${
+        embed
+          ? `
         <div class="video-wrapper">
           <iframe src="${embed}" allowfullscreen></iframe>
-        </div>` : ""
+        </div>`
+          : ""
       }
 
-      <h3>${t.title}</h3>
+      <h3>${t.title || "Untitled"}</h3>
 
       <p class="video-meta">
         ${formatDate(t.date)} ${t.difficulty ? "• " + t.difficulty : ""}
@@ -140,14 +160,14 @@ function renderTutorials() {
       <button class="btn btn-outline btn-sm">Read More</button>
 
       <div class="markdown-body" hidden>
-        ${marked.parse(t.body)}
+        ${marked.parse(t.body || "")}
       </div>
     `;
 
     const btn = card.querySelector("button");
     const body = card.querySelector(".markdown-body");
 
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
       const open = body.hasAttribute("hidden");
 
       if (open) {
@@ -157,43 +177,43 @@ function renderTutorials() {
         body.setAttribute("hidden", "");
         btn.textContent = "Read More";
       }
-    };
+    });
 
     tutorialsList.appendChild(card);
   });
 }
 
-/* ================= LOAD TUTORIALS ================= */
+/* ================= LOAD DATA ================= */
 async function loadTutorials() {
   tutorialsList.innerHTML = "<p>Loading tutorials...</p>";
 
   const res = await fetch(TUTORIALS_API);
   const files = await res.json();
 
+  const mdFiles = files.filter(f => f.name.endsWith(".md"));
+
   tutorials = await Promise.all(
-    files
-      .filter(f => f.name.endsWith(".md"))
-      .map(async file => {
-        const r = await fetch(file.download_url);
-        const text = await r.text();
+    mdFiles.map(async file => {
+      const r = await fetch(file.download_url);
+      const text = await r.text();
 
-        const parts = text.split("---");
-        const fm = parts[1] || "";
-        const body = parts.slice(2).join("---");
+      const parts = text.split("---");
+      const fm = parts[1] || "";
+      const body = parts.slice(2).join("---");
 
-        return {
-          title: getFrontmatterValue(fm, "title"),
-          date: getFrontmatterValue(fm, "date"),
-          category: getFrontmatterValue(fm, "category"),
-          difficulty: getFrontmatterValue(fm, "difficulty"),
-          youtube: getFrontmatterValue(fm, "youtube"),
-          description: getFrontmatterValue(fm, "description"),
-          body
-        };
-      })
+      return {
+        title: getFrontmatterValue(fm, "title"),
+        date: getFrontmatterValue(fm, "date"),
+        category: getFrontmatterValue(fm, "category"),
+        difficulty: getFrontmatterValue(fm, "difficulty"),
+        youtube: getFrontmatterValue(fm, "youtube"),
+        description: getFrontmatterValue(fm, "description"),
+        body
+      };
+    })
   );
 
-  buildCategories();   // ✅ IMPORTANT FIX
+  buildCategories();
   renderTutorials();
 }
 
