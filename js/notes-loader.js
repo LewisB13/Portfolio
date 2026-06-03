@@ -1,9 +1,6 @@
 const NOTES_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/notes";
 
-const CMS_CONFIG =
-  "https://raw.githubusercontent.com/LewisB13/Portfolio/main/admin/config.yml";
-
 const notesList = document.getElementById("notes-list");
 const categorySelect = document.getElementById("notes-category");
 const searchInput = document.getElementById("notes-search");
@@ -41,6 +38,23 @@ function filterNotes() {
       note.body.toLowerCase().includes(searchQuery);
 
     return categoryMatch && searchMatch;
+  });
+}
+
+/* ================= CATEGORY BUILDER (FIXED) ================= */
+function buildCategories() {
+  const categories = [...new Set(notes.map(n => n.category))]
+    .filter(Boolean)
+    .sort();
+
+  // reset dropdown except "All"
+  categorySelect.innerHTML = `<option value="All">All Notes</option>`;
+
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
   });
 }
 
@@ -108,37 +122,6 @@ function renderNotes() {
   });
 }
 
-/* ================= LOAD CATEGORIES FROM YAML ================= */
-async function loadCategoriesFromCMS() {
-  try {
-    const res = await fetch(CMS_CONFIG);
-    const yamlText = await res.text();
-
-    const match = yamlText.match(
-      /name:\s*category[\s\S]*?options:\s*([\s\S]*?)(?:\n\s*\w|\n$)/m
-    );
-
-    if (!match) return;
-
-    const optionsBlock = match[1];
-
-    const categories = optionsBlock
-      .split("\n")
-      .map(line => line.replace("-", "").trim())
-      .filter(Boolean);
-
-    categories.forEach(cat => {
-      const option = document.createElement("option");
-      option.value = cat;
-      option.textContent = cat;
-      categorySelect.appendChild(option);
-    });
-
-  } catch (err) {
-    console.error("Failed to load categories:", err);
-  }
-}
-
 /* ================= LOAD NOTES ================= */
 async function loadNotes() {
   notesList.innerHTML = "<p>Loading notes...</p>";
@@ -167,24 +150,20 @@ async function loadNotes() {
     })
   );
 
+  buildCategories();   // ✅ IMPORTANT
   renderNotes();
 }
 
 /* ================= EVENTS ================= */
-categorySelect?.addEventListener("change", e => {
+categorySelect.addEventListener("change", e => {
   activeCategory = e.target.value;
   renderNotes();
 });
 
-searchInput?.addEventListener("input", e => {
+searchInput.addEventListener("input", e => {
   searchQuery = e.target.value.toLowerCase();
   renderNotes();
 });
 
 /* ================= INIT ================= */
-async function init() {
-  await loadCategoriesFromCMS();
-  await loadNotes();
-}
-
-init();
+loadNotes();

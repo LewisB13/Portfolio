@@ -11,7 +11,6 @@
 
 <body>
 
-  <!-- ================= HEADER (UNCHANGED) ================= -->
   <header class="site-header">
     <div class="nav-container">
 
@@ -29,24 +28,20 @@
     </div>
   </header>
 
-  <!-- ================= MAIN ================= -->
   <main class="container">
 
-    <!-- ================= HEADER ================= -->
     <section class="page-header">
 
       <h1>Notes</h1>
 
-      <p>
-        Quick technical notes, ideas, and reference snippets.
-      </p>
+      <p>Quick technical notes, ideas, and reference snippets.</p>
 
-      <!-- CONTROLS BAR -->
       <div class="sort-bar">
 
-<select id="notes-category">
-  <option value="All">All Notes</option>
-</select>
+        <!-- JS WILL POPULATE THIS -->
+        <select id="notes-category">
+          <option value="All">All Notes</option>
+        </select>
 
         <input
           id="notes-search"
@@ -59,14 +54,12 @@
 
     </section>
 
-    <!-- ================= NOTES GRID ================= -->
     <section id="notes-list" class="grid">
       <p>Loading notes...</p>
     </section>
 
   </main>
 
-  <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="./js/notes-loader.js"></script>
 
