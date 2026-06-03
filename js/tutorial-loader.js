@@ -2,10 +2,9 @@ const TUTORIALS_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/tutorials";
 
 const tutorialsList = document.getElementById("tutorials-list");
-const categoryGrid = document.getElementById("tutorial-category-grid");
+const categorySelect = document.getElementById("tutorial-category");
 const tutorialSort = document.getElementById("tutorial-sort");
 const searchInput = document.getElementById("tutorial-search");
-const selectedCategoryTitle = document.getElementById("selected-category-title");
 
 let tutorials = [];
 let activeCategory = "All Tutorials";
@@ -52,35 +51,18 @@ function buildCategories() {
     ...new Set(tutorials.map(t => t.category || "Uncategorised"))
   ];
 
-  categoryGrid.innerHTML = "";
+  categorySelect.innerHTML = "";
 
   categories.forEach(category => {
-    const count =
-      category === "All Tutorials"
-        ? tutorials.length
-        : tutorials.filter(t => (t.category || "Uncategorised") === category).length;
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    
+    if (category === activeCategory) {
+      option.selected = true;
+    }
 
-    const btn = document.createElement("button");
-    btn.className = `category-card ${category === activeCategory ? "active" : ""}`;
-
-    btn.innerHTML = `
-      <span class="category-card-title">${category}</span>
-      <span class="category-card-count">
-        ${count} ${count === 1 ? "Tutorial" : "Tutorials"}
-      </span>
-    `;
-
-    btn.addEventListener("click", () => {
-      activeCategory = category;
-
-      // optional UX upgrade
-      selectedCategoryTitle.textContent = category;
-
-      buildCategories();
-      renderTutorials();
-    });
-
-    categoryGrid.appendChild(btn);
+    categorySelect.appendChild(option);
   });
 }
 
@@ -218,6 +200,11 @@ async function loadTutorials() {
 }
 
 /* ================= EVENTS ================= */
+categorySelect?.addEventListener("change", e => {
+  activeCategory = e.target.value;
+  renderTutorials();
+});
+
 tutorialSort?.addEventListener("change", renderTutorials);
 
 searchInput?.addEventListener("input", e => {
