@@ -27,9 +27,10 @@ function formatDate(dateString) {
   });
 }
 
-/* ================= FILTER ================= */
+/* ================= FILTER + SORT ================= */
 function filterNotes() {
-  return notes.filter(note => {
+  // 1. FILTER FIRST
+  let filtered = notes.filter(note => {
     const categoryMatch =
       activeCategory === "All" || note.category === activeCategory;
 
@@ -39,6 +40,13 @@ function filterNotes() {
 
     return categoryMatch && searchMatch;
   });
+
+  // 2. SORT ONLY FILTERED RESULTS
+  filtered.sort((a, b) => {
+    return new Date(b.date || 0) - new Date(a.date || 0);
+  });
+
+  return filtered;
 }
 
 /* ================= RENDER ================= */
@@ -134,11 +142,6 @@ async function loadNotes() {
       };
     })
   );
-
-  // ================= RESTORE SORT BY DATE =================
-  notes.sort((a, b) => {
-    return new Date(b.date || 0) - new Date(a.date || 0);
-  });
 
   renderNotes();
 }
