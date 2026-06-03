@@ -54,9 +54,14 @@ function buildCategories() {
   categorySelect.innerHTML = "";
 
   categories.forEach(category => {
+    const count =
+      category === "All Tutorials"
+        ? tutorials.length
+        : tutorials.filter(t => (t.category || "Uncategorised") === category).length;
+
     const option = document.createElement("option");
     option.value = category;
-    option.textContent = category;
+    option.textContent = `${category} (${count})`;
     
     if (category === activeCategory) {
       option.selected = true;
