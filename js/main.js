@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  fetch("header.html")
-    .then((response) => {
+fetch("./header.html")
+  .then((response) => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       return response.text();
     })
