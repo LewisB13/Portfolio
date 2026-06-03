@@ -301,17 +301,16 @@ p {
    IMPORTANT ADDITIONS (FIX SEARCH ALIGNMENT)
 =============================== */
 
-/* THIS FIXES YOUR SEARCH BAR POSITION */
+/* THIS FIXES YOUR SEARCH BAR POSITION (Changed to flex-start) */
 .video-panel-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 20px;
 }
 
-/* pushes controls to right */
+/* Controls grouping (margin-left removed) */
 .sort-bar {
-  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 12px;
