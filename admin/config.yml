@@ -190,6 +190,7 @@ collections:
           - "Programming"
           - "Cheatsheets"
           - "Ideas"
+          - "System Admin"
           - "Other"
 
       - label: "Tags"
