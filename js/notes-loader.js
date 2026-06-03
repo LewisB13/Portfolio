@@ -1,6 +1,9 @@
 const NOTES_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/notes";
 
+const CMS_CONFIG =
+  "https://raw.githubusercontent.com/LewisB13/Portfolio/main/admin/config.yml";
+
 const notesList = document.getElementById("notes-list");
 const categorySelect = document.getElementById("notes-category");
 const searchInput = document.getElementById("notes-search");
@@ -9,6 +12,7 @@ let notes = [];
 let activeCategory = "All";
 let searchQuery = "";
 
+/* ================= FRONTMATTER ================= */
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter.match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
@@ -16,6 +20,7 @@ function getFrontmatterValue(frontmatter, key) {
   );
 }
 
+/* ================= DATE ================= */
 function formatDate(dateString) {
   if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-IE", {
@@ -25,6 +30,7 @@ function formatDate(dateString) {
   });
 }
 
+/* ================= FILTER ================= */
 function filterNotes() {
   return notes.filter(note => {
     const categoryMatch =
@@ -38,6 +44,7 @@ function filterNotes() {
   });
 }
 
+/* ================= RENDER ================= */
 function renderNotes() {
   notesList.innerHTML = "";
 
@@ -60,7 +67,6 @@ function renderNotes() {
     card.innerHTML = `
       <p>${note.category || "Other"}</p>
 
-      <!-- TITLE OPENS FULL NOTE -->
       <h3 class="note-title">
         <a href="note.html?note=${note.slug}">
           ${note.title}
@@ -73,10 +79,7 @@ function renderNotes() {
         ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
-      <!-- READ MORE (USES YOUR EXISTING STYLE) -->
-      <button class="read-more toggle">
-        Read More
-      </button>
+      <button class="read-more toggle">Read More</button>
 
       <div class="note-body" hidden>
         ${marked.parse(note.body)}
@@ -105,6 +108,38 @@ function renderNotes() {
   });
 }
 
+/* ================= LOAD CATEGORIES FROM YAML ================= */
+async function loadCategoriesFromCMS() {
+  try {
+    const res = await fetch(CMS_CONFIG);
+    const yamlText = await res.text();
+
+    const match = yamlText.match(
+      /name:\s*category[\s\S]*?options:\s*([\s\S]*?)(?:\n\s*\w|\n$)/m
+    );
+
+    if (!match) return;
+
+    const optionsBlock = match[1];
+
+    const categories = optionsBlock
+      .split("\n")
+      .map(line => line.replace("-", "").trim())
+      .filter(Boolean);
+
+    categories.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+
+  } catch (err) {
+    console.error("Failed to load categories:", err);
+  }
+}
+
+/* ================= LOAD NOTES ================= */
 async function loadNotes() {
   notesList.innerHTML = "<p>Loading notes...</p>";
 
@@ -135,6 +170,7 @@ async function loadNotes() {
   renderNotes();
 }
 
+/* ================= EVENTS ================= */
 categorySelect?.addEventListener("change", e => {
   activeCategory = e.target.value;
   renderNotes();
@@ -145,4 +181,10 @@ searchInput?.addEventListener("input", e => {
   renderNotes();
 });
 
-loadNotes();
+/* ================= INIT ================= */
+async function init() {
+  await loadCategoriesFromCMS();
+  await loadNotes();
+}
+
+init();
