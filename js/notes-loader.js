@@ -4,10 +4,12 @@ const NOTES_API =
 const notesList = document.getElementById("notes-list");
 const categorySelect = document.getElementById("notes-category");
 const searchInput = document.getElementById("notes-search");
+const sortSelect = document.getElementById("notes-sort");
 
 let notes = [];
 let activeCategory = "All";
 let searchQuery = "";
+let sortOrder = "newest";
 
 /* ================= FRONTMATTER ================= */
 function getFrontmatterValue(frontmatter, key) {
@@ -27,18 +29,17 @@ function formatDate(dateString) {
   });
 }
 
-/* ================= NOTICE ================= */
+/* ================= NOTICE (optional safety) ================= */
 function showNotice(message) {
   notesList.innerHTML = `
     <div class="rate-limit-notice">
       <h3>⚠️ Notice</h3>
       <p>${message}</p>
-      <p>Please try again shortly.</p>
     </div>
   `;
 }
 
-/* ================= FILTER ================= */
+/* ================= FILTER + SORT ================= */
 function filterNotes() {
   let filtered = notes.filter(note => {
     const categoryMatch =
@@ -51,8 +52,14 @@ function filterNotes() {
     return categoryMatch && searchMatch;
   });
 
+  // ✅ SORT (controlled by dropdown)
   filtered.sort((a, b) => {
-    return new Date(b.date || 0) - new Date(a.date || 0);
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
+
+    return sortOrder === "oldest"
+      ? dateA - dateB
+      : dateB - dateA;
   });
 
   return filtered;
@@ -130,19 +137,11 @@ async function loadNotes() {
     const res = await fetch(NOTES_API);
     const data = await res.json();
 
-    // 🔴 RATE LIMIT CHECK
-    if (data.message && data.message.includes("rate limit")) {
-      showNotice("GitHub API rate limit exceeded.");
-      return;
-    }
-
     if (!Array.isArray(data)) {
-      throw new Error("Invalid API response");
+      throw new Error("GitHub API error");
     }
 
-    const files = data;
-
-    const mdFiles = files.filter(f => f.name.endsWith(".md"));
+    const mdFiles = data.filter(f => f.name.endsWith(".md"));
 
     notes = await Promise.all(
       mdFiles.map(async file => {
@@ -167,7 +166,7 @@ async function loadNotes() {
 
   } catch (err) {
     console.error(err);
-    showNotice("Failed to load notes. Please try again later.");
+    showNotice("Failed to load notes.");
   }
 }
 
@@ -179,6 +178,11 @@ categorySelect?.addEventListener("change", e => {
 
 searchInput?.addEventListener("input", e => {
   searchQuery = e.target.value.toLowerCase();
+  renderNotes();
+});
+
+sortSelect?.addEventListener("change", e => {
+  sortOrder = e.target.value;
   renderNotes();
 });
 

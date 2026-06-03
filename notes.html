@@ -11,6 +11,7 @@
 
 <body>
 
+  <!-- ================= HEADER ================= -->
   <header class="site-header">
     <div class="nav-container">
 
@@ -28,38 +29,57 @@
     </div>
   </header>
 
+  <!-- ================= MAIN ================= -->
   <main class="container">
 
+    <!-- PAGE HEADER -->
     <section class="page-header">
-
       <h1>Notes</h1>
-
       <p>Quick technical notes, ideas, and reference snippets.</p>
+    </section>
 
-      <div class="sort-bar">
+    <!-- ================= CONTROLS ================= -->
+    <section class="sort-bar">
 
-        <!-- JS WILL POPULATE THIS -->
-        <select id="notes-category">
-          <option value="All">All Notes</option>
-        </select>
+      <!-- CATEGORY -->
+      <select id="notes-category">
+        <option value="All">All Notes</option>
+        <option value="Linux">Linux</option>
+        <option value="Networking">Networking</option>
+        <option value="Docker">Docker</option>
+        <option value="Homelab">Homelab</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Security">Security</option>
+        <option value="Programming">Programming</option>
+        <option value="Cheatsheets">Cheatsheets</option>
+        <option value="Ideas">Ideas</option>
+        <option value="Other">Other</option>
+      </select>
 
-        <input
-          id="notes-search"
-          class="tutorial-search"
-          type="text"
-          placeholder="Search notes..."
-        />
+      <!-- SORT -->
+      <select id="notes-sort">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
 
-      </div>
+      <!-- SEARCH -->
+      <input
+        id="notes-search"
+        class="tutorial-search"
+        type="text"
+        placeholder="Search notes..."
+      />
 
     </section>
 
+    <!-- ================= NOTES GRID ================= -->
     <section id="notes-list" class="grid">
       <p>Loading notes...</p>
     </section>
 
   </main>
 
+  <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="./js/notes-loader.js"></script>
 
