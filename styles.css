@@ -544,3 +544,25 @@ p {
   color: #ffcc00;
   margin-bottom: 10px;
 }
+
+.form-status {
+  margin-top: 15px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Success color */
+.form-status:contains("successfully") {
+  color: #56d364;
+}
+
+/* Error color */
+.form-status:contains("Failed") {
+  color: #f85149;
+}
+
+input:focus, textarea:focus {
+  outline: 2px solid #4f8cff;
+  border-color: transparent;
+}
