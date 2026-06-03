@@ -34,20 +34,19 @@ function filterNotes() {
       activeCategory === "All" || note.category === activeCategory;
 
     const searchMatch =
-      note.title.toLowerCase().includes(searchQuery) ||
-      note.body.toLowerCase().includes(searchQuery);
+      (note.title || "").toLowerCase().includes(searchQuery) ||
+      (note.body || "").toLowerCase().includes(searchQuery);
 
     return categoryMatch && searchMatch;
   });
 }
 
-/* ================= CATEGORY BUILDER (FIXED) ================= */
+/* ================= CATEGORY BUILDER ================= */
 function buildCategories() {
   const categories = [...new Set(notes.map(n => n.category))]
     .filter(Boolean)
     .sort();
 
-  // reset dropdown except "All"
   categorySelect.innerHTML = `<option value="All">All Notes</option>`;
 
   categories.forEach(cat => {
@@ -73,8 +72,9 @@ function renderNotes() {
     const card = document.createElement("article");
     card.className = "card";
 
+    const rawBody = note.body || "";
     const preview = marked
-      .parse(note.body || "")
+      .parse(rawBody)
       .replace(/<[^>]*>/g, "")
       .slice(0, 180);
 
@@ -83,7 +83,7 @@ function renderNotes() {
 
       <h3 class="note-title">
         <a href="note.html?note=${note.slug}">
-          ${note.title}
+          ${note.title || "Untitled"}
         </a>
       </h3>
 
@@ -96,7 +96,7 @@ function renderNotes() {
       <button class="read-more toggle">Read More</button>
 
       <div class="note-body" hidden>
-        ${marked.parse(note.body)}
+        ${marked.parse(rawBody)}
       </div>
     `;
 
@@ -124,43 +124,58 @@ function renderNotes() {
 
 /* ================= LOAD NOTES ================= */
 async function loadNotes() {
-  notesList.innerHTML = "<p>Loading notes...</p>";
+  try {
+    notesList.innerHTML = "<p>Loading notes...</p>";
 
-  const res = await fetch(NOTES_API);
-  const files = await res.json();
+    const res = await fetch(NOTES_API);
 
-  const mdFiles = files.filter(f => f.name.endsWith(".md"));
+    if (!res.ok) {
+      throw new Error(`GitHub API error: ${res.status}`);
+    }
 
-  notes = await Promise.all(
-    mdFiles.map(async file => {
-      const r = await fetch(file.download_url);
-      const text = await r.text();
+    const files = await res.json();
 
-      const parts = text.split("---");
-      const frontmatter = parts[1] || "";
-      const body = parts.slice(2).join("---").trim();
+    if (!Array.isArray(files)) {
+      throw new Error("GitHub response is not a file list");
+    }
 
-      return {
-        slug: file.name.replace(".md", ""),
-        title: getFrontmatterValue(frontmatter, "title"),
-        date: getFrontmatterValue(frontmatter, "date"),
-        category: getFrontmatterValue(frontmatter, "category"),
-        body
-      };
-    })
-  );
+    const mdFiles = files.filter(f => f.name.endsWith(".md"));
 
-  buildCategories();   // ✅ IMPORTANT
-  renderNotes();
+    notes = await Promise.all(
+      mdFiles.map(async file => {
+        const r = await fetch(file.download_url);
+        const text = await r.text();
+
+        const parts = text.split("---");
+        const frontmatter = parts[1] || "";
+        const body = parts.slice(2).join("---").trim();
+
+        return {
+          slug: file.name.replace(".md", ""),
+          title: getFrontmatterValue(frontmatter, "title"),
+          date: getFrontmatterValue(frontmatter, "date"),
+          category: getFrontmatterValue(frontmatter, "category"),
+          body
+        };
+      })
+    );
+
+    buildCategories();
+    renderNotes();
+  } catch (err) {
+    console.error(err);
+    notesList.innerHTML =
+      "<p>Failed to load notes. Check GitHub API or repo path.</p>";
+  }
 }
 
 /* ================= EVENTS ================= */
-categorySelect.addEventListener("change", e => {
+categorySelect?.addEventListener("change", e => {
   activeCategory = e.target.value;
   renderNotes();
 });
 
-searchInput.addEventListener("input", e => {
+searchInput?.addEventListener("input", e => {
   searchQuery = e.target.value.toLowerCase();
   renderNotes();
 });
