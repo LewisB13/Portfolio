@@ -53,7 +53,6 @@ Unlock-ADAccount -Identity "jdoe"
 
 # Reset a user's password
 Set-ADAccountPassword -Identity "jdoe" -NewPassword (Read-Host -AsSecureString "Enter Password")
-
 ```
 
 ### Group Management
@@ -69,7 +68,6 @@ Add-ADGroupMember -Identity "Finance-Dept" -Members "jdoe"
 
 # List all members of a group
 Get-ADGroupMember -Identity "Finance-Dept" | Select-Object Name, SamAccountName
-
 ```
 
 ### Computer & DC Management
@@ -84,7 +82,6 @@ Get-ADComputer -Filter 'LastLogonDate -le $date' -Properties LastLogonDate | Sel
 # Find which DC holds which FSMO roles
 Get-ADForest | Select-Object SchemaMaster, DomainNamingMaster
 Get-ADDomain | Select-Object PSDCPRole, RIDMaster, InfrastructureMaster
-
 ```
 
 ## 4. Classic Command-Line (CMD) Utilities
@@ -105,7 +102,6 @@ When you don't have PowerShell handy, these legacy tools are absolute lifesavers
 - **Protect the PDC Emulator:** Ensure your PDC Emulator is syncing its time with a reliable external NTP stratum-1 time source. If AD time drifts by more than 5 minutes, Kerberos authentication will break.
 - **Active Directory Recycle Bin:** Enable it immediately if it isn’t already. It allows you to recover accidentally deleted objects with their attributes intact without restoring from backups.
 PowerShellEnable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target 'yourdomain.com'
-
 - **AGDLP Group Nesting Strategy:** \* Add **A**ccounts to **G**lobal Groups.
     - Add Global Groups to **D**omain **L**ocal Groups.
     - Assign **P**ermissions to the Domain Local Groups.
