@@ -84,19 +84,7 @@ Get-ADForest | Select-Object SchemaMaster, DomainNamingMaster
 Get-ADDomain | Select-Object PSDCPRole, RIDMaster, InfrastructureMaster
 ```
 
-## 4. Classic Command-Line (CMD) Utilities
-
-When you don't have PowerShell handy, these legacy tools are absolute lifesavers for troubleshooting.
-
-| **Command** | **Purpose** | **Example Usage** |
-| **`repadmin`** | Checks Active Directory replication status and forces replication between DCs. | `repadmin /replsummary`\n\n`repadmin /syncall /AeD` |
-| **`dcdiag`** | Runs a massive suite of diagnostic tests on a Domain Controller to check its health. | `dcdiag /v` (Verbose output) |
-| **`gpupdate`** | Forces an immediate refresh of Group Policy settings on a local machine. | `gpupdate /force` |
-| **`gpresult`** | Displays the Resultant Set of Policy (RSoP) information for a user/computer. | `gpresult /r` (Summary report) |
-| **`netdom`** | Manages domain memberships, trusts, and can query/transfer FSMO roles. | `netdom query fsmo` |
-| **`nltest`** | Tests trust relationships, secure channels, and locates DCs. | `nltest /dsgetdc:domain.com` |
-
-## 5. Security & Maintenance Best Practices
+## 4. Security & Maintenance Best Practices
 
 - **The Principle of Least Privilege:** Never use the Domain Admin account for daily tasks. Use delegated OU permissions instead.
 - **Protect the PDC Emulator:** Ensure your PDC Emulator is syncing its time with a reliable external NTP stratum-1 time source. If AD time drifts by more than 5 minutes, Kerberos authentication will break.
