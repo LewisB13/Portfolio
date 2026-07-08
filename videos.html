@@ -2,47 +2,206 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Videos | Lewis Barrett</title>
+<title>Videos | Lewis Barrett</title>
 
-  <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles.css" />
 
-  <script src="js/main.js" defer></script>
+<script src="js/main.js" defer></script>
 </head>
+
 
 <body>
 
+
 <header class="site-header">
-  <div id="header-placeholder"></div>
+<div id="header-placeholder"></div>
 </header>
+
 
 
 <main class="container">
 
+
+
 <section class="page-header">
 
-  <h1>Videos</h1>
+<h1>Videos</h1>
 
-  <p>
-    A collection of videos covering projects, tutorials, demonstrations,
-    and other content.
-  </p>
+<p>
+A collection of videos covering projects, tutorials, demonstrations,
+hardware, homelab experiments and technical content.
+</p>
 
 
-  <div class="tutorial-cta">
 
-    <p>
-      <strong>Looking for something specific?</strong>
-      Use the search and category filters below to find videos.
-      If you have a request, feel free to 
-      <a href="contact.html">contact me</a>.
-    </p>
+<section class="rate-limit-notice">
 
-  </div>
+<h3>
+🚧 Content Currently Being Developed
+</h3>
+
+<p>
+The video library is currently being built. I am adding project showcases,
+tutorials, homelab demonstrations and technical walkthroughs as they become
+available.
+</p>
 
 </section>
+
+
+
+<div class="tutorial-cta">
+
+<p>
+<strong>Looking for something specific?</strong>
+Select a category below or use the search system to find videos.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section class="category-grid">
+
+
+<div class="category-card active" data-category="all">
+
+<span class="category-card-title">
+All Videos
+</span>
+
+<span class="category-card-count">
+View everything
+</span>
+
+</div>
+
+
+
+
+<div class="category-card" data-category="projects">
+
+<span class="category-card-title">
+Projects
+</span>
+
+<span class="category-card-count">
+Development and builds
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="homelab">
+
+<span class="category-card-title">
+Homelab
+</span>
+
+<span class="category-card-count">
+Servers and infrastructure
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="hardware">
+
+<span class="category-card-title">
+Hardware
+</span>
+
+<span class="category-card-count">
+Repairs and upgrades
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="programming">
+
+<span class="category-card-title">
+Programming
+</span>
+
+<span class="category-card-count">
+Coding projects
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="tutorials">
+
+<span class="category-card-title">
+Tutorials
+</span>
+
+<span class="category-card-count">
+Guides and walkthroughs
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="security">
+
+<span class="category-card-title">
+Cybersecurity
+</span>
+
+<span class="category-card-count">
+Security learning
+</span>
+
+</div>
+
+
+
+
+
+<div class="category-card" data-category="content">
+
+<span class="category-card-title">
+Content Creation
+</span>
+
+<span class="category-card-count">
+Recording and media
+</span>
+
+</div>
+
+
+
+</section>
+
+
+
+
 
 
 <section class="video-panel">
@@ -50,56 +209,69 @@
 
 <div class="video-panel-top">
 
-  <div class="sort-bar">
 
-    <label for="video-category">Category</label>
-
-    <select id="video-category">
-    </select>
+<div class="sort-bar">
 
 
-    <label for="video-sort">Sort</label>
-
-    <select id="video-sort">
-
-      <option value="latest">
-        Latest first
-      </option>
-
-      <option value="oldest">
-        Oldest first
-      </option>
-
-    </select>
+<label for="video-sort">
+Sort
+</label>
 
 
-    <input
-      id="video-search"
-      class="tutorial-search"
-      type="text"
-      placeholder="Search videos..."
-    />
+<select id="video-sort">
 
-  </div>
+<option value="latest">
+Latest first
+</option>
+
+<option value="oldest">
+Oldest first
+</option>
+
+</select>
+
+
+
+
+
+<input
+id="video-search"
+class="tutorial-search"
+type="text"
+placeholder="Search videos..."
+/>
+
 
 </div>
 
 
+</div>
+
+
+
+
+
 <section id="videos-list" class="grid">
 
-  <p>
-    Loading videos...
-  </p>
+<p>
+Loading videos...
+</p>
+
+
+</section>
+
+
 
 </section>
 
 
-</section>
 
 </main>
 
 
+
 <script src="js/video-loader.js"></script>
+
 
 </body>
 

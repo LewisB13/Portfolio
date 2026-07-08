@@ -913,29 +913,17 @@ input:focus, textarea:focus {
 }
 
 
-
-/* ===============================
-   MOBILE
-=============================== */
-
-
 @media(max-width:768px) {
-
-
   .cv-hero {
 
     padding:22px;
 
   }
-
-
   .cv-title h1 {
 
     font-size:2.2rem;
 
   }
-
-
   .cv-links {
 
     flex-direction:column;
@@ -944,12 +932,11 @@ input:focus, textarea:focus {
 
   }
 
-
   .cv-btn {
 
     width:100%;
 
   }
 
-
 }
+
