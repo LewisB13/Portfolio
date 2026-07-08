@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Videos | Lewis Barrett</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div id="header-placeholder"></div>
+</header>
+
+
+<main class="container">
+
+<section class="page-header">
+
+  <h1>Videos</h1>
+
+  <p>
+    A collection of videos covering projects, tutorials, demonstrations,
+    and other content.
+  </p>
+
+
+  <div class="tutorial-cta">
+
+    <p>
+      <strong>Looking for something specific?</strong>
+      Use the search and category filters below to find videos.
+      If you have a request, feel free to 
+      <a href="contact.html">contact me</a>.
+    </p>
+
+  </div>
+
+</section>
+
+
+<section class="video-panel">
+
+
+<div class="video-panel-top">
+
+  <div class="sort-bar">
+
+    <label for="video-category">Category</label>
+
+    <select id="video-category">
+    </select>
+
+
+    <label for="video-sort">Sort</label>
+
+    <select id="video-sort">
+
+      <option value="latest">
+        Latest first
+      </option>
+
+      <option value="oldest">
+        Oldest first
+      </option>
+
+    </select>
+
+
+    <input
+      id="video-search"
+      class="tutorial-search"
+      type="text"
+      placeholder="Search videos..."
+    />
+
+  </div>
+
+</div>
+
+
+<section id="videos-list" class="grid">
+
+  <p>
+    Loading videos...
+  </p>
+
+</section>
+
+
+</section>
+
+</main>
+
+
+<script src="js/video-loader.js"></script>
+
+</body>
+
+</html>
