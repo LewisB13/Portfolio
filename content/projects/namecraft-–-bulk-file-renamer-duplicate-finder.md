@@ -22,19 +22,19 @@ NameCraft is a Windows desktop utility built with Python and PySide6 for bulk fi
 
 ## Core Features
 
-- Bulk file renaming
-- Find and replace text within filenames
-- Replace full filenames
-- Add prefixes and suffixes
-- Sequential numbering
-- Live rename preview
-- Undo the most recent rename operation
-- SHA-256 duplicate file detection
-- Duplicate file deletion controls
-- Folder and subfolder scanning
-- Drag-and-drop file support
-- Light and dark themes
-- Responsive desktop interface
+    - Bulk file renaming
+    - Find and replace text within filenames
+    - Replace full filenames
+    - Add prefixes and suffixes
+    - Sequential numbering
+    - Live rename preview
+    - Undo the most recent rename operation
+    - SHA-256 duplicate file detection
+    - Duplicate file deletion controls
+    - Folder and subfolder scanning
+    - Drag-and-drop file support
+    - Light and dark themes
+    - Responsive desktop interface
 
 ## How It Works
 
