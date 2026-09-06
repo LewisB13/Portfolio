@@ -7,6 +7,7 @@ github: https://github.com/LewisB13/MotoPi
 demo: ''
 thumbnail: ''
 description: A Raspberry Pi–based motorcycle safety system using GPS and tilt sensors to monitor ride stability, location tracking, and crash/tilt detection."
+what_i_learned: I learnt more about building practical Windows desktop applications with Python, including working with file-system operations, SHA-256 hashing, music metadata and external services such as MusicBrainz. I also gained experience with multithreading, error handling, safe file manipulation, undo systems and packaging a Python project as a standalone Windows executable using PyInstaller.
 visibility: ''
 ---
 
