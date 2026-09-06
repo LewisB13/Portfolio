@@ -13,6 +13,20 @@ github: ''
 demo: ''
 thumbnail: ''
 description: A lightweight Windows desktop tool for bulk file renaming and duplicate file detection, featuring live previews, undo support, SHA-256 scanning, and a clean responsive interface.
+what_i_learned: |-
+  Building NameCraft helped me develop practical experience in:
+
+      - Creating desktop applications with **Python and PySide6**
+      - Designing responsive graphical user interfaces with **Qt**
+      - Safely renaming and managing files using Python
+      - Detecting duplicate files using **SHA-256 hashing**
+      - Using **worker threads** for longer-running operations
+      - Implementing validation, error handling and rollback systems
+      - Adding features such as **drag-and-drop, live previews and undo**
+      - Testing software against edge cases and fixing bugs found during testing
+      - Packaging Python applications into standalone Windows `.exe` files using **PyInstaller**
+      - Testing software in a clean Windows environment before release
+      - Taking a project from initial development through to a **finished, distributable product**
 visibility: ''
 ---
 
