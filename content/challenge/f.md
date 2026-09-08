@@ -15,4 +15,4 @@ what_i_learned: ''
 visibility: public
 ---
 
-[https://www.youtube.com/watch?v=lKm4tmfpXWs](https://www.youtube.com/watch?v=lKm4tmfpXWs)
+ghyoi
