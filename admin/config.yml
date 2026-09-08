@@ -60,6 +60,11 @@ collections:
         widget: "string"
         required: false
 
+      - label: "YouTube Video URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
       - label: "Thumbnail"
         name: "thumbnail"
         widget: "image"
