@@ -6,8 +6,8 @@ difficulty: Easy
 time: ''
 technology: ''
 tags: []
-github: https://www.youtube.com/watch?v=eQzOkd9lqtY
-youtube: ''
+github: ''
+youtube: https://www.youtube.com/watch?v=eQzOkd9lqtY
 demo: ''
 thumbnail: ''
 description: ''
