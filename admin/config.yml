@@ -221,10 +221,10 @@ collections:
           - "private"
 
   # =========================================
-  # 100 PROJECT CHALLENGE
+  # challenges
   # =========================================
   - name: "challenge"
-    label: "Challenge projects"
+    label: "Challenges"
     folder: "content/challenge"
     create: true
     slug: "{{slug}}"

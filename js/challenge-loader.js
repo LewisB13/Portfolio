@@ -1,309 +1,589 @@
 const CHALLENGE_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/challenge";
 
-const challengeList = document.getElementById("challenge-list");
-const challengeSearch = document.getElementById("challenge-search");
-const challengeStatus = document.getElementById("challenge-status");
+const challengeList =
+  document.getElementById("challenge-list");
 
-const progressText = document.getElementById("challenge-progress-text");
-const progressBar = document.getElementById("challenge-progress-bar");
+const difficultySelect =
+  document.getElementById("challenge-difficulty");
 
-let challengeProjects = [];
+const challengeSort =
+  document.getElementById("challenge-sort");
+
+const searchInput =
+  document.getElementById("challenge-search");
+
+let challenges = [];
+let activeDifficulty = "All Challenges";
 let searchQuery = "";
-let activeStatus = "All";
 
+
+/* ================= FRONTMATTER ================= */
 
 function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
-      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
-      ?.trim() || ""
+      .match(
+        new RegExp(
+          `${key}:\\s*["']?(.*?)["']?$`,
+          "m"
+        )
+      )?.[1]?.trim() || ""
   );
 }
 
+
+/* ================= DATE ================= */
 
 function formatDate(dateString) {
   if (!dateString) return "";
 
-  return new Date(dateString).toLocaleDateString("en-IE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
+  return new Date(dateString)
+    .toLocaleDateString("en-IE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+}
+
+
+/* ================= YOUTUBE ================= */
+
+function getYouTubeEmbed(url) {
+  if (!url) return "";
+
+  if (url.includes("youtube.com/watch?v=")) {
+    const id =
+      url.split("v=")[1].split("&")[0];
+
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  if (url.includes("youtu.be/")) {
+    const id =
+      url.split("youtu.be/")[1].split("?")[0];
+
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  return "";
+}
+
+
+/* ================= BUILD DIFFICULTIES ================= */
+
+function buildDifficulties() {
+  const difficulties = [
+    "All Challenges",
+    "Ultimate Beginner",
+    "Easy",
+    "Intermediate",
+    "Advanced",
+    "Difficult"
+  ];
+
+  difficultySelect.innerHTML = "";
+
+  difficulties.forEach(difficulty => {
+    const count =
+      difficulty === "All Challenges"
+        ? challenges.length
+        : challenges.filter(
+            challenge =>
+              challenge.difficulty === difficulty
+          ).length;
+
+    const option =
+      document.createElement("option");
+
+    option.value = difficulty;
+    option.textContent =
+      `${difficulty} (${count})`;
+
+    if (
+      difficulty === activeDifficulty
+    ) {
+      option.selected = true;
+    }
+
+    difficultySelect.appendChild(option);
   });
 }
 
 
-function updateProgress() {
-  const completed = challengeProjects.filter(
-    project => project.status === "Completed"
-  ).length;
+/* ================= FILTER + SORT ================= */
 
-  const percentage = Math.min((completed / 100) * 100, 100);
+function getFilteredChallenges() {
+  let filtered = [...challenges];
 
-  progressText.textContent =
-    `${completed} of 100 projects completed`;
+  /* Difficulty */
 
-  progressBar.style.width = `${percentage}%`;
-}
-
-
-function renderChallengeProjects() {
-  challengeList.innerHTML = "";
-
-  let filtered = [...challengeProjects];
-
-  if (activeStatus !== "All") {
-    filtered = filtered.filter(
-      project => project.status === activeStatus
-    );
+  if (
+    activeDifficulty !==
+    "All Challenges"
+  ) {
+    filtered =
+      filtered.filter(
+        challenge =>
+          challenge.difficulty ===
+          activeDifficulty
+      );
   }
 
-  if (searchQuery.trim() !== "") {
-    const q = searchQuery.toLowerCase();
+  /* Search */
 
-    filtered = filtered.filter(project =>
-      (project.title || "").toLowerCase().includes(q) ||
-      (project.description || "").toLowerCase().includes(q) ||
-      (project.technology || "").toLowerCase().includes(q)
-    );
+  if (searchQuery.trim()) {
+    const q =
+      searchQuery.toLowerCase();
+
+    filtered =
+      filtered.filter(
+        challenge =>
+          (
+            (challenge.title || "") +
+            " " +
+            (challenge.description || "") +
+            " " +
+            (challenge.technology || "") +
+            " " +
+            (challenge.difficulty || "") +
+            " " +
+            (challenge.status || "")
+          )
+            .toLowerCase()
+            .includes(q)
+      );
   }
+
+  /* Sort */
+
+  const sortOrder =
+    challengeSort?.value ||
+    "latest";
 
   filtered.sort((a, b) => {
-    return Number(a.projectNumber) - Number(b.projectNumber);
+    const dateA =
+      new Date(a.date || 0);
+
+    const dateB =
+      new Date(b.date || 0);
+
+    return sortOrder === "oldest"
+      ? dateA - dateB
+      : dateB - dateA;
   });
 
+  return filtered;
+}
 
-  if (filtered.length === 0) {
+
+/* ================= RENDER ================= */
+
+function renderChallenges() {
+  challengeList.innerHTML = "";
+
+  const filtered =
+    getFilteredChallenges();
+
+  if (!filtered.length) {
     challengeList.innerHTML =
-      "<p>No challenge projects found.</p>";
+      "<p>No challenges found.</p>";
 
     return;
   }
 
+  filtered.forEach(challenge => {
+    const card =
+      document.createElement("article");
 
-  filtered.forEach(project => {
-    const card = document.createElement("article");
+    card.className = "card";
 
-    card.className = "card blog-card challenge-card";
-
-
-    const preview =
-      project.description ||
-      marked
-        .parse(project.body || "")
-        .replace(/<[^>]*>/g, "")
-        .slice(0, 180);
-
+    const embed =
+      getYouTubeEmbed(
+        challenge.youtube
+      );
 
     card.innerHTML = `
 
-      <div class="challenge-card-top">
+      ${
+        embed
+          ? `
+            <div class="video-wrapper">
 
-        <span class="challenge-number">
-          #${project.projectNumber}
-        </span>
+              <iframe
+                src="${embed}"
+                allowfullscreen
+              ></iframe>
 
-        <span class="challenge-status challenge-status-${project.status
-          .toLowerCase()
-          .replaceAll(" ", "-")}">
-          ${project.status}
-        </span>
-
-      </div>
+            </div>
+          `
+          : ""
+      }
 
 
-      <h3 class="note-title">
-
-        <a href="challenge-project.html?project=${project.slug}">
-          ${project.title}
-        </a>
-
+      <h3>
+        ${challenge.title || "Untitled"}
       </h3>
 
 
-      ${
-        project.technology
-          ? `<p class="video-category">${project.technology}</p>`
-          : ""
-      }
+      <p class="video-meta">
 
+        ${formatDate(challenge.date)}
 
-      ${
-        project.date
-          ? `<p class="blog-date">${formatDate(project.date)}</p>`
-          : ""
-      }
+        ${
+          challenge.difficulty
+            ? ` • ${challenge.difficulty}`
+            : ""
+        }
 
+        ${
+          challenge.status
+            ? ` • ${challenge.status}`
+            : ""
+        }
 
-      <p class="note-preview">
-        ${preview}${preview.length >= 180 ? "..." : ""}
       </p>
 
 
-      <a
-        class="read-more"
-        href="challenge-project.html?project=${project.slug}">
-        View Project →
-      </a>
+      ${
+        challenge.technology
+          ? `
+            <p class="video-category">
+              ${challenge.technology}
+            </p>
+          `
+          : ""
+      }
+
+
+      <p>
+        ${challenge.description || ""}
+      </p>
+
+
+      <button
+        class="btn btn-outline btn-sm"
+      >
+        Read More
+      </button>
+
+
+      <div
+        class="markdown-body"
+        hidden
+      >
+
+        ${marked.parse(
+          challenge.body || ""
+        )}
+
+
+        ${
+          challenge.whatILearned
+            ? `
+              <h2>
+                What I Learned
+              </h2>
+
+              ${marked.parse(
+                challenge.whatILearned
+              )}
+            `
+            : ""
+        }
+
+
+        ${
+          challenge.github ||
+          challenge.demo
+            ? `
+              <div class="note-actions">
+
+                ${
+                  challenge.github
+                    ? `
+                      <a
+                        class="read-more"
+                        href="${challenge.github}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        GitHub ↗
+                      </a>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  challenge.demo
+                    ? `
+                      <a
+                        class="read-more"
+                        href="${challenge.demo}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Live Demo ↗
+                      </a>
+                    `
+                    : ""
+                }
+
+              </div>
+            `
+            : ""
+        }
+
+      </div>
 
     `;
 
-    challengeList.appendChild(card);
+
+    const btn =
+      card.querySelector("button");
+
+    const body =
+      card.querySelector(
+        ".markdown-body"
+      );
+
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const open =
+          body.hasAttribute(
+            "hidden"
+          );
+
+
+        if (open) {
+          body.removeAttribute(
+            "hidden"
+          );
+
+          btn.textContent =
+            "Close ↑";
+        }
+
+        else {
+          body.setAttribute(
+            "hidden",
+            ""
+          );
+
+          btn.textContent =
+            "Read More";
+        }
+
+      }
+    );
+
+
+    challengeList.appendChild(
+      card
+    );
   });
 }
 
 
-async function loadChallengeProjects() {
+/* ================= LOAD DATA ================= */
+
+async function loadChallenges() {
   challengeList.innerHTML =
-    "<p>Loading challenge projects...</p>";
+    "<p>Loading challenges...</p>";
 
   try {
+    const res =
+      await fetch(CHALLENGE_API);
 
-    const response = await fetch(CHALLENGE_API);
-
-    if (!response.ok) {
+    if (!res.ok) {
       throw new Error(
-        `GitHub request failed: ${response.status}`
+        `GitHub API error: ${res.status}`
       );
     }
 
-    const files = await response.json();
+    const files =
+      await res.json();
 
-    const markdownFiles =
-      files.filter(file => file.name.endsWith(".md"));
-
-
-    challengeProjects = await Promise.all(
-
-      markdownFiles.map(async file => {
-
-        const response = await fetch(file.download_url);
-
-        const text = await response.text();
-
-        const parts = text.split("---");
-
-        const frontmatter = parts[1] || "";
-        const body = parts.slice(2).join("---").trim();
+    const mdFiles =
+      files.filter(
+        file =>
+          file.type === "file" &&
+          file.name
+            .toLowerCase()
+            .endsWith(".md")
+      );
 
 
-        return {
-          slug: file.name.replace(".md", ""),
+    challenges =
+      await Promise.all(
 
-          projectNumber:
-            getFrontmatterValue(
-              frontmatter,
-              "project_number"
-            ),
+        mdFiles.map(
+          async file => {
 
-          title:
-            getFrontmatterValue(
-              frontmatter,
-              "title"
-            ),
+            const r =
+              await fetch(
+                file.download_url
+              );
 
-          date:
-            getFrontmatterValue(
-              frontmatter,
-              "date"
-            ),
+            const text =
+              await r.text();
 
-          status:
-            getFrontmatterValue(
-              frontmatter,
-              "status"
-            ) || "Planned",
+            const parts =
+              text.split("---");
 
-          technology:
-            getFrontmatterValue(
-              frontmatter,
-              "technology"
-            ),
+            const fm =
+              parts[1] || "";
 
-          github:
-            getFrontmatterValue(
-              frontmatter,
-              "github"
-            ),
-
-          demo:
-            getFrontmatterValue(
-              frontmatter,
-              "demo"
-            ),
-
-          youtube:
-            getFrontmatterValue(
-              frontmatter,
-              "youtube"
-            ),
-
-          description:
-            getFrontmatterValue(
-              frontmatter,
-              "description"
-            ),
-
-          body
-        };
-
-      })
-    );
+            const body =
+              parts
+                .slice(2)
+                .join("---")
+                .trim();
 
 
-    updateProgress();
-    renderChallengeProjects();
+            return {
+              title:
+                getFrontmatterValue(
+                  fm,
+                  "title"
+                ),
 
-  } catch (error) {
+              date:
+                getFrontmatterValue(
+                  fm,
+                  "date"
+                ),
 
+              status:
+                getFrontmatterValue(
+                  fm,
+                  "status"
+                ),
+
+              difficulty:
+                getFrontmatterValue(
+                  fm,
+                  "difficulty"
+                ),
+
+              technology:
+                getFrontmatterValue(
+                  fm,
+                  "technology"
+                ),
+
+              github:
+                getFrontmatterValue(
+                  fm,
+                  "github"
+                ),
+
+              demo:
+                getFrontmatterValue(
+                  fm,
+                  "demo"
+                ),
+
+              youtube:
+                getFrontmatterValue(
+                  fm,
+                  "youtube"
+                ),
+
+              description:
+                getFrontmatterValue(
+                  fm,
+                  "description"
+                ),
+
+              whatILearned:
+                getFrontmatterValue(
+                  fm,
+                  "what_i_learned"
+                ),
+
+              visibility:
+                getFrontmatterValue(
+                  fm,
+                  "visibility"
+                ) || "public",
+
+              body
+            };
+
+          }
+        )
+
+      );
+
+
+    challenges =
+      challenges.filter(
+        challenge =>
+          challenge.visibility
+            .toLowerCase() !==
+          "private"
+      );
+
+
+    buildDifficulties();
+    renderChallenges();
+
+  }
+
+  catch (error) {
     console.error(
-      "Failed to load challenge projects:",
+      "Failed to load challenges:",
       error
     );
 
-    challengeList.innerHTML = `
-      <p>
-        No challenge projects have been added yet.
-      </p>
-    `;
-
-    progressText.textContent =
-      "0 of 100 projects completed";
-
+    challengeList.innerHTML =
+      "<p>Could not load challenges.</p>";
   }
 }
 
 
-if (challengeSearch) {
+/* ================= EVENTS ================= */
 
-  challengeSearch.addEventListener(
-    "input",
-    event => {
-
-      searchQuery = event.target.value;
-
-      renderChallengeProjects();
-
-    }
-  );
-
-}
-
-
-if (challengeStatus) {
-
-  challengeStatus.addEventListener(
+difficultySelect
+  ?.addEventListener(
     "change",
     event => {
 
-      activeStatus = event.target.value;
+      activeDifficulty =
+        event.target.value;
 
-      renderChallengeProjects();
+      renderChallenges();
 
     }
   );
 
-}
+
+challengeSort
+  ?.addEventListener(
+    "change",
+    renderChallenges
+  );
 
 
-loadChallengeProjects();
+searchInput
+  ?.addEventListener(
+    "input",
+    event => {
+
+      searchQuery =
+        event.target.value;
+
+      renderChallenges();
+
+    }
+  );
+
+
+/* ================= INIT ================= */
+
+loadChallenges();

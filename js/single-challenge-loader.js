@@ -1,3 +1,7 @@
+/* ===============================
+   GET PROJECT SLUG
+================================ */
+
 function getChallengeSlug() {
   return new URLSearchParams(
     window.location.search
@@ -5,22 +9,39 @@ function getChallengeSlug() {
 }
 
 
-function getFrontmatterValue(frontmatter, key) {
+/* ===============================
+   FRONTMATTER
+================================ */
+
+function getFrontmatterValue(
+  frontmatter,
+  key
+) {
   return (
     frontmatter
-      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+      .match(
+        new RegExp(
+          `${key}:\\s*["']?(.*?)["']?$`,
+          "m"
+        )
+      )?.[1]
       ?.trim() || ""
   );
 }
 
 
-function formatDate(dateString) {
+/* ===============================
+   DATE
+================================ */
 
+function formatDate(dateString) {
   if (!dateString) {
     return "";
   }
 
-  return new Date(dateString).toLocaleDateString(
+  return new Date(
+    dateString
+  ).toLocaleDateString(
     "en-IE",
     {
       day: "numeric",
@@ -28,65 +49,100 @@ function formatDate(dateString) {
       year: "numeric"
     }
   );
-
 }
 
 
-function getYouTubeEmbedUrl(url) {
+/* ===============================
+   YOUTUBE
+================================ */
 
+function getYouTubeEmbedUrl(url) {
   if (!url) {
     return "";
   }
 
+
   try {
+    const parsedUrl =
+      new URL(url);
 
-    const parsedUrl = new URL(url);
 
-
+    /*
+      Normal YouTube URL
+    */
     if (
-      parsedUrl.hostname === "youtube.com" ||
-      parsedUrl.hostname === "www.youtube.com"
+      parsedUrl.hostname ===
+        "youtube.com" ||
+
+      parsedUrl.hostname ===
+        "www.youtube.com"
     ) {
 
       const videoId =
         parsedUrl.searchParams.get("v");
 
+
       if (videoId) {
-        return `https://www.youtube.com/embed/${videoId}`;
+        return (
+          "https://www.youtube.com/embed/" +
+          videoId
+        );
       }
 
 
+      /*
+        YouTube Shorts
+      */
       if (
-        parsedUrl.pathname.startsWith("/shorts/")
+        parsedUrl.pathname.startsWith(
+          "/shorts/"
+        )
       ) {
 
-        const videoId =
+        const shortId =
           parsedUrl.pathname
             .split("/shorts/")[1]
             .split("/")[0];
 
-        return `https://www.youtube.com/embed/${videoId}`;
+
+        return (
+          "https://www.youtube.com/embed/" +
+          shortId
+        );
       }
 
 
+      /*
+        Already embedded
+      */
       if (
-        parsedUrl.pathname.startsWith("/embed/")
+        parsedUrl.pathname.startsWith(
+          "/embed/"
+        )
       ) {
         return url;
       }
-
     }
 
 
-    if (parsedUrl.hostname === "youtu.be") {
+    /*
+      youtu.be URL
+    */
+    if (
+      parsedUrl.hostname ===
+      "youtu.be"
+    ) {
 
       const videoId =
         parsedUrl.pathname
           .slice(1)
           .split("/")[0];
 
-      return `https://www.youtube.com/embed/${videoId}`;
 
+      return (
+        "https://www.youtube.com/embed/" +
+        videoId
+      );
     }
 
   } catch (error) {
@@ -95,18 +151,22 @@ function getYouTubeEmbedUrl(url) {
       "Invalid YouTube URL:",
       error
     );
-
   }
 
 
   return "";
-
 }
 
 
+/* ===============================
+   LOAD SINGLE PROJECT
+================================ */
+
 async function loadSingleChallengeProject() {
 
-  const slug = getChallengeSlug();
+  const slug =
+    getChallengeSlug();
+
 
   const container =
     document.getElementById(
@@ -119,51 +179,76 @@ async function loadSingleChallengeProject() {
   }
 
 
+  /*
+    No project supplied
+  */
   if (!slug) {
 
     container.innerHTML = `
-      <p>No challenge project selected.</p>
+
+      <a
+        class="read-more"
+        href="challenge-projects.html"
+      >
+        ← Back to Challenges
+      </a>
+
+      <p>
+        No challenge project selected.
+      </p>
+
     `;
 
     return;
-
   }
 
 
   const url =
-    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/challenge/${slug}.md`;
+    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/challenge/${encodeURIComponent(slug)}.md`;
 
 
   try {
 
-    const response = await fetch(url);
+    const response =
+      await fetch(url);
 
 
     if (!response.ok) {
-
       throw new Error(
         `Failed to load project: ${response.status}`
       );
-
     }
 
 
-    const text = await response.text();
+    const text =
+      await response.text();
 
-    const parts = text.split("---");
+
+    const parts =
+      text.split("---");
+
 
     const frontmatter =
       parts[1] || "";
 
-    const body =
-      parts.slice(2).join("---").trim();
 
+    const body =
+      parts
+        .slice(2)
+        .join("---")
+        .trim();
+
+
+    /* ===============================
+       PROJECT DATA
+    ================================ */
 
     const title =
       getFrontmatterValue(
         frontmatter,
         "title"
-      );
+      ) || "Untitled Project";
+
 
     const projectNumber =
       getFrontmatterValue(
@@ -171,11 +256,13 @@ async function loadSingleChallengeProject() {
         "project_number"
       );
 
+
     const date =
       getFrontmatterValue(
         frontmatter,
         "date"
       );
+
 
     const status =
       getFrontmatterValue(
@@ -183,11 +270,20 @@ async function loadSingleChallengeProject() {
         "status"
       );
 
+
+    const difficulty =
+      getFrontmatterValue(
+        frontmatter,
+        "difficulty"
+      );
+
+
     const technology =
       getFrontmatterValue(
         frontmatter,
         "technology"
       );
+
 
     const github =
       getFrontmatterValue(
@@ -195,17 +291,20 @@ async function loadSingleChallengeProject() {
         "github"
       );
 
+
     const demo =
       getFrontmatterValue(
         frontmatter,
         "demo"
       );
 
+
     const youtube =
       getFrontmatterValue(
         frontmatter,
         "youtube"
       );
+
 
     const whatILearned =
       getFrontmatterValue(
@@ -215,27 +314,42 @@ async function loadSingleChallengeProject() {
 
 
     const youtubeEmbed =
-      getYouTubeEmbedUrl(youtube);
+      getYouTubeEmbedUrl(
+        youtube
+      );
 
 
     document.title =
       `${title} | 100 Project Challenge`;
 
 
+    /* ===============================
+       PAGE
+    ================================ */
+
     container.innerHTML = `
 
       <a
         class="read-more"
-        href="100-project-challenge.html">
-        ← Back to Challenge
+        href="challenge-projects.html"
+      >
+        ← Back to Challenges
       </a>
 
 
       <p class="blog-date">
 
-        Project #${projectNumber}
+        ${
+          projectNumber
+            ? `Project #${projectNumber}`
+            : "Challenge Project"
+        }
 
-        ${date ? ` • ${formatDate(date)}` : ""}
+        ${
+          date
+            ? ` • ${formatDate(date)}`
+            : ""
+        }
 
       </p>
 
@@ -249,17 +363,33 @@ async function loadSingleChallengeProject() {
 
         ${
           status
-            ? `<span class="challenge-status">
-                 ${status}
-               </span>`
+            ? `
+              <span class="challenge-status">
+                ${status}
+              </span>
+            `
             : ""
         }
 
+
+        ${
+          difficulty
+            ? `
+              <span class="video-category">
+                ${difficulty}
+              </span>
+            `
+            : ""
+        }
+
+
         ${
           technology
-            ? `<span class="video-category">
-                 ${technology}
-               </span>`
+            ? `
+              <span class="video-category">
+                ${technology}
+              </span>
+            `
             : ""
         }
 
@@ -269,6 +399,7 @@ async function loadSingleChallengeProject() {
       ${
         github || demo
           ? `
+
             <div class="note-actions">
 
               ${
@@ -278,12 +409,14 @@ async function loadSingleChallengeProject() {
                       class="read-more"
                       href="${github}"
                       target="_blank"
-                      rel="noopener noreferrer">
+                      rel="noopener noreferrer"
+                    >
                       GitHub ↗
                     </a>
                   `
                   : ""
               }
+
 
               ${
                 demo
@@ -292,7 +425,8 @@ async function loadSingleChallengeProject() {
                       class="read-more"
                       href="${demo}"
                       target="_blank"
-                      rel="noopener noreferrer">
+                      rel="noopener noreferrer"
+                    >
                       Live Demo ↗
                     </a>
                   `
@@ -300,6 +434,7 @@ async function loadSingleChallengeProject() {
               }
 
             </div>
+
           `
           : ""
       }
@@ -307,7 +442,11 @@ async function loadSingleChallengeProject() {
 
       <div class="markdown-body">
 
-        ${marked.parse(body)}
+        ${
+          body
+            ? marked.parse(body)
+            : "<p>No project write-up has been added yet.</p>"
+        }
 
       </div>
 
@@ -315,6 +454,7 @@ async function loadSingleChallengeProject() {
       ${
         whatILearned
           ? `
+
             <section class="project-learning-card">
 
               <h2>
@@ -322,10 +462,13 @@ async function loadSingleChallengeProject() {
               </h2>
 
               <div class="markdown-body">
+
                 ${marked.parse(whatILearned)}
+
               </div>
 
             </section>
+
           `
           : ""
       }
@@ -334,11 +477,13 @@ async function loadSingleChallengeProject() {
       ${
         youtubeEmbed
           ? `
+
             <section class="project-demo-card">
 
               <h2>
                 Project Demo
               </h2>
+
 
               <div class="project-video">
 
@@ -346,17 +491,19 @@ async function loadSingleChallengeProject() {
                   src="${youtubeEmbed}"
                   title="${title} Project Demo"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen>
-                </iframe>
+                  allowfullscreen
+                ></iframe>
 
               </div>
 
             </section>
+
           `
           : ""
       }
 
     `;
+
 
   } catch (error) {
 
@@ -370,8 +517,9 @@ async function loadSingleChallengeProject() {
 
       <a
         class="read-more"
-        href="100-project-challenge.html">
-        ← Back to Challenge
+        href="challenge-projects.html"
+      >
+        ← Back to Challenges
       </a>
 
       <p>
@@ -379,10 +527,12 @@ async function loadSingleChallengeProject() {
       </p>
 
     `;
-
   }
-
 }
 
+
+/* ===============================
+   START
+================================ */
 
 loadSingleChallengeProject();
