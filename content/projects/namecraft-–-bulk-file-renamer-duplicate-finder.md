@@ -10,7 +10,7 @@ tags:
   - File Manager
   - Duplicate finder
 github: ''
-demo: ''
+demo: https://youtu.be/iqSewl_qsG0
 thumbnail: ''
 description: A lightweight Windows desktop tool for bulk file renaming and duplicate file detection, featuring live previews, undo support, SHA-256 scanning, and a clean responsive interface.
 what_i_learned: |-
