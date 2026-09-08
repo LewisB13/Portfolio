@@ -3,107 +3,65 @@
 
 <head>
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Challenges | Lewis Barrett Portfolio</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  />
+  <link rel="stylesheet" href="styles.css" />
 
-  <script
-    src="js/main.js"
-    defer
-  ></script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-    defer
-  ></script>
-
-  <script
-    src="js/challenge-loader.js"
-    defer
-  ></script>
+  <script src="js/main.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+  <script src="js/challenge-loader.js" defer></script>
 </head>
-
 
 <body>
 
-  <!-- ===============================
-       HEADER
-  ================================ -->
-
   <div id="header-placeholder"></div>
 
-
-  <!-- ===============================
-       MAIN
-  ================================ -->
-
   <main class="container">
-
-
-    <!-- ===============================
-         PAGE INTRO
-    ================================ -->
 
     <section class="page-header">
 
       <h1>Challenges</h1>
 
       <p>
-        A collection of programming challenges and applications
-        I'm building to improve my software development and
-        problem-solving skills.
+        A collection of practical programming, systems and development
+        challenges ranging from prerequisite setup tasks through to more
+        advanced projects.
       </p>
 
     </section>
 
-
-    <!-- ===============================
-         DIFFICULTY GUIDE
-    ================================ -->
 
     <section class="challenge-difficulty-section">
 
       <h2>Difficulty Levels</h2>
 
       <p>
-        Each challenge is rated based on its scope, complexity
-        and the skills involved. Typical completion times are
-        estimates and will vary depending on experience.
-        Why not challenge yourself too?
+        Each challenge is rated based on its scope, complexity and the skills
+        involved. Typical completion times are estimates and will vary
+        depending on experience. Why not challenge yourself too?
       </p>
-
 
       <div class="difficulty-table-wrapper">
 
         <table class="difficulty-table">
 
           <thead>
-
             <tr>
-              <th>Level</th>
-              <th>What to Expect</th>
-              <th>Typical Time</th>
+              <th>Difficulty</th>
+              <th>Typical Scope</th>
+              <th>Estimated Time</th>
             </tr>
-
           </thead>
-
 
           <tbody>
 
             <tr>
               <td>⚪ Prerequisite</td>
               <td>
-                Environment setup, installing tools,
-                terminal basics and Git/GitHub setup
+                Environment setup, installing tools, terminal basics,
+                Git/GitHub setup and understanding files and folders
               </td>
               <td>1–3 hours</td>
             </tr>
@@ -111,8 +69,8 @@
             <tr>
               <td>🌱 Ultimate Beginner</td>
               <td>
-                Programming fundamentals, variables,
-                input/output, conditionals and loops
+                Programming fundamentals, variables, input/output,
+                conditionals and loops
               </td>
               <td>1–6 hours</td>
             </tr>
@@ -120,8 +78,7 @@
             <tr>
               <td>🟢 Easy</td>
               <td>
-                Small standalone applications and
-                simple problem solving
+                Small standalone applications and simple problem solving
               </td>
               <td>4–15 hours</td>
             </tr>
@@ -129,8 +86,7 @@
             <tr>
               <td>🟡 Intermediate</td>
               <td>
-                Larger applications, APIs, databases
-                and multiple components
+                Larger applications, APIs, databases and multiple components
               </td>
               <td>15–35 hours</td>
             </tr>
@@ -138,9 +94,8 @@
             <tr>
               <td>🟠 Advanced</td>
               <td>
-                Production-style applications,
-                authentication, deployment and
-                deeper architecture
+                Production-style applications, authentication, deployment
+                and deeper architecture
               </td>
               <td>30–70 hours</td>
             </tr>
@@ -148,8 +103,7 @@
             <tr>
               <td>🔴 Difficult</td>
               <td>
-                Complex architecture, AI,
-                systems integration and larger
+                Complex architecture, AI, systems integration and larger
                 end-to-end projects
               </td>
               <td>50–120+ hours</td>
@@ -164,62 +118,40 @@
     </section>
 
 
-    <!-- ===============================
-         CHALLENGE CONTROLS
-    ================================ -->
-
     <section class="challenge-controls">
 
       <div class="video-panel-top">
 
-        <!-- SEARCH -->
-
         <input
+          type="search"
           id="challenge-search"
           class="tutorial-search"
-          type="search"
           placeholder="Search challenges..."
           aria-label="Search challenges"
         />
 
-
-        <!-- FILTERS -->
-
         <div class="sort-bar">
-
-          <label for="challenge-difficulty">
-            Difficulty:
-          </label>
 
           <select
             id="challenge-difficulty"
             aria-label="Filter challenges by difficulty"
           >
-
             <option value="All Challenges">
               All Challenges
             </option>
-
           </select>
-
-
-          <label for="challenge-sort">
-            Sort:
-          </label>
 
           <select
             id="challenge-sort"
             aria-label="Sort challenges"
           >
-
             <option value="latest">
-              Newest
+              Latest
             </option>
 
             <option value="oldest">
               Oldest
             </option>
-
           </select>
 
         </div>
@@ -229,21 +161,19 @@
     </section>
 
 
-    <!-- ===============================
-         CHALLENGE LIST
-    ================================ -->
-
     <section class="challenge-projects-section">
 
       <div class="challenge-section-heading">
 
         <div>
+
           <h2>Challenges</h2>
 
           <p>
-            Watch the demonstration or open a challenge
-            to see the complete write-up.
+            Watch the demonstration directly from the card or open a challenge
+            to read the complete write-up.
           </p>
+
         </div>
 
         <p
@@ -253,18 +183,14 @@
 
       </div>
 
-
       <div
         id="challenge-list"
         class="grid challenge-grid"
       >
-
         <p>Loading challenges...</p>
-
       </div>
 
     </section>
-
 
   </main>
 

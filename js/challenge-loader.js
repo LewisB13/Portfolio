@@ -1,15 +1,30 @@
 const CHALLENGE_API =
   "https://api.github.com/repos/LewisB13/Portfolio/contents/content/challenge";
 
-const challengeList = document.getElementById("challenge-list");
-const difficultySelect = document.getElementById("challenge-difficulty");
-const challengeSort = document.getElementById("challenge-sort");
-const searchInput = document.getElementById("challenge-search");
-const resultCount = document.getElementById("challenge-result-count");
+const challengeList =
+  document.getElementById("challenge-list");
+
+const difficultySelect =
+  document.getElementById("challenge-difficulty");
+
+const challengeSort =
+  document.getElementById("challenge-sort");
+
+const searchInput =
+  document.getElementById("challenge-search");
+
+const resultCount =
+  document.getElementById("challenge-result-count");
+
 
 let challenges = [];
-let activeDifficulty = "All Challenges";
-let searchQuery = "";
+
+let activeDifficulty =
+  "All Challenges";
+
+let searchQuery =
+  "";
+
 
 const difficulties = [
   "All Challenges",
@@ -20,6 +35,7 @@ const difficulties = [
   "Advanced",
   "Difficult"
 ];
+
 
 const difficultyIcons = {
   Prerequisite: "⚪",
@@ -34,149 +50,288 @@ const difficultyIcons = {
 /* ================= FRONTMATTER ================= */
 
 function getFrontmatterValue(frontmatter, key) {
+
   return (
     frontmatter
-      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
+      .match(
+        new RegExp(
+          `${key}:\\s*["']?(.*?)["']?$`,
+          "m"
+        )
+      )?.[1]
       ?.trim() || ""
   );
+
 }
 
 
 /* ================= HELPERS ================= */
 
 function formatDate(dateString) {
-  if (!dateString) return "";
 
-  const date = new Date(dateString);
+  if (!dateString) {
+    return "";
+  }
+
+  const date =
+    new Date(dateString);
 
   if (Number.isNaN(date.getTime())) {
     return dateString;
   }
 
-  return date.toLocaleDateString("en-IE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-}
+  return date.toLocaleDateString(
+    "en-IE",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }
+  );
 
-
-function getYouTubeEmbed(url) {
-  if (!url) return "";
-
-  if (url.includes("youtube.com/watch?v=")) {
-    const id = url.split("v=")[1].split("&")[0];
-    return `https://www.youtube.com/embed/${id}`;
-  }
-
-  if (url.includes("youtu.be/")) {
-    const id = url.split("youtu.be/")[1].split("?")[0];
-    return `https://www.youtube.com/embed/${id}`;
-  }
-
-  if (url.includes("youtube.com/shorts/")) {
-    const id = url.split("/shorts/")[1].split("?")[0];
-    return `https://www.youtube.com/embed/${id}`;
-  }
-
-  if (url.includes("youtube.com/embed/")) {
-    return url;
-  }
-
-  return "";
 }
 
 
 function getDifficultyIcon(difficulty) {
-  return difficultyIcons[difficulty] || "⚪";
+
+  return (
+    difficultyIcons[difficulty] ||
+    "⚪"
+  );
+
 }
 
 
-/* ================= FILTER OPTIONS ================= */
+function getYouTubeEmbed(url) {
+
+  if (!url) {
+    return "";
+  }
+
+
+  if (
+    url.includes(
+      "youtube.com/watch?v="
+    )
+  ) {
+
+    const id =
+      url
+        .split("v=")[1]
+        .split("&")[0];
+
+    return (
+      `https://www.youtube.com/embed/${id}`
+    );
+
+  }
+
+
+  if (
+    url.includes("youtu.be/")
+  ) {
+
+    const id =
+      url
+        .split("youtu.be/")[1]
+        .split("?")[0];
+
+    return (
+      `https://www.youtube.com/embed/${id}`
+    );
+
+  }
+
+
+  if (
+    url.includes(
+      "youtube.com/shorts/"
+    )
+  ) {
+
+    const id =
+      url
+        .split("/shorts/")[1]
+        .split("?")[0];
+
+    return (
+      `https://www.youtube.com/embed/${id}`
+    );
+
+  }
+
+
+  if (
+    url.includes(
+      "youtube.com/embed/"
+    )
+  ) {
+    return url;
+  }
+
+
+  return "";
+
+}
+
+
+/* ================= DIFFICULTIES ================= */
 
 function buildDifficulties() {
-  if (!difficultySelect) return;
 
-  difficultySelect.innerHTML = "";
+  if (!difficultySelect) {
+    return;
+  }
 
-  difficulties.forEach((difficulty) => {
-    const count =
-      difficulty === "All Challenges"
-        ? challenges.length
-        : challenges.filter(
-            (challenge) => challenge.difficulty === difficulty
-          ).length;
+  difficultySelect.innerHTML =
+    "";
 
-    const option = document.createElement("option");
 
-    option.value = difficulty;
+  difficulties.forEach(
+    (difficulty) => {
 
-    option.textContent =
-      difficulty === "All Challenges"
-        ? `${difficulty} (${count})`
-        : `${getDifficultyIcon(difficulty)} ${difficulty} (${count})`;
+      const count =
+        difficulty ===
+        "All Challenges"
+          ? challenges.length
+          : challenges.filter(
+              (challenge) =>
+                challenge.difficulty ===
+                difficulty
+            ).length;
 
-    option.selected = difficulty === activeDifficulty;
 
-    difficultySelect.appendChild(option);
-  });
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        difficulty;
+
+
+      option.textContent =
+        difficulty ===
+        "All Challenges"
+          ? `${difficulty} (${count})`
+          : `${getDifficultyIcon(
+              difficulty
+            )} ${difficulty} (${count})`;
+
+
+      option.selected =
+        difficulty ===
+        activeDifficulty;
+
+
+      difficultySelect.appendChild(
+        option
+      );
+
+    }
+  );
+
 }
 
 
-/* ================= FILTER + SORT ================= */
+/* ================= FILTERING ================= */
 
 function getFilteredChallenges() {
-  let filtered = [...challenges];
 
-  if (activeDifficulty !== "All Challenges") {
-    filtered = filtered.filter(
-      (challenge) => challenge.difficulty === activeDifficulty
-    );
+  let filtered =
+    [...challenges];
+
+
+  if (
+    activeDifficulty !==
+    "All Challenges"
+  ) {
+
+    filtered =
+      filtered.filter(
+        (challenge) =>
+          challenge.difficulty ===
+          activeDifficulty
+      );
+
   }
 
-  if (searchQuery.trim()) {
-    const query = searchQuery.trim().toLowerCase();
 
-    filtered = filtered.filter((challenge) =>
-      [
-        challenge.title,
-        challenge.description,
-        challenge.technology,
-        challenge.difficulty,
-        challenge.status,
-        challenge.time
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(query)
-    );
+  if (
+    searchQuery.trim()
+  ) {
+
+    const query =
+      searchQuery
+        .trim()
+        .toLowerCase();
+
+
+    filtered =
+      filtered.filter(
+        (challenge) =>
+
+          [
+            challenge.title,
+            challenge.description,
+            challenge.technology,
+            challenge.difficulty,
+            challenge.status,
+            challenge.time
+          ]
+
+            .join(" ")
+
+            .toLowerCase()
+
+            .includes(query)
+      );
+
   }
 
-  const sortOrder = challengeSort?.value || "latest";
 
-  filtered.sort((a, b) => {
-    const dateA = new Date(a.date || 0);
-    const dateB = new Date(b.date || 0);
+  const sortOrder =
+    challengeSort?.value ||
+    "latest";
 
-    return sortOrder === "oldest"
-      ? dateA - dateB
-      : dateB - dateA;
-  });
+
+  filtered.sort(
+    (a, b) => {
+
+      const dateA =
+        new Date(a.date || 0);
+
+      const dateB =
+        new Date(b.date || 0);
+
+
+      return (
+        sortOrder === "oldest"
+          ? dateA - dateB
+          : dateB - dateA
+      );
+
+    }
+  );
+
 
   return filtered;
+
 }
 
 
 /* ================= MEDIA ================= */
 
 function createMedia(challenge) {
-  const embed = getYouTubeEmbed(challenge.youtube);
 
-  /*
-    YouTube video stays embedded directly
-    inside the challenge card.
-  */
+  const embed =
+    getYouTubeEmbed(
+      challenge.youtube
+    );
+
+
   if (embed) {
+
     return `
       <div class="challenge-card-media">
 
@@ -196,13 +351,14 @@ function createMedia(challenge) {
 
       </div>
     `;
+
   }
 
-  /*
-    Thumbnail is display-only.
-    It does not open another page.
-  */
-  if (challenge.thumbnail) {
+
+  if (
+    challenge.thumbnail
+  ) {
+
     return `
       <div class="challenge-card-media">
 
@@ -219,11 +375,10 @@ function createMedia(challenge) {
 
       </div>
     `;
+
   }
 
-  /*
-    Fallback when no video or thumbnail exists.
-  */
+
   return `
     <div class="challenge-card-placeholder">
 
@@ -237,35 +392,64 @@ function createMedia(challenge) {
 
     </div>
   `;
+
 }
 
 
 /* ================= CARD ================= */
 
-function createChallengeCard(challenge) {
+function createChallengeCard(
+  challenge
+) {
+
   const detailURL =
-    `challenge.html?challenge=${encodeURIComponent(challenge.slug)}`;
+    `challenge.html?challenge=${
+      encodeURIComponent(
+        challenge.slug
+      )
+    }`;
 
-  const card = document.createElement("article");
 
-  card.className = "card challenge-card";
+  const card =
+    document.createElement(
+      "article"
+    );
+
+
+  card.className =
+    "card challenge-card";
+
 
   card.innerHTML = `
+
     ${createMedia(challenge)}
+
 
     <div class="challenge-card-content">
 
+
       <div class="challenge-badges">
 
-        <span class="challenge-badge challenge-difficulty-badge">
-          ${getDifficultyIcon(challenge.difficulty)}
-          ${challenge.difficulty || "Unrated"}
+        <span
+          class="challenge-badge challenge-difficulty-badge"
+        >
+          ${getDifficultyIcon(
+            challenge.difficulty
+          )}
+
+          ${
+            challenge.difficulty ||
+            "Unrated"
+          }
         </span>
+
 
         ${
           challenge.status
             ? `
-              <span class="challenge-badge challenge-status-badge">
+              <span
+                class="challenge-badge challenge-status-badge"
+              >
                 ${challenge.status}
               </span>
             `
@@ -278,7 +462,10 @@ function createChallengeCard(challenge) {
       <h3 class="challenge-card-title">
 
         <a href="${detailURL}">
-          ${challenge.title || "Untitled Challenge"}
+          ${
+            challenge.title ||
+            "Untitled Challenge"
+          }
         </a>
 
       </h3>
@@ -296,6 +483,7 @@ function createChallengeCard(challenge) {
             : ""
         }
 
+
         ${
           challenge.time
             ? `
@@ -306,11 +494,14 @@ function createChallengeCard(challenge) {
             : ""
         }
 
+
         ${
           challenge.date
             ? `
               <span>
-                📅 ${formatDate(challenge.date)}
+                📅 ${formatDate(
+                  challenge.date
+                )}
               </span>
             `
             : ""
@@ -339,6 +530,7 @@ function createChallengeCard(challenge) {
           View Challenge →
         </a>
 
+
         ${
           challenge.github
             ? `
@@ -353,6 +545,7 @@ function createChallengeCard(challenge) {
             `
             : ""
         }
+
 
         ${
           challenge.demo
@@ -374,26 +567,47 @@ function createChallengeCard(challenge) {
     </div>
   `;
 
+
   return card;
+
 }
 
 
 /* ================= RENDER ================= */
 
 function renderChallenges() {
-  if (!challengeList) return;
 
-  const filtered = getFilteredChallenges();
-
-  challengeList.innerHTML = "";
-
-  if (resultCount) {
-    resultCount.textContent =
-      `${filtered.length} challenge${filtered.length === 1 ? "" : "s"}`;
+  if (!challengeList) {
+    return;
   }
 
-  if (!filtered.length) {
+
+  const filtered =
+    getFilteredChallenges();
+
+
+  challengeList.innerHTML =
+    "";
+
+
+  if (resultCount) {
+
+    resultCount.textContent =
+      `${filtered.length} challenge${
+        filtered.length === 1
+          ? ""
+          : "s"
+      }`;
+
+  }
+
+
+  if (
+    !filtered.length
+  ) {
+
     challengeList.innerHTML = `
+
       <div class="challenge-empty">
 
         <h3>
@@ -401,127 +615,210 @@ function renderChallenges() {
         </h3>
 
         <p>
-          Try changing the difficulty or search term.
+          Try changing the difficulty
+          or search term.
         </p>
 
       </div>
     `;
 
     return;
+
   }
 
-  filtered.forEach((challenge) => {
-    challengeList.appendChild(
-      createChallengeCard(challenge)
-    );
-  });
+
+  filtered.forEach(
+    (challenge) => {
+
+      challengeList.appendChild(
+        createChallengeCard(
+          challenge
+        )
+      );
+
+    }
+  );
+
 }
 
 
-/* ================= PARSE FILE ================= */
+/* ================= LOAD FILE ================= */
 
-async function loadChallengeFile(file) {
-  const response = await fetch(file.download_url);
+async function loadChallengeFile(
+  file
+) {
+
+  const response =
+    await fetch(
+      file.download_url
+    );
+
 
   if (!response.ok) {
-    throw new Error(`Could not load ${file.name}`);
+
+    throw new Error(
+      `Could not load ${file.name}`
+    );
+
   }
 
-  const text = await response.text();
 
-  const parts = text.split("---");
-  const frontmatter = parts[1] || "";
-  const body = parts.slice(2).join("---").trim();
+  const text =
+    await response.text();
 
-  const value = (key) =>
-    getFrontmatterValue(frontmatter, key);
+
+  const parts =
+    text.split("---");
+
+
+  const frontmatter =
+    parts[1] || "";
+
+
+  const body =
+    parts
+      .slice(2)
+      .join("---")
+      .trim();
+
+
+  const value =
+    (key) =>
+      getFrontmatterValue(
+        frontmatter,
+        key
+      );
+
 
   return {
-    slug: file.name.replace(/\.md$/i, ""),
 
-    title: value("title"),
+    slug:
+      file.name.replace(
+        /\.md$/i,
+        ""
+      ),
 
-    date: value("date"),
+    title:
+      value("title"),
 
-    status: value("status"),
+    date:
+      value("date"),
 
-    difficulty: value("difficulty"),
+    status:
+      value("status"),
 
-    time: value("time"),
+    difficulty:
+      value("difficulty"),
 
-    technology: value("technology"),
+    time:
+      value("time"),
 
-    thumbnail: value("thumbnail"),
+    technology:
+      value("technology"),
 
-    youtube: value("youtube"),
+    thumbnail:
+      value("thumbnail"),
 
-    github: value("github"),
+    youtube:
+      value("youtube"),
 
-    demo: value("demo"),
+    github:
+      value("github"),
 
-    description: value("description"),
+    demo:
+      value("demo"),
+
+    description:
+      value("description"),
 
     visibility:
-      value("visibility") || "public",
+      value("visibility") ||
+      "public",
 
     body
+
   };
+
 }
 
 
 /* ================= LOAD ================= */
 
 async function loadChallenges() {
-  if (!challengeList) return;
+
+  if (!challengeList) {
+    return;
+  }
+
 
   challengeList.innerHTML =
     "<p>Loading challenges...</p>";
 
+
   try {
+
     const response =
-      await fetch(CHALLENGE_API);
+      await fetch(
+        CHALLENGE_API
+      );
+
 
     if (!response.ok) {
+
       throw new Error(
         `GitHub API error: ${response.status}`
       );
+
     }
+
 
     const files =
       await response.json();
 
+
     const markdownFiles =
       files.filter(
         (file) =>
-          file.type === "file" &&
+          file.type ===
+            "file" &&
           file.name
             .toLowerCase()
             .endsWith(".md")
       );
 
+
     challenges =
       await Promise.all(
-        markdownFiles.map(loadChallengeFile)
+        markdownFiles.map(
+          loadChallengeFile
+        )
       );
+
 
     challenges =
       challenges.filter(
         (challenge) =>
           challenge.visibility
-            .toLowerCase() !== "private"
+            .toLowerCase() !==
+          "private"
       );
+
 
     buildDifficulties();
 
     renderChallenges();
 
+
   } catch (error) {
+
     console.error(
       "Failed to load challenges:",
       error
     );
 
+
     challengeList.innerHTML = `
+
       <div class="challenge-empty">
 
         <h3>
@@ -534,7 +831,9 @@ async function loadChallenges() {
 
       </div>
     `;
+
   }
+
 }
 
 
@@ -543,10 +842,12 @@ async function loadChallenges() {
 difficultySelect?.addEventListener(
   "change",
   (event) => {
+
     activeDifficulty =
       event.target.value;
 
     renderChallenges();
+
   }
 );
 
@@ -560,10 +861,12 @@ challengeSort?.addEventListener(
 searchInput?.addEventListener(
   "input",
   (event) => {
+
     searchQuery =
       event.target.value;
 
     renderChallenges();
+
   }
 );
 
