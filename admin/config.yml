@@ -20,7 +20,6 @@ collections:
     slug: "{{slug}}"
 
     fields:
-
       - label: "Project Title"
         name: "title"
         widget: "string"
@@ -107,7 +106,6 @@ collections:
     slug: "{{slug}}"
 
     fields:
-
       - label: "Title"
         name: "title"
         widget: "string"
@@ -186,7 +184,6 @@ collections:
     slug: "{{slug}}"
 
     fields:
-
       - label: "Title"
         name: "title"
         widget: "string"
@@ -243,7 +240,6 @@ collections:
     slug: "{{slug}}"
 
     fields:
-
       - label: "Challenge Title"
         name: "title"
         widget: "string"
