@@ -11,7 +11,7 @@ demo: ''
 thumbnail: ''
 description: ''
 what_i_learned: '[https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://www.youtube.com/watch?v=dQw4w9WgXcQ)'
-visibility: ''
+visibility: public
 ---
 
 [https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
