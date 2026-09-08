@@ -34,7 +34,6 @@ async function loadSingleProject() {
   try {
     const res = await fetch(url);
     const text = await res.text();
-
     const parts = text.split("---");
     const frontmatter = parts[1] || "";
     const body = parts.slice(2).join("---").trim();
@@ -42,6 +41,7 @@ async function loadSingleProject() {
     const title = getFrontmatterValue(frontmatter, "title");
     const date = getFrontmatterValue(frontmatter, "date");
     const github = getFrontmatterValue(frontmatter, "github");
+    const youtube = getFrontmatterValue(frontmatter, "youtube");
 
     document.title = title;
 
@@ -53,7 +53,8 @@ async function loadSingleProject() {
       <h1>${title}</h1>
 
       <div class="note-actions">
-        ${github ? `<a class="read-more" href="${github}" target="_blank">GitHub ↗</a>` : ""}
+        ${github ? `<a class="read-more" href="${github}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>` : ""}
+        ${youtube ? `<a class="read-more" href="${youtube}" target="_blank" rel="noopener noreferrer">YouTube ↗</a>` : ""}
       </div>
 
       <div class="markdown-body">
@@ -61,6 +62,7 @@ async function loadSingleProject() {
       </div>
     `;
   } catch (err) {
+    console.error("Failed to load project:", err);
     container.innerHTML = "<p>Could not load project.</p>";
   }
 }
