@@ -62,6 +62,9 @@ textarea:focus {
 /* ===============================
    HEADER / NAVBAR
 ================================ */
+#header-placeholder {
+  min-height: 72px;
+}
 .site-header {
   position: sticky;
   top: 0;
