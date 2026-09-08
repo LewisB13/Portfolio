@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8" />
 
   <meta
@@ -10,16 +9,12 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>
-    Challenges | Lewis Barrett Portfolio
-  </title>
-
+  <title>Challenges | Lewis Barrett Portfolio</title>
 
   <link
     rel="stylesheet"
     href="styles.css"
   />
-
 
   <script
     src="js/main.js"
@@ -35,68 +30,154 @@
     src="js/challenge-loader.js"
     defer
   ></script>
-
 </head>
 
 
 <body>
 
-  <!-- ================= HEADER ================= -->
+  <!-- ===============================
+       HEADER
+  ================================ -->
 
-  <header class="site-header">
-
-    <div id="header-placeholder"></div>
-
-  </header>
+  <div id="header-placeholder"></div>
 
 
-  <!-- ================= MAIN ================= -->
+  <!-- ===============================
+       MAIN
+  ================================ -->
 
   <main class="container">
 
 
-    <!-- ================= OVERVIEW ================= -->
+    <!-- ===============================
+         PAGE INTRO
+    ================================ -->
 
     <section class="page-header">
 
-      <h1>
-        Challenges
-      </h1>
+      <h1>Challenges</h1>
 
       <p>
-        A collection of programming challenges
-        and applications I'm building to improve
-        my software development and
+        A collection of programming challenges and applications
+        I'm building to improve my software development and
         problem-solving skills.
       </p>
 
     </section>
 
 
-    <!-- ================= CONTROLS ================= -->
+    <!-- ===============================
+         DIFFICULTY GUIDE
+    ================================ -->
 
-    <section>
+    <section class="challenge-difficulty-section">
+
+      <h2>Difficulty Levels</h2>
+
+      <p>
+        Each challenge is rated based on its scope,
+        complexity and the skills involved.
+        Why not challenge yourself too?
+      </p>
+
+
+      <div class="difficulty-table-wrapper">
+
+        <table class="difficulty-table">
+
+          <thead>
+
+            <tr>
+              <th>Level</th>
+              <th>What to Expect</th>
+              <th>Typical Time</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr>
+              <td>🌱 Ultimate Beginner</td>
+              <td>Programming fundamentals</td>
+              <td>1–6 hours</td>
+            </tr>
+
+            <tr>
+              <td>🟢 Easy</td>
+              <td>Small standalone applications</td>
+              <td>4–15 hours</td>
+            </tr>
+
+            <tr>
+              <td>🟡 Intermediate</td>
+              <td>
+                Larger applications, APIs and databases
+              </td>
+              <td>15–35 hours</td>
+            </tr>
+
+            <tr>
+              <td>🟠 Advanced</td>
+              <td>
+                Production-style applications
+              </td>
+              <td>30–70 hours</td>
+            </tr>
+
+            <tr>
+              <td>🔴 Difficult</td>
+              <td>
+                Complex architecture, AI and systems
+              </td>
+              <td>50–120+ hours</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===============================
+         CHALLENGE CONTROLS
+    ================================ -->
+
+    <section class="challenge-controls">
 
       <div class="video-panel-top">
 
+
+        <!-- Search -->
 
         <input
           id="challenge-search"
           class="tutorial-search"
           type="search"
           placeholder="Search challenges..."
+          aria-label="Search challenges"
         />
 
 
+        <!-- Filters -->
+
         <div class="sort-bar">
+
 
           <label for="challenge-difficulty">
             Difficulty:
           </label>
 
-          <select id="challenge-difficulty">
+          <select
+            id="challenge-difficulty"
+            aria-label="Filter challenges by difficulty"
+          >
 
-            <option>
+            <option value="All Challenges">
               All Challenges
             </option>
 
@@ -107,7 +188,10 @@
             Sort:
           </label>
 
-          <select id="challenge-sort">
+          <select
+            id="challenge-sort"
+            aria-label="Sort challenges"
+          >
 
             <option value="latest">
               Newest
@@ -126,149 +210,13 @@
     </section>
 
 
-    <!-- ================= DIFFICULTY GUIDE ================= -->
+    <!-- ===============================
+         CHALLENGE LIST
+    ================================ -->
 
-    <section class="challenge-difficulty-section">
+    <section class="challenge-projects-section">
 
-      <h2>
-        Difficulty Levels
-      </h2>
-
-      <p>
-        Each project is rated based on its
-        scope, complexity and the skills involved.
-        Why not challenge yourself too?
-      </p>
-
-
-      <div class="difficulty-table-wrapper">
-
-        <table class="difficulty-table">
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Level
-              </th>
-
-              <th>
-                What to Expect
-              </th>
-
-              <th>
-                Typical Time
-              </th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            <tr>
-
-              <td>
-                🌱 Ultimate Beginner
-              </td>
-
-              <td>
-                Programming fundamentals
-              </td>
-
-              <td>
-                1–6 hours
-              </td>
-
-            </tr>
-
-
-            <tr>
-
-              <td>
-                🟢 Easy
-              </td>
-
-              <td>
-                Small standalone applications
-              </td>
-
-              <td>
-                4–15 hours
-              </td>
-
-            </tr>
-
-
-            <tr>
-
-              <td>
-                🟡 Intermediate
-              </td>
-
-              <td>
-                Full-stack, APIs and databases
-              </td>
-
-              <td>
-                15–35 hours
-              </td>
-
-            </tr>
-
-
-            <tr>
-
-              <td>
-                🟠 Advanced
-              </td>
-
-              <td>
-                Production-style applications
-              </td>
-
-              <td>
-                30–70 hours
-              </td>
-
-            </tr>
-
-
-            <tr>
-
-              <td>
-                🔴 Difficult
-              </td>
-
-              <td>
-                Complex architecture,
-                AI and systems
-              </td>
-
-              <td>
-                50–120+ hours
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= CHALLENGES ================= -->
-
-    <section>
-
-      <h2>
-        Challenges
-      </h2>
+      <h2>Challenges</h2>
 
 
       <div
@@ -276,9 +224,7 @@
         class="grid"
       >
 
-        <p>
-          Loading challenges...
-        </p>
+        <p>Loading challenges...</p>
 
       </div>
 
