@@ -1,3 +1,4 @@
+
 backend:
   name: github
   repo: lewisb13/Portfolio
@@ -12,7 +13,6 @@ collections:
   # =========================================
   # PROJECTS
   # =========================================
-
   - name: "projects"
     label: "Projects"
     folder: "content/projects"
@@ -89,7 +89,6 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
-        default: "public"
         options:
           - "public"
           - "private"
@@ -98,7 +97,6 @@ collections:
   # =========================================
   # TUTORIALS
   # =========================================
-
   - name: "tutorials"
     label: "Tutorials"
     folder: "content/tutorials"
@@ -167,7 +165,6 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
-        default: "public"
         options:
           - "public"
           - "private"
@@ -176,7 +173,6 @@ collections:
   # =========================================
   # NOTES
   # =========================================
-
   - name: "notes"
     label: "Notes"
     folder: "content/notes"
@@ -223,7 +219,6 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
-        default: "public"
         options:
           - "public"
           - "private"
@@ -232,7 +227,6 @@ collections:
   # =========================================
   # CHALLENGES
   # =========================================
-
   - name: "challenge"
     label: "Challenges"
     folder: "content/challenge"
@@ -253,7 +247,6 @@ collections:
         name: "status"
         widget: "select"
         required: false
-        default: "Planned"
         options:
           - "Planned"
           - "In Progress"
@@ -264,7 +257,7 @@ collections:
         widget: "select"
         required: true
         options:
-          - label: "⚪ Prerequisite"
+          - label: "📚 Prerequisite"
             value: "Prerequisite"
 
           - label: "🌱 Ultimate Beginner"
@@ -282,17 +275,26 @@ collections:
           - label: "🔴 Difficult"
             value: "Difficult"
 
-      - label: "Estimated Time"
-        name: "time"
-        widget: "string"
+      # =========================================
+      # PREREQUISITE CHALLENGES
+      # =========================================
+      - label: "Prerequisite Challenges"
+        name: "prerequisites"
+        widget: "relation"
+        collection: "challenge"
+        search_fields:
+          - "title"
+        display_fields:
+          - "title"
+        value_field: "{{slug}}"
+        multiple: true
         required: false
-        hint: "Example: 1–3 hours, 4–6 hours, 2 days"
+        hint: "Select challenges that should be completed before starting this challenge."
 
       - label: "Language / Technology"
         name: "technology"
         widget: "string"
         required: false
-        hint: "Example: Python, Java, Git / GitHub, Docker"
 
       - label: "Tags"
         name: "tags"
@@ -309,7 +311,7 @@ collections:
         name: "youtube"
         widget: "string"
         required: false
-        hint: "YouTube video showing you completing or demonstrating the challenge"
+        hint: "Video showing you completing the challenge"
 
       - label: "Finished Demo URL"
         name: "demo"
@@ -340,7 +342,7 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
-        default: "public"
         options:
           - "public"
           - "private"
+
