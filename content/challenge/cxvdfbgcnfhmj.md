@@ -12,7 +12,7 @@ demo: ''
 thumbnail: ''
 description: ''
 what_i_learned: ''
-visibility: private
+visibility: public
 ---
 
 [https://www.youtube.com/watch?v=eQzOkd9lqtY](https://www.youtube.com/watch?v=eQzOkd9lqtY)
