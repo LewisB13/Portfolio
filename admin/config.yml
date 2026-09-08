@@ -12,6 +12,7 @@ collections:
   # =========================================
   # PROJECTS
   # =========================================
+
   - name: "projects"
     label: "Projects"
     folder: "content/projects"
@@ -19,6 +20,7 @@ collections:
     slug: "{{slug}}"
 
     fields:
+
       - label: "Project Title"
         name: "title"
         widget: "string"
@@ -88,13 +90,16 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
+        default: "public"
         options:
           - "public"
           - "private"
 
+
   # =========================================
   # TUTORIALS
   # =========================================
+
   - name: "tutorials"
     label: "Tutorials"
     folder: "content/tutorials"
@@ -102,6 +107,7 @@ collections:
     slug: "{{slug}}"
 
     fields:
+
       - label: "Title"
         name: "title"
         widget: "string"
@@ -163,13 +169,16 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
+        default: "public"
         options:
           - "public"
           - "private"
 
+
   # =========================================
   # NOTES
   # =========================================
+
   - name: "notes"
     label: "Notes"
     folder: "content/notes"
@@ -177,6 +186,7 @@ collections:
     slug: "{{slug}}"
 
     fields:
+
       - label: "Title"
         name: "title"
         widget: "string"
@@ -216,13 +226,16 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
+        default: "public"
         options:
           - "public"
           - "private"
 
-   # =========================================
+
+  # =========================================
   # CHALLENGES
   # =========================================
+
   - name: "challenge"
     label: "Challenges"
     folder: "content/challenge"
@@ -230,7 +243,8 @@ collections:
     slug: "{{slug}}"
 
     fields:
-      - label: "Project Title"
+
+      - label: "Challenge Title"
         name: "title"
         widget: "string"
 
@@ -243,6 +257,7 @@ collections:
         name: "status"
         widget: "select"
         required: false
+        default: "Planned"
         options:
           - "Planned"
           - "In Progress"
@@ -253,8 +268,8 @@ collections:
         widget: "select"
         required: true
         options:
-          - label: "📚 Prerequisites"
-            value: "Prerequisites"
+          - label: "⚪ Prerequisite"
+            value: "Prerequisite"
 
           - label: "🌱 Ultimate Beginner"
             value: "Ultimate Beginner"
@@ -271,10 +286,17 @@ collections:
           - label: "🔴 Difficult"
             value: "Difficult"
 
+      - label: "Estimated Time"
+        name: "time"
+        widget: "string"
+        required: false
+        hint: "Example: 1–3 hours, 4–6 hours, 2 days"
+
       - label: "Language / Technology"
         name: "technology"
         widget: "string"
         required: false
+        hint: "Example: Python, Java, Git / GitHub, Docker"
 
       - label: "Tags"
         name: "tags"
@@ -291,10 +313,10 @@ collections:
         name: "youtube"
         widget: "string"
         required: false
-        hint: "Video showing you completing the challenge"
+        hint: "YouTube video showing you completing or demonstrating the challenge"
 
       - label: "Finished Demo URL"
-        name: "demo"1
+        name: "demo"
         widget: "string"
         required: false
         hint: "Link to the finished working result or live demo"
@@ -309,7 +331,7 @@ collections:
         widget: "text"
         required: false
 
-      - label: "Project Body"
+      - label: "Challenge Body"
         name: "body"
         widget: "markdown"
 
@@ -322,6 +344,7 @@ collections:
         name: "visibility"
         widget: "select"
         required: false
+        default: "public"
         options:
           - "public"
           - "private"
