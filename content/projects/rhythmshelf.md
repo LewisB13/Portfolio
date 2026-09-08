@@ -8,10 +8,11 @@ tags:
   - Music Organiser
   - MusicBrainz
   - Desktop App
-github: ''
+github: https://github.com/LewisB13/rhythmshelf
 demo: ''
 thumbnail: ''
 description: A simple desktop app that helps you clean, organise and manage your music library.
+what_i_learned: ''
 visibility: ''
 ---
 
@@ -85,10 +86,4 @@ It also gave me further experience packaging Python applications as standalone W
 
 ## Get RhythmShelf
 
-RhythmShelf is available as a standalone Windows application and can be purchased directly from my store for **€4.99 as a one-time purchase**.
-
-**No installation required** — simply download and run RhythmShelf. Python or any additional software does not need to be installed.
-
-**No DRM, no activation and no account required.** There are no licence keys, online activation checks or subscriptions.
-
-**One purchase — download it and use it.**
+RhythmShelf is available as a standalone Windows application and can be downloaded from my store or source code downloaded from github link above or a older version can just be downloaded from my github link in dist file under the exe
