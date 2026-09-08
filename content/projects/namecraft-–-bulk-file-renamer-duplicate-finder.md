@@ -11,7 +11,7 @@ tags:
   - Duplicate finder
 github: ''
 demo: https://youtu.be/iqSewl_qsG0
-thumbnail: ''
+thumbnail: /images/uploads/ChatGPT Image Sep 8, 2026, 03_46_37 AM.png
 description: A lightweight Windows desktop tool for bulk file renaming and duplicate file detection, featuring live previews, undo support, SHA-256 scanning, and a clean responsive interface.
 what_i_learned: |-
   Building NameCraft helped me develop practical experience in:
