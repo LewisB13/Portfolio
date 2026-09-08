@@ -2,7 +2,8 @@
 title: rick
 date: 2026-09-01T21:36:00
 status: Completed
-difficulty: Prerequisites
+difficulty: Prerequisite
+time: ''
 technology: ''
 tags: []
 github: ''
