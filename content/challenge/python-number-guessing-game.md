@@ -1,6 +1,6 @@
 ---
-title: Python Number Guessing Game Challenge 1
-date: 2026-09-08T20:56:00
+title: Python Number Guessing game
+date: 2026-09-08T21:33:00
 status: Completed
 difficulty: Ultimate Beginner
 technology: Python
