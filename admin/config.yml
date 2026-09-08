@@ -224,7 +224,7 @@ collections:
   # 100 PROJECT CHALLENGE
   # =========================================
   - name: "challenge"
-    label: "100 Project Challenge"
+    label: "Challenge projects"
     folder: "content/challenge"
     create: true
     slug: "{{slug}}"
