@@ -1,393 +1,197 @@
-/* ===============================
-   GET PROJECT SLUG
-================================ */
+const CHALLENGE_API =
+  "https://api.github.com/repos/LewisB13/Portfolio/contents/content/challenge";
 
-function getChallengeSlug() {
-  return new URLSearchParams(
-    window.location.search
-  ).get("project");
-}
+const challengeContent =
+  document.getElementById("challenge-content");
+
+const difficultyIcons = {
+  Prerequisite: "⚪",
+  "Ultimate Beginner": "🌱",
+  Easy: "🟢",
+  Intermediate: "🟡",
+  Advanced: "🟠",
+  Difficult: "🔴"
+};
 
 
-/* ===============================
-   FRONTMATTER
-================================ */
+/* ================= HELPERS ================= */
 
-function getFrontmatterValue(
-  frontmatter,
-  key
-) {
+function getFrontmatterValue(frontmatter, key) {
   return (
     frontmatter
-      .match(
-        new RegExp(
-          `${key}:\\s*["']?(.*?)["']?$`,
-          "m"
-        )
-      )?.[1]
+      .match(new RegExp(`${key}:\\s*["']?(.*?)["']?$`, "m"))?.[1]
       ?.trim() || ""
   );
 }
 
 
-/* ===============================
-   DATE
-================================ */
-
 function formatDate(dateString) {
-  if (!dateString) {
-    return "";
-  }
+  if (!dateString) return "";
 
-  return new Date(
-    dateString
-  ).toLocaleDateString(
-    "en-IE",
-    {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    }
-  );
+  return new Date(dateString).toLocaleDateString("en-IE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 }
 
 
-/* ===============================
-   YOUTUBE
-================================ */
+function getDifficultyIcon(difficulty) {
+  return difficultyIcons[difficulty] || "⚪";
+}
 
-function getYouTubeEmbedUrl(url) {
-  if (!url) {
-    return "";
+
+function getYouTubeEmbed(url) {
+  if (!url) return "";
+
+  if (url.includes("youtube.com/watch?v=")) {
+    const id = url.split("v=")[1].split("&")[0];
+    return `https://www.youtube.com/embed/${id}`;
   }
 
-
-  try {
-    const parsedUrl =
-      new URL(url);
-
-
-    /*
-      Normal YouTube URL
-    */
-    if (
-      parsedUrl.hostname ===
-        "youtube.com" ||
-
-      parsedUrl.hostname ===
-        "www.youtube.com"
-    ) {
-
-      const videoId =
-        parsedUrl.searchParams.get("v");
-
-
-      if (videoId) {
-        return (
-          "https://www.youtube.com/embed/" +
-          videoId
-        );
-      }
-
-
-      /*
-        YouTube Shorts
-      */
-      if (
-        parsedUrl.pathname.startsWith(
-          "/shorts/"
-        )
-      ) {
-
-        const shortId =
-          parsedUrl.pathname
-            .split("/shorts/")[1]
-            .split("/")[0];
-
-
-        return (
-          "https://www.youtube.com/embed/" +
-          shortId
-        );
-      }
-
-
-      /*
-        Already embedded
-      */
-      if (
-        parsedUrl.pathname.startsWith(
-          "/embed/"
-        )
-      ) {
-        return url;
-      }
-    }
-
-
-    /*
-      youtu.be URL
-    */
-    if (
-      parsedUrl.hostname ===
-      "youtu.be"
-    ) {
-
-      const videoId =
-        parsedUrl.pathname
-          .slice(1)
-          .split("/")[0];
-
-
-      return (
-        "https://www.youtube.com/embed/" +
-        videoId
-      );
-    }
-
-  } catch (error) {
-
-    console.error(
-      "Invalid YouTube URL:",
-      error
-    );
+  if (url.includes("youtu.be/")) {
+    const id = url.split("youtu.be/")[1].split("?")[0];
+    return `https://www.youtube.com/embed/${id}`;
   }
 
+  if (url.includes("youtube.com/shorts/")) {
+    const id = url.split("/shorts/")[1].split("?")[0];
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  return url.includes("youtube.com/embed/")
+    ? url
+    : "";
+}
+
+
+/* ================= PARSE ================= */
+
+function parseChallenge(text, slug) {
+  const parts = text.split("---");
+
+  const frontmatter = parts[1] || "";
+  const body = parts.slice(2).join("---").trim();
+
+  const value = (key) =>
+    getFrontmatterValue(frontmatter, key);
+
+  return {
+    slug,
+    title: value("title"),
+    date: value("date"),
+    status: value("status"),
+    difficulty: value("difficulty"),
+    time: value("time"),
+    technology: value("technology"),
+    thumbnail: value("thumbnail"),
+    youtube: value("youtube"),
+    github: value("github"),
+    demo: value("demo"),
+    description: value("description"),
+    visibility: value("visibility") || "public",
+    body
+  };
+}
+
+
+/* ================= MEDIA ================= */
+
+function renderMedia(challenge) {
+  const embed =
+    getYouTubeEmbed(challenge.youtube);
+
+  if (embed) {
+    return `
+      <section class="challenge-detail-video">
+
+        <div class="challenge-detail-section-heading">
+          <span class="challenge-section-label">
+            DEMONSTRATION
+          </span>
+
+          <h2>Watch the Challenge</h2>
+        </div>
+
+        <div class="video-wrapper">
+          <iframe
+            src="${embed}"
+            title="${challenge.title}"
+            allow="accelerometer; autoplay; clipboard-write;
+                   encrypted-media; gyroscope;
+                   picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+      </section>
+    `;
+  }
+
+  if (challenge.thumbnail) {
+    return `
+      <section class="challenge-detail-video">
+        <div class="challenge-detail-media">
+          <img
+            src="${challenge.thumbnail}"
+            alt="${challenge.title}"
+          >
+        </div>
+      </section>
+    `;
+  }
 
   return "";
 }
 
 
-/* ===============================
-   LOAD SINGLE PROJECT
-================================ */
+/* ================= META ITEM ================= */
 
-async function loadSingleChallengeProject() {
+function metaItem(label, value) {
+  if (!value) return "";
 
-  const slug =
-    getChallengeSlug();
+  return `
+    <div class="challenge-meta-item">
+      <span class="challenge-meta-label">
+        ${label}
+      </span>
 
-
-  const container =
-    document.getElementById(
-      "challenge-project-content"
-    );
-
-
-  if (!container) {
-    return;
-  }
+      <strong>${value}</strong>
+    </div>
+  `;
+}
 
 
-  /*
-    No project supplied
-  */
-  if (!slug) {
+/* ================= RENDER ================= */
 
-    container.innerHTML = `
+function renderChallenge(challenge) {
+  const difficulty =
+    challenge.difficulty
+      ? `${getDifficultyIcon(challenge.difficulty)}
+         ${challenge.difficulty}`
+      : "";
 
-      <a
-        class="read-more"
-        href="challenge-projects.html"
-      >
-        ← Back to Challenges
-      </a>
+  challengeContent.innerHTML = `
 
-      <p>
-        No challenge project selected.
-      </p>
+    <header class="challenge-detail-hero">
 
-    `;
-
-    return;
-  }
-
-
-  const url =
-    `https://raw.githubusercontent.com/LewisB13/Portfolio/main/content/challenge/${encodeURIComponent(slug)}.md`;
-
-
-  try {
-
-    const response =
-      await fetch(url);
-
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load project: ${response.status}`
-      );
-    }
-
-
-    const text =
-      await response.text();
-
-
-    const parts =
-      text.split("---");
-
-
-    const frontmatter =
-      parts[1] || "";
-
-
-    const body =
-      parts
-        .slice(2)
-        .join("---")
-        .trim();
-
-
-    /* ===============================
-       PROJECT DATA
-    ================================ */
-
-    const title =
-      getFrontmatterValue(
-        frontmatter,
-        "title"
-      ) || "Untitled Project";
-
-
-    const projectNumber =
-      getFrontmatterValue(
-        frontmatter,
-        "project_number"
-      );
-
-
-    const date =
-      getFrontmatterValue(
-        frontmatter,
-        "date"
-      );
-
-
-    const status =
-      getFrontmatterValue(
-        frontmatter,
-        "status"
-      );
-
-
-    const difficulty =
-      getFrontmatterValue(
-        frontmatter,
-        "difficulty"
-      );
-
-
-    const technology =
-      getFrontmatterValue(
-        frontmatter,
-        "technology"
-      );
-
-
-    const github =
-      getFrontmatterValue(
-        frontmatter,
-        "github"
-      );
-
-
-    const demo =
-      getFrontmatterValue(
-        frontmatter,
-        "demo"
-      );
-
-
-    const youtube =
-      getFrontmatterValue(
-        frontmatter,
-        "youtube"
-      );
-
-
-    const whatILearned =
-      getFrontmatterValue(
-        frontmatter,
-        "what_i_learned"
-      );
-
-
-    const youtubeEmbed =
-      getYouTubeEmbedUrl(
-        youtube
-      );
-
-
-    document.title =
-      `${title} | 100 Project Challenge`;
-
-
-    /* ===============================
-       PAGE
-    ================================ */
-
-    container.innerHTML = `
-
-      <a
-        class="read-more"
-        href="challenge-projects.html"
-      >
-        ← Back to Challenges
-      </a>
-
-
-      <p class="blog-date">
+      <div class="challenge-detail-badges">
 
         ${
-          projectNumber
-            ? `Project #${projectNumber}`
-            : "Challenge Project"
-        }
-
-        ${
-          date
-            ? ` • ${formatDate(date)}`
-            : ""
-        }
-
-      </p>
-
-
-      <h1>
-        ${title}
-      </h1>
-
-
-      <div class="challenge-project-meta">
-
-        ${
-          status
+          challenge.difficulty
             ? `
-              <span class="challenge-status">
-                ${status}
-              </span>
-            `
-            : ""
-        }
-
-
-        ${
-          difficulty
-            ? `
-              <span class="video-category">
+              <span class="challenge-badge challenge-difficulty-badge">
                 ${difficulty}
               </span>
             `
             : ""
         }
 
-
         ${
-          technology
+          challenge.status
             ? `
-              <span class="video-category">
-                ${technology}
+              <span class="challenge-badge challenge-status-badge">
+                ${challenge.status}
               </span>
             `
             : ""
@@ -396,143 +200,226 @@ async function loadSingleChallengeProject() {
       </div>
 
 
+      <h1>
+        ${challenge.title || "Untitled Challenge"}
+      </h1>
+
+
       ${
-        github || demo
+        challenge.description
           ? `
-
-            <div class="note-actions">
-
-              ${
-                github
-                  ? `
-                    <a
-                      class="read-more"
-                      href="${github}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GitHub ↗
-                    </a>
-                  `
-                  : ""
-              }
-
-
-              ${
-                demo
-                  ? `
-                    <a
-                      class="read-more"
-                      href="${demo}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Live Demo ↗
-                    </a>
-                  `
-                  : ""
-              }
-
-            </div>
-
+            <p class="challenge-detail-description">
+              ${challenge.description}
+            </p>
           `
           : ""
       }
 
 
-      <div class="markdown-body">
+      <div class="challenge-detail-meta">
 
-        ${
-          body
-            ? marked.parse(body)
-            : "<p>No project write-up has been added yet.</p>"
-        }
+        ${metaItem(
+          "Technology",
+          challenge.technology
+        )}
+
+        ${metaItem(
+          "Estimated Time",
+          challenge.time
+        )}
+
+        ${metaItem(
+          "Published",
+          formatDate(challenge.date)
+        )}
+
+        ${metaItem(
+          "Difficulty",
+          difficulty
+        )}
 
       </div>
 
 
-      ${
-        whatILearned
-          ? `
+      <div class="challenge-detail-actions">
 
-            <section class="project-learning-card">
+        ${
+          challenge.github
+            ? `
+              <a
+                class="btn btn-primary"
+                href="${challenge.github}"
+                target="_blank"
+                rel="noopener noreferrer">
+                View GitHub ↗
+              </a>
+            `
+            : ""
+        }
 
-              <h2>
-                What I Learned
-              </h2>
+        ${
+          challenge.demo
+            ? `
+              <a
+                class="btn btn-outline"
+                href="${challenge.demo}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Live Demo ↗
+              </a>
+            `
+            : ""
+        }
 
-              <div class="markdown-body">
+      </div>
 
-                ${marked.parse(whatILearned)}
-
-              </div>
-
-            </section>
-
-          `
-          : ""
-      }
-
-
-      ${
-        youtubeEmbed
-          ? `
-
-            <section class="project-demo-card">
-
-              <h2>
-                Project Demo
-              </h2>
-
-
-              <div class="project-video">
-
-                <iframe
-                  src="${youtubeEmbed}"
-                  title="${title} Project Demo"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-
-              </div>
-
-            </section>
-
-          `
-          : ""
-      }
-
-    `;
+    </header>
 
 
-  } catch (error) {
-
-    console.error(
-      "Failed to load challenge project:",
-      error
-    );
+    ${renderMedia(challenge)}
 
 
-    container.innerHTML = `
+    <section class="challenge-detail-writeup">
+
+      <div class="challenge-detail-section-heading">
+
+        <span class="challenge-section-label">
+          CHALLENGE WRITE-UP
+        </span>
+
+        <h2>The Challenge</h2>
+
+      </div>
+
+
+      <div class="markdown-body challenge-markdown">
+
+        ${
+          challenge.body
+            ? marked.parse(challenge.body)
+            : "<p>No write-up has been added yet.</p>"
+        }
+
+      </div>
+
+    </section>
+
+
+    <footer class="challenge-detail-footer">
 
       <a
-        class="read-more"
         href="challenge-projects.html"
-      >
-        ← Back to Challenges
+        class="btn btn-outline">
+        ← All Challenges
       </a>
 
-      <p>
-        Could not load this project.
-      </p>
+      ${
+        challenge.github
+          ? `
+            <a
+              href="${challenge.github}"
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer">
+              View Source Code ↗
+            </a>
+          `
+          : ""
+      }
 
-    `;
+    </footer>
+  `;
+
+  document.title =
+    `${challenge.title} | Lewis Barrett Portfolio`;
+}
+
+
+/* ================= ERROR ================= */
+
+function showError(message = "This challenge could not be loaded.") {
+  challengeContent.innerHTML = `
+
+    <div class="challenge-detail-error">
+
+      <h1>Challenge not found</h1>
+
+      <p>${message}</p>
+
+      <a
+        href="challenge-projects.html"
+        class="btn btn-primary">
+        Back to Challenges
+      </a>
+
+    </div>
+  `;
+}
+
+
+/* ================= LOAD ================= */
+
+async function loadChallenge() {
+  if (!challengeContent) return;
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const slug =
+    params.get("challenge");
+
+  if (!slug) {
+    showError("No challenge was specified.");
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9._-]+$/.test(slug)) {
+    showError("The challenge URL is invalid.");
+    return;
+  }
+
+  try {
+    const apiResponse =
+      await fetch(
+        `${CHALLENGE_API}/${encodeURIComponent(slug)}.md`
+      );
+
+    if (!apiResponse.ok) {
+      throw new Error("Challenge not found.");
+    }
+
+    const file =
+      await apiResponse.json();
+
+    const fileResponse =
+      await fetch(file.download_url);
+
+    if (!fileResponse.ok) {
+      throw new Error("Could not download challenge.");
+    }
+
+    const text =
+      await fileResponse.text();
+
+    const challenge =
+      parseChallenge(text, slug);
+
+    if (
+      challenge.visibility.toLowerCase() ===
+      "private"
+    ) {
+      throw new Error("Challenge is private.");
+    }
+
+    renderChallenge(challenge);
+
+  } catch (error) {
+    console.error(error);
+    showError();
   }
 }
 
 
-/* ===============================
-   START
-================================ */
+/* ================= START ================= */
 
-loadSingleChallengeProject();
+loadChallenge();

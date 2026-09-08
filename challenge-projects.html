@@ -75,8 +75,9 @@
       <h2>Difficulty Levels</h2>
 
       <p>
-        Each challenge is rated based on its scope,
-        complexity and the skills involved.
+        Each challenge is rated based on its scope, complexity
+        and the skills involved. Typical completion times are
+        estimates and will vary depending on experience.
         Why not challenge yourself too?
       </p>
 
@@ -99,21 +100,37 @@
           <tbody>
 
             <tr>
+              <td>⚪ Prerequisite</td>
+              <td>
+                Environment setup, installing tools,
+                terminal basics and Git/GitHub setup
+              </td>
+              <td>1–3 hours</td>
+            </tr>
+
+            <tr>
               <td>🌱 Ultimate Beginner</td>
-              <td>Programming fundamentals</td>
+              <td>
+                Programming fundamentals, variables,
+                input/output, conditionals and loops
+              </td>
               <td>1–6 hours</td>
             </tr>
 
             <tr>
               <td>🟢 Easy</td>
-              <td>Small standalone applications</td>
+              <td>
+                Small standalone applications and
+                simple problem solving
+              </td>
               <td>4–15 hours</td>
             </tr>
 
             <tr>
               <td>🟡 Intermediate</td>
               <td>
-                Larger applications, APIs and databases
+                Larger applications, APIs, databases
+                and multiple components
               </td>
               <td>15–35 hours</td>
             </tr>
@@ -121,7 +138,9 @@
             <tr>
               <td>🟠 Advanced</td>
               <td>
-                Production-style applications
+                Production-style applications,
+                authentication, deployment and
+                deeper architecture
               </td>
               <td>30–70 hours</td>
             </tr>
@@ -129,7 +148,9 @@
             <tr>
               <td>🔴 Difficult</td>
               <td>
-                Complex architecture, AI and systems
+                Complex architecture, AI,
+                systems integration and larger
+                end-to-end projects
               </td>
               <td>50–120+ hours</td>
             </tr>
@@ -151,8 +172,7 @@
 
       <div class="video-panel-top">
 
-
-        <!-- Search -->
+        <!-- SEARCH -->
 
         <input
           id="challenge-search"
@@ -163,10 +183,9 @@
         />
 
 
-        <!-- Filters -->
+        <!-- FILTERS -->
 
         <div class="sort-bar">
-
 
           <label for="challenge-difficulty">
             Difficulty:
@@ -216,12 +235,28 @@
 
     <section class="challenge-projects-section">
 
-      <h2>Challenges</h2>
+      <div class="challenge-section-heading">
+
+        <div>
+          <h2>Challenges</h2>
+
+          <p>
+            Watch the demonstration or open a challenge
+            to see the complete write-up.
+          </p>
+        </div>
+
+        <p
+          id="challenge-result-count"
+          class="challenge-result-count"
+        ></p>
+
+      </div>
 
 
       <div
         id="challenge-list"
-        class="grid"
+        class="grid challenge-grid"
       >
 
         <p>Loading challenges...</p>

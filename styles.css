@@ -1,33 +1,48 @@
-/* ===============================
+/* =========================================================
    DESIGN TOKENS
-================================ */
+========================================================= */
+
 :root {
   --bg: #0d1117;
   --surface: #161b22;
   --surface-hover: #21262d;
   --border: #2b3440;
+
   --text: #f5f7fa;
   --text-strong: #fff;
   --text-muted: #b7c0cc;
   --text-subtle: #8b96a5;
+
   --accent: #4f8cff;
   --accent-hover: #6aa0ff;
   --focus-ring: rgba(79, 140, 255, 0.25);
+
   --success: #56d364;
   --danger: #f85149;
   --warning: #ffcc00;
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --transition: 0.2s ease;
 }
 
-/* ===============================
+
+/* =========================================================
    RESET / BASE
-================================ */
+========================================================= */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--bg);
@@ -35,127 +50,200 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-section { width: 100%; }
+section {
+  width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-strong);
+}
 
 h1 {
   font-size: 2.4rem;
-  letter-spacing: -0.02em;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-h2 { margin-bottom: 12px; }
+h2 {
+  margin-bottom: 12px;
+}
 
 p {
-  line-height: 1.7;
   color: var(--text-muted);
+  line-height: 1.7;
 }
 
-a { color: var(--accent); }
-a:hover { color: var(--accent-hover); }
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+img,
+iframe {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 
 input:focus,
+select:focus,
 textarea:focus {
-  outline: 2px solid var(--accent);
-  border-color: transparent;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
-/* ===============================
-   HEADER / NAVBAR
-================================ */
-#header-placeholder {
-  min-height: 72px;
-}
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(13, 17, 23, 0.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-}
 
-.nav-container,
-.container {
+/* =========================================================
+   SHARED LAYOUT
+========================================================= */
+
+.container,
+.nav-container {
   width: min(95%, 1600px);
   margin-inline: auto;
 }
 
+.container {
+  margin-block: 48px;
+}
+
+main.container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.page-header {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   HEADER / NAVIGATION
+========================================================= */
+
+#header-placeholder {
+  min-height: 72px;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(13, 17, 23, 0.95);
+  border-bottom: 1px solid var(--border);
+
+  backdrop-filter: blur(10px);
+}
+
 .nav-container {
   min-height: 72px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 24px;
 }
 
 .logo {
   color: var(--text-strong);
-  text-decoration: none;
   font-size: 1.15rem;
   font-weight: 700;
+  text-decoration: none;
   white-space: nowrap;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  gap: 28px;
   flex-wrap: wrap;
+
+  gap: 28px;
 }
 
 .navbar a,
 .dropdown .dropbtn {
   color: var(--text-muted);
-  text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
+  text-decoration: none;
 }
 
-.navbar a { transition: color 0.2s ease; }
+.navbar a {
+  transition: color var(--transition);
+}
 
 .navbar a:hover,
 .navbar a.active {
   color: var(--text-strong);
 }
 
+
 /* Dropdown */
+
 .dropdown {
   position: relative;
+
   display: flex;
   align-items: center;
 }
 
-.dropdown .dropbtn { cursor: pointer; }
+.dropdown .dropbtn {
+  cursor: pointer;
+}
 
 .dropdown::after {
   content: "";
+
   position: absolute;
   top: 100%;
   left: 0;
+
   width: 100%;
   height: 12px;
 }
 
 .dropdown-content {
   display: none;
+
   position: absolute;
-  right: 0;
   top: calc(100% + 8px);
+  right: 0;
   z-index: 2000;
+
   min-width: 170px;
   padding: 8px;
+
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
+
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
 .dropdown-content a {
   display: block;
+
   padding: 10px 14px;
+
   color: var(--text-muted);
+  border-radius: var(--radius-sm);
+
   text-decoration: none;
-  border-radius: 8px;
 }
 
 .dropdown-content a:hover {
@@ -168,34 +256,47 @@ textarea:focus {
   display: block;
 }
 
-/* ===============================
-   GLOBAL LAYOUT
-================================ */
-.container { margin-block: 48px; }
 
-main.container {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-}
+/* =========================================================
+   SHARED SURFACES / CARDS
+========================================================= */
 
-.page-header { margin-bottom: 0; }
-
-/* ===============================
-   CARD / GRID SYSTEM
-================================ */
 .card,
-.category-card {
+.category-card,
+.contact-form,
+.challenge-progress-section,
+.challenge-detail-hero,
+.challenge-detail-video,
+.challenge-detail-writeup,
+.challenge-detail-loading,
+.challenge-detail-error,
+.challenge-empty {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border-radius: var(--radius-lg);
+}
+
+.card,
+.category-card,
+.home-explore-item,
+.cv-btn,
+.skill-tag {
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.card,
+.category-card {
+  color: inherit;
 }
 
 .card {
-  padding: 20px;
   display: flex;
   flex-direction: column;
+
+  padding: 20px;
 }
 
 .card:hover,
@@ -206,20 +307,16 @@ main.container {
 
 .card h2,
 .card h3 {
-  font-size: 1.15rem;
   margin-bottom: 8px;
+  font-size: 1.15rem;
 }
-
-.card p { color: var(--text-muted); }
 
 .card * {
   max-width: 100%;
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .card pre {
-  max-width: 100%;
   overflow-x: auto;
 }
 
@@ -228,29 +325,39 @@ main.container {
   word-break: break-word;
 }
 
-.card a { overflow-wrap: anywhere; }
+.card a {
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   GRID SYSTEM
+========================================================= */
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(420px, 1fr));
+
   gap: 32px;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
   gap: 20px;
+
   margin-bottom: 32px;
 }
 
 .category-card {
   padding: 22px;
+
   cursor: pointer;
-  color: var(--text-strong);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .category-card.active {
@@ -260,9 +367,12 @@ main.container {
 
 .category-card-title {
   display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--text-strong);
   font-size: 1.05rem;
   font-weight: 700;
-  margin-bottom: 8px;
 }
 
 .category-card-count {
@@ -270,46 +380,68 @@ main.container {
   font-size: 0.92rem;
 }
 
-/* ===============================
-   CONTROLS / LINKS / BUTTONS
-================================ */
-.sort-bar {
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.sort-bar,
+.video-panel-top,
+.notes-controls {
   display: flex;
   align-items: center;
+}
+
+.sort-bar {
   gap: 12px;
+}
+
+.video-panel-top {
+  justify-content: flex-start;
+
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.notes-controls {
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .sort-bar select,
 .tutorial-search,
 #notes-search {
+  padding: 10px 14px;
+
   background: var(--surface);
   color: var(--text-strong);
+
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 10px 14px;
 }
 
 .tutorial-search,
 #notes-search {
   min-width: 220px;
-}
-
-.tutorial-search {
   font-size: 0.95rem;
-  outline: none;
 }
 
-.tutorial-search:focus,
-#notes-search:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--focus-ring);
-}
+
+/* =========================================================
+   BUTTONS / LINKS
+========================================================= */
 
 .read-more {
   display: inline-block;
+
   margin-top: 14px;
+
   color: var(--accent);
   font-weight: 600;
+
   text-decoration: none;
 }
 
@@ -323,22 +455,41 @@ main.container {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  font-weight: 600;
+
   cursor: pointer;
+
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .btn {
   gap: 6px;
+
   padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 0.9rem;
+
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  border-radius: 10px;
+
+  font-size: 0.9rem;
+
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn-primary {
   background: var(--accent);
+  color: var(--text-strong);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
   color: var(--text-strong);
 }
 
@@ -348,58 +499,56 @@ main.container {
   color: var(--text-strong);
 }
 
-/* ===============================
+.btn-outline:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+
+/* =========================================================
    VIDEO / MARKDOWN
-================================ */
+========================================================= */
+
 .video-wrapper,
 .project-video {
   width: 100%;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
+
+  aspect-ratio: 16 / 9;
+
   background: #000;
 }
 
-.video-wrapper { border-radius: 12px; }
+.video-wrapper {
+  border-radius: var(--radius);
+}
 
 .video-wrapper iframe,
 .project-video iframe {
   width: 100%;
   height: 100%;
+
   border: 0;
 }
 
-.markdown-body { line-height: 1.8; }
+.markdown-body {
+  line-height: 1.8;
+}
 
 .markdown-body pre {
   overflow-x: auto;
+
   padding: 1rem;
-  border-radius: 12px;
+
   background: #111;
+  border-radius: var(--radius);
 }
 
-/* ===============================
-   TUTORIAL / NOTES CONTROLS
-================================ */
-.video-panel-top {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
-  margin-bottom: 32px;
-}
 
-.notes-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
+/* =========================================================
+   CONTACT
+========================================================= */
 
-/* ===============================
-   CONTACT PAGE
-================================ */
 .contact-section {
   display: flex;
   justify-content: center;
@@ -408,79 +557,76 @@ main.container {
 .contact-form {
   width: 100%;
   max-width: 760px;
-  padding: 32px;
+
   display: flex;
   flex-direction: column;
+
   gap: 22px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  padding: 32px;
 }
 
-.contact-form:hover { border-color: var(--accent); }
+.contact-form:hover {
+  border-color: var(--accent);
+}
 
 .form-row {
   display: flex;
   flex-direction: column;
+
   gap: 10px;
 }
 
 .form-row label {
+  color: var(--text-strong);
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-strong);
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
+
   padding: 14px 16px;
+
   background: var(--bg);
   color: var(--text-strong);
+
   border: 1px solid var(--border);
-  border-radius: 12px;
-  font: 0.95rem inherit;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  border-radius: var(--radius);
 }
 
 .contact-form textarea {
-  resize: vertical;
   min-height: 160px;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  resize: vertical;
 }
 
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-  color: #7d8590;
+  color: var(--text-subtle);
 }
 
 #submit-btn {
   padding: 14px 20px;
+
   background: var(--accent);
   color: var(--text-strong);
+
   border: 0;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: var(--radius);
+
   font-weight: 700;
+
   cursor: pointer;
+
   transition:
-    transform 0.2s ease,
-    opacity 0.2s ease,
-    background 0.2s ease;
+    background var(--transition),
+    transform var(--transition),
+    opacity var(--transition);
 }
 
 #submit-btn:hover {
-  transform: translateY(-2px);
   background: var(--accent-hover);
+  transform: translateY(-2px);
 }
 
 #submit-btn:disabled {
@@ -490,78 +636,99 @@ main.container {
 
 .form-status {
   min-height: 24px;
+
   margin-top: 15px;
   padding: 10px;
-  border-radius: 8px;
+
   color: var(--text-muted);
+
+  border-radius: var(--radius-sm);
+
   font-size: 0.95rem;
   font-weight: 600;
 }
 
-.hidden-field { display: none; }
+.hidden-field {
+  display: none;
+}
 
-/* ===============================
+
+/* =========================================================
    HOME
-================================ */
-.hero-home { max-width: 950px; }
-.hero-home h1 { margin-bottom: 28px; }
+========================================================= */
+
+.hero-home {
+  max-width: 950px;
+}
+
+.hero-home h1 {
+  margin-bottom: 28px;
+}
 
 .hero-text {
   display: flex;
   flex-direction: column;
+
   gap: 22px;
 }
 
 .hero-text p {
+  color: #c2cad5;
+
   font-size: 1.02rem;
   line-height: 1.9;
-  color: #c2cad5;
 }
 
 .hero-subtitle {
   margin-top: -8px;
   margin-bottom: 28px;
+
+  color: var(--text-subtle);
+
   font-size: 1.1rem;
-  color: #8b949e;
-  font-weight: 400;
 }
 
 .rate-limit-notice {
   padding: 20px;
-  text-align: center;
-  color: var(--text-strong);
+
   background: var(--surface);
+  color: var(--text-strong);
+
   border: 1px solid var(--warning);
-  border-radius: 12px;
+  border-radius: var(--radius);
+
+  text-align: center;
 }
 
 .rate-limit-notice h3 {
-  color: var(--warning);
   margin-bottom: 10px;
+  color: var(--warning);
 }
 
-/* Home Explore */
+
+/* Explore */
+
 .home-explore {
   margin-top: 30px;
   padding-top: 24px;
+
   border-top: 1px solid var(--border);
 }
 
 .home-explore h2 {
   margin-bottom: 8px;
+
   font-size: 1.8rem;
-  color: var(--text-strong);
 }
 
 .home-explore-intro {
   margin-bottom: 28px;
-  color: var(--text-muted);
-  font-size: 1rem;
 }
 
 .home-explore-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
   gap: 16px;
 }
 
@@ -569,106 +736,125 @@ main.container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 20px;
   padding: 22px 24px;
+
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
   color: inherit;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
   text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
 }
 
 .home-explore-item:hover {
   transform: translateY(-3px);
-  border-color: var(--accent);
+
   background: var(--surface-hover);
+  border-color: var(--accent);
 }
 
 .home-explore-item div {
   display: flex;
   flex-direction: column;
+
   gap: 6px;
 }
 
 .home-explore-item strong {
   color: var(--text-strong);
+
   font-size: 1.05rem;
   font-weight: 600;
 }
 
 .home-explore-item span:not(.home-explore-arrow) {
   color: var(--text-muted);
+
   font-size: 0.92rem;
   line-height: 1.5;
 }
 
 .home-explore-arrow {
   flex-shrink: 0;
+
   color: var(--accent);
   font-size: 1.4rem;
-  transition: transform 0.2s ease;
+
+  transition: transform var(--transition);
 }
 
 .home-explore-item:hover .home-explore-arrow {
   transform: translateX(4px);
 }
 
-/* ===============================
-   CV PAGE
-================================ */
-.cv-hero { padding: 32px; }
-.cv-title { margin-bottom: 24px; }
+
+/* =========================================================
+   CV
+========================================================= */
+
+.cv-hero {
+  padding: 32px;
+}
+
+.cv-title {
+  margin-bottom: 24px;
+}
 
 .cv-title h1 {
-  font-size: 2.8rem;
-  color: var(--text-strong);
   margin-bottom: 8px;
+
+  font-size: 2.8rem;
 }
 
 .cv-title h2 {
+  margin-bottom: 12px;
+
   color: var(--accent);
   font-size: 1.25rem;
-  margin-bottom: 12px;
 }
 
-.cv-location { color: var(--text-subtle); }
+.cv-location {
+  color: var(--text-subtle);
+}
 
 .cv-links {
   display: flex;
   flex-wrap: wrap;
+
   gap: 12px;
   margin-bottom: 30px;
 }
 
 .cv-btn {
   min-width: 110px;
+
   padding: 10px 18px;
+
   background: var(--bg);
+  color: var(--text-muted);
+
   border: 1px solid var(--border);
   border-radius: 10px;
-  color: var(--text-muted);
+
   font-size: 0.95rem;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .cv-btn:hover {
+  transform: translateY(-3px);
+
   background: var(--surface);
   border-color: var(--accent);
+
   color: var(--text-strong);
-  transform: translateY(-3px);
 }
 
 .cv-btn-primary {
   background: var(--accent);
   border-color: var(--accent);
+
   color: var(--text-strong);
 }
 
@@ -678,87 +864,91 @@ main.container {
 }
 
 .cv-summary {
-  border-top: 1px solid var(--border);
   padding-top: 24px;
+
+  border-top: 1px solid var(--border);
 }
 
 .cv-summary h3 {
-  color: var(--text-strong);
   margin-bottom: 12px;
-  font-size: 1.2rem;
-}
 
-.cv-summary p {
-  color: var(--text-muted);
-  line-height: 1.8;
+  font-size: 1.2rem;
 }
 
 .cv-section {
   display: flex;
   flex-direction: column;
+
   gap: 18px;
 }
 
 .cv-section h2 {
-  color: var(--text-strong);
   font-size: 1.4rem;
 }
 
 .cv-section h3 {
-  color: var(--text-strong);
   margin-top: 10px;
 }
 
-.cv-section p { color: var(--text-muted); }
-
 .cv-section ul {
   padding-left: 22px;
+
   color: var(--text-muted);
   line-height: 1.7;
 }
 
-.cv-section li { margin-bottom: 8px; }
+.cv-section li {
+  margin-bottom: 8px;
+}
 
 .cv-skills {
   display: flex;
   flex-wrap: wrap;
+
   gap: 10px;
 }
 
 .skill-tag {
   padding: 8px 14px;
+
   background: var(--surface-hover);
-  border: 1px solid var(--border);
-  border-radius: 20px;
   color: var(--text-strong);
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
   font-size: 0.9rem;
-  transition: 0.2s ease;
 }
 
 .skill-tag:hover {
-  border-color: var(--accent);
   transform: translateY(-2px);
+  border-color: var(--accent);
 }
 
-/* ===============================
-   ABOUT PAGE
-================================ */
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
 .about-hero {
-  padding: 36px;
   display: flex;
   flex-direction: column;
+
   gap: 28px;
+  padding: 36px;
 }
 
 .about-hero h1 {
-  font-size: 3rem;
   margin-bottom: 8px;
+
+  font-size: 3rem;
 }
 
 .about-hero h2 {
+  margin-bottom: 20px;
+
   color: var(--accent);
   font-size: 1.25rem;
-  margin-bottom: 20px;
 }
 
 .about-hero p {
@@ -768,16 +958,20 @@ main.container {
 
 .ai-note {
   padding: 18px 22px;
+
   background: var(--bg);
+
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 
 .ai-note strong {
   display: block;
-  color: var(--text-strong);
+
   margin-bottom: 8px;
+
+  color: var(--text-strong);
 }
 
 .ai-note p {
@@ -785,35 +979,47 @@ main.container {
   font-size: 0.95rem;
 }
 
-/* ===============================
+
+/* =========================================================
    DEVELOPMENT BANNER
-================================ */
+========================================================= */
+
 .dev-banner {
   width: 100%;
+
   padding: 8px 16px;
+
   background: yellow;
   color: red;
+
   font-size: 1.5rem;
-  font-weight: 1000;
-  text-align: center;
+  font-weight: 900;
+
   letter-spacing: 0.08em;
+  text-align: center;
 }
 
-/* ===============================
+
+/* =========================================================
    PROJECT DEMO
-================================ */
+========================================================= */
+
 .project-demo-card {
   width: 100%;
   max-width: 1100px;
+
   margin: 4rem auto 2rem;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
 }
 
 .project-demo-card h2 {
   margin: 0 0 1.5rem;
+
   font-size: 1.8rem;
 }
 
@@ -825,31 +1031,43 @@ main.container {
 .project-video iframe {
   position: absolute;
   inset: 0;
+
   display: block;
 }
 
-/* ===============================
-   PROJECT CHALLENGE
-================================ */
-.challenge-difficulty-section {
-  margin-top: 1.25rem;
-  margin-bottom: 1.75rem;
+
+/* =========================================================
+   CHALLENGE PAGE
+========================================================= */
+
+.challenge-difficulty-section,
+.challenge-progress-section {
   max-width: 850px;
 }
 
-.page-header + .challenge-difficulty-section {
-  margin-top: 1rem;
-}
-
-.challenge-difficulty-section h2 {
-  margin-top: 0;
-  margin-bottom: 0.3rem;
+.challenge-difficulty-section {
+  margin-bottom: 10px;
 }
 
 .challenge-difficulty-section > p {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
+
+.challenge-controls,
+.challenge-projects-section {
+  margin-top: 0;
+}
+
+.challenge-controls {
+  margin-bottom: 10px;
+}
+
+.challenge-controls .video-panel-top {
+  margin-bottom: 0;
+}
+
+
+/* Difficulty table */
 
 .difficulty-table-wrapper {
   width: 100%;
@@ -858,19 +1076,24 @@ main.container {
 
 .difficulty-table {
   width: 100%;
+
   border-collapse: collapse;
+
   font-size: 0.9rem;
 }
 
 .difficulty-table th,
 .difficulty-table td {
-  padding: 0.45rem 0.65rem;
+  padding: 8px 10px;
+
   text-align: left;
+
   border-bottom: 1px solid var(--border);
 }
 
 .difficulty-table th,
 .difficulty-table td:first-child {
+  color: var(--text-strong);
   font-weight: 600;
 }
 
@@ -879,38 +1102,537 @@ main.container {
   white-space: nowrap;
 }
 
-.challenge-projects-section { margin-top: 1.5rem; }
 
-.challenge-projects-section h2 {
-  margin-top: 0;
-  margin-bottom: 1rem;
+/* =========================================================
+   CHALLENGE PROGRESS
+========================================================= */
+
+.challenge-progress-section {
+  padding: 22px;
 }
 
-/* ===============================
+.challenge-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.challenge-progress-header h2,
+.challenge-progress-header p {
+  margin: 0;
+}
+
+.challenge-progress-track {
+  width: 100%;
+  height: 10px;
+
+  overflow: hidden;
+
+  background: var(--bg);
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.challenge-progress-bar {
+  width: 0;
+  height: 100%;
+
+  background: var(--accent);
+
+  border-radius: inherit;
+
+  transition: width 0.4s ease;
+}
+
+
+/* =========================================================
+   CHALLENGE LIST HEADER
+========================================================= */
+
+.challenge-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.challenge-section-heading h2 {
+  margin-bottom: 6px;
+}
+
+.challenge-section-heading p {
+  margin: 0;
+}
+
+.challenge-result-count {
+  flex-shrink: 0;
+
+  color: var(--text-subtle);
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   HYBRID CHALLENGE CARDS
+========================================================= */
+
+.challenge-grid {
+  align-items: start;
+}
+
+.challenge-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.challenge-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding: 20px;
+}
+
+
+/* Media */
+
+.challenge-card-media {
+  display: block;
+
+  width: 100%;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.challenge-card .video-wrapper {
+  margin: 0;
+
+  border-radius: 0;
+}
+
+.challenge-media {
+  width: 100%;
+
+  overflow: hidden;
+
+  aspect-ratio: 16 / 9;
+
+  background: var(--bg);
+}
+
+.challenge-thumbnail {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.25s ease;
+}
+
+.challenge-card-media:hover .challenge-thumbnail {
+  transform: scale(1.025);
+}
+
+.challenge-card-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  gap: 10px;
+
+  aspect-ratio: 16 / 9;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface-hover),
+      var(--bg)
+    );
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid var(--border);
+
+  text-decoration: none;
+}
+
+.challenge-card-placeholder:hover {
+  color: var(--text-strong);
+}
+
+.challenge-placeholder-icon {
+  color: var(--accent);
+
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+
+/* Badges */
+
+.challenge-badges,
+.challenge-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.challenge-badges {
+  margin-bottom: 14px;
+}
+
+.challenge-badge {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+  padding: 6px 10px;
+
+  background: var(--bg);
+  color: var(--text-muted);
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.challenge-difficulty-badge {
+  color: var(--text-strong);
+}
+
+.challenge-status-badge.completed {
+  color: var(--success);
+}
+
+.challenge-status-badge.progress {
+  color: var(--warning);
+}
+
+.challenge-status-badge.planned {
+  color: var(--text-subtle);
+}
+
+
+/* Card content */
+
+.challenge-card-title {
+  margin-bottom: 12px;
+}
+
+.challenge-card-title a {
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.challenge-card-title a:hover {
+  color: var(--accent);
+}
+
+.challenge-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px 16px;
+  margin-bottom: 14px;
+
+  color: var(--text-subtle);
+  font-size: 0.86rem;
+}
+
+.challenge-card-description {
+  margin-bottom: 18px;
+}
+
+.challenge-card-actions,
+.challenge-detail-actions,
+.challenge-detail-footer {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.challenge-card-actions {
+  margin-top: auto;
+}
+
+
+/* Empty */
+
+.challenge-empty {
+  grid-column: 1 / -1;
+
+  padding: 36px;
+
+  text-align: center;
+}
+
+.challenge-empty h3 {
+  margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   SINGLE CHALLENGE
+========================================================= */
+
+.challenge-detail-container {
+  width: min(92%, 1100px);
+}
+
+.challenge-back {
+  margin-bottom: -18px;
+}
+
+.challenge-detail {
+  display: flex;
+  flex-direction: column;
+
+  gap: 36px;
+}
+
+.challenge-detail-hero,
+.challenge-detail-video,
+.challenge-detail-writeup {
+  padding: 30px;
+}
+
+.challenge-detail-hero {
+  padding: 36px;
+}
+
+.challenge-detail-badges {
+  margin-bottom: 18px;
+}
+
+.challenge-detail-hero h1 {
+  max-width: 900px;
+
+  margin-bottom: 16px;
+
+  font-size: clamp(2rem, 6vw, 3.2rem);
+}
+
+.challenge-detail-description {
+  max-width: 850px;
+
+  margin-bottom: 28px;
+
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+
+/* Metadata */
+
+.challenge-detail-meta {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(160px, 1fr));
+
+  gap: 12px;
+  padding-top: 22px;
+
+  border-top: 1px solid var(--border);
+}
+
+.challenge-meta-item {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+  padding: 14px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.challenge-meta-label,
+.challenge-section-label {
+  color: var(--accent);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.challenge-meta-label {
+  color: var(--text-subtle);
+}
+
+.challenge-meta-item strong {
+  color: var(--text-strong);
+  font-size: 0.92rem;
+}
+
+.challenge-detail-actions {
+  margin-top: 24px;
+}
+
+
+/* Sections */
+
+.challenge-detail-section-heading {
+  margin-bottom: 22px;
+}
+
+.challenge-detail-section-heading h2 {
+  margin: 5px 0 0;
+}
+
+.challenge-detail-video .video-wrapper,
+.challenge-detail-media {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.challenge-detail-media img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+
+/* Markdown */
+
+.challenge-markdown {
+  max-width: 900px;
+}
+
+.challenge-markdown h2 {
+  margin: 36px 0 14px;
+}
+
+.challenge-markdown h3 {
+  margin: 28px 0 12px;
+}
+
+.challenge-markdown p {
+  margin-bottom: 16px;
+  line-height: 1.85;
+}
+
+.challenge-markdown ul,
+.challenge-markdown ol {
+  margin: 0 0 20px 24px;
+
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.challenge-markdown li {
+  margin-bottom: 7px;
+}
+
+.challenge-markdown blockquote {
+  margin: 22px 0;
+  padding: 14px 18px;
+
+  background: var(--bg);
+
+  border-left: 4px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+}
+
+.challenge-markdown pre {
+  margin: 20px 0;
+}
+
+.challenge-markdown img {
+  max-width: 100%;
+  height: auto;
+
+  border-radius: var(--radius);
+}
+
+
+/* Footer / Error */
+
+.challenge-detail-footer {
+  justify-content: space-between;
+
+  padding-top: 24px;
+
+  border-top: 1px solid var(--border);
+}
+
+.challenge-detail-loading,
+.challenge-detail-error {
+  padding: 40px;
+
+  text-align: center;
+}
+
+.challenge-detail-error h1 {
+  margin-bottom: 12px;
+}
+
+.challenge-detail-error .btn {
+  margin-top: 20px;
+}
+
+
+/* =========================================================
    RESPONSIVE
-================================ */
+========================================================= */
+
 @media (max-width: 900px) {
+
   .video-panel-top {
     flex-direction: column;
     align-items: flex-start;
   }
 
   .sort-bar {
-    margin-left: 0;
     width: 100%;
     flex-wrap: wrap;
   }
+
 }
 
+
 @media (max-width: 768px) {
-  h1 { font-size: 2rem; }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
 
   .contact-form {
     padding: 24px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
   }
 
-  .cv-hero { padding: 22px; }
+  .cv-hero {
+    padding: 22px;
+  }
 
   .cv-title h1,
   .about-hero h1 {
@@ -922,182 +1644,101 @@ main.container {
     align-items: stretch;
   }
 
-  .cv-btn { width: 100%; }
+  .cv-btn {
+    width: 100%;
+  }
 
-  .about-hero { padding: 24px; }
+  .about-hero {
+    padding: 24px;
+  }
 
   .project-demo-card {
     margin-top: 3rem;
     padding: 1rem;
+
     border-radius: 14px;
   }
 
-  .project-demo-card h2 { font-size: 1.5rem; }
-  .project-video { border-radius: 10px; }
-}
-
-@media (max-width: 700px) {
-  .home-explore {
-    margin-top: 30px;
-    padding-top: 24px;
+  .project-demo-card h2 {
+    font-size: 1.5rem;
   }
 
-  .home-explore-list { grid-template-columns: 1fr; }
-  .home-explore-item { padding: 20px; }
-
-  .difficulty-table { min-width: 600px; }
-
-  .challenge-difficulty-section {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+  .project-video {
+    border-radius: 10px;
   }
+
 }
 
-
-/* ===============================
-   CHALLENGE PROGRESS
-================================ */
-
-.challenge-progress-section {
-  max-width: 850px;
-  padding: 22px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-}
-
-.challenge-progress-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 14px;
-}
-
-.challenge-progress-header h2 {
-  margin: 0;
-}
-
-.challenge-progress-header p {
-  margin: 0;
-  color: var(--text-muted);
-}
-
-.challenge-progress-track {
-  width: 100%;
-  height: 10px;
-  overflow: hidden;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-}
-
-.challenge-progress-bar {
-  width: 0;
-  height: 100%;
-  background: var(--accent);
-  border-radius: inherit;
-  transition: width 0.4s ease;
-}
 
 @media (max-width: 700px) {
-  .challenge-progress-header {
+
+  main.container {
+    gap: 36px;
+  }
+
+  .home-explore-list {
+    grid-template-columns: 1fr;
+  }
+
+  .home-explore-item {
+    padding: 20px;
+  }
+
+  .difficulty-table {
+    min-width: 600px;
+  }
+
+  .challenge-progress-header,
+  .challenge-section-heading {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .challenge-progress-header {
     gap: 6px;
   }
+
+  .challenge-detail-hero,
+  .challenge-detail-video,
+  .challenge-detail-writeup {
+    padding: 20px;
+
+    border-radius: 14px;
+  }
+
+  .challenge-detail-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .challenge-card-actions .btn,
+  .challenge-detail-actions .btn {
+    flex: 1;
+  }
+
 }
 
-/* ===============================
-   CHALLENGE PAGE
-================================ */
 
-.challenge-difficulty-section {
-  max-width: 850px;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+@media (max-width: 480px) {
 
-.challenge-controls {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+  .container,
+  .nav-container {
+    width: min(92%, 1600px);
+  }
 
-.challenge-controls .video-panel-top {
-  margin-bottom: 0;
-}
+  .challenge-detail-meta {
+    grid-template-columns: 1fr;
+  }
 
-.challenge-projects-section {
-  margin-top: 10px;
-}
+  .challenge-card-actions,
+  .challenge-detail-actions,
+  .challenge-detail-footer {
+    flex-direction: column;
+  }
 
-.challenge-projects-section h2 {
-  margin-bottom: 18px;
-}
-/* ===============================
-   CHALLENGE CARDS
-================================ */
+  .challenge-card-actions .btn,
+  .challenge-detail-actions .btn,
+  .challenge-detail-footer .btn {
+    width: 100%;
+  }
 
-.challenge-media {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  margin-bottom: 16px;
-
-  background: var(--bg);
-
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-
-.challenge-thumbnail {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.challenge-card .video-wrapper {
-  margin-bottom: 16px;
-}
-
-.challenge-card .video-meta {
-  margin-bottom: 8px;
-  color: var(--text-subtle);
-  font-size: 0.9rem;
-}
-
-.challenge-card .video-category {
-  margin-bottom: 12px;
-}
-
-.challenge-read-more {
-  align-self: flex-start;
-  margin-top: 16px;
-}
-
-.challenge-body {
-  width: 100%;
-  margin-top: 24px;
-  padding-top: 20px;
-
-  border-top: 1px solid var(--border);
-}
-
-.challenge-body[hidden] {
-  display: none;
-}
-
-.challenge-body h2 {
-  margin-top: 24px;
-}
-
-.challenge-body .note-actions {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-
-  margin-top: 24px;
 }

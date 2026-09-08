@@ -294,7 +294,7 @@ collections:
         hint: "Video showing you completing the challenge"
 
       - label: "Finished Demo URL"
-        name: "demo"
+        name: "demo"1
         widget: "string"
         required: false
         hint: "Link to the finished working result or live demo"
