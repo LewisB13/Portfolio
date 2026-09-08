@@ -220,8 +220,8 @@ collections:
           - "public"
           - "private"
 
-  # =========================================
-  # challenges
+   # =========================================
+  # CHALLENGES
   # =========================================
   - name: "challenge"
     label: "Challenges"
@@ -253,6 +253,9 @@ collections:
         widget: "select"
         required: true
         options:
+          - label: "📚 Prerequisites"
+            value: "Prerequisites"
+
           - label: "🌱 Ultimate Beginner"
             value: "Ultimate Beginner"
 
@@ -278,20 +281,23 @@ collections:
         widget: "list"
         required: false
 
-      - label: "GitHub Link"
+      - label: "Complete Code URL"
         name: "github"
         widget: "string"
         required: false
+        hint: "Link to the completed source code for the challenge"
 
-      - label: "Live Demo"
-        name: "demo"
-        widget: "string"
-        required: false
-
-      - label: "YouTube Video URL"
+      - label: "Challenge / Build Video URL"
         name: "youtube"
         widget: "string"
         required: false
+        hint: "Video showing you completing the challenge"
+
+      - label: "Finished Demo URL"
+        name: "demo"
+        widget: "string"
+        required: false
+        hint: "Link to the finished working result or live demo"
 
       - label: "Thumbnail"
         name: "thumbnail"
