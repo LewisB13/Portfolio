@@ -1,5 +1,5 @@
 ---
-title: Python Environment Setup & Hello World
+title: 0.01 Python Environment Setup & Hello World
 date: 2026-09-08T22:51:00
 status: Completed
 difficulty: Prerequisite
