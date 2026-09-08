@@ -219,3 +219,103 @@ collections:
         options:
           - "public"
           - "private"
+
+  # =========================================
+  # 100 PROJECT CHALLENGE
+  # =========================================
+  - name: "challenge"
+    label: "100 Project Challenge"
+    folder: "content/challenge"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Project Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        required: false
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        required: false
+        options:
+          - "Planned"
+          - "In Progress"
+          - "Completed"
+
+      - label: "Difficulty"
+        name: "difficulty"
+        widget: "select"
+        required: true
+        options:
+          - label: "🌱 Ultimate Beginner"
+            value: "Ultimate Beginner"
+
+          - label: "🟢 Easy"
+            value: "Easy"
+
+          - label: "🟡 Intermediate"
+            value: "Intermediate"
+
+          - label: "🟠 Advanced"
+            value: "Advanced"
+
+          - label: "🔴 Difficult"
+            value: "Difficult"
+
+      - label: "Language / Technology"
+        name: "technology"
+        widget: "string"
+        required: false
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "GitHub Link"
+        name: "github"
+        widget: "string"
+        required: false
+
+      - label: "Live Demo"
+        name: "demo"
+        widget: "string"
+        required: false
+
+      - label: "YouTube Video URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+
+      - label: "Short Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Project Body"
+        name: "body"
+        widget: "markdown"
+
+      - label: "What I Learned"
+        name: "what_i_learned"
+        widget: "markdown"
+        required: false
+
+      - label: "Visibility"
+        name: "visibility"
+        widget: "select"
+        required: false
+        options:
+          - "public"
+          - "private"

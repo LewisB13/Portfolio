@@ -1029,3 +1029,86 @@ input:focus, textarea:focus {
     border-radius: 10px;
   }
 }
+
+/* =========================================
+  /* =========================================
+   PROJECT CHALLENGE - COMPACT LAYOUT
+   ========================================= */
+
+/* Reduce overall vertical spacing */
+.challenge-difficulty-section {
+  margin-top: 1.25rem;
+  margin-bottom: 1.75rem;
+  max-width: 850px;
+}
+
+/* Pull difficulty section closer to intro */
+.page-header + .challenge-difficulty-section {
+  margin-top: 1rem;
+}
+
+/* Difficulty heading */
+.challenge-difficulty-section h2 {
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+}
+
+/* Difficulty description */
+.challenge-difficulty-section > p {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* Table */
+.difficulty-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.difficulty-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.difficulty-table th,
+.difficulty-table td {
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.difficulty-table th {
+  font-weight: 600;
+}
+
+.difficulty-table td:first-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.difficulty-table td:last-child {
+  white-space: nowrap;
+}
+
+/* Bring Projects closer to difficulty table */
+.challenge-projects-section {
+  margin-top: 1.5rem;
+}
+
+.challenge-projects-section h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .difficulty-table {
+    min-width: 600px;
+  }
+
+  .challenge-difficulty-section {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
