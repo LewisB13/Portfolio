@@ -85,12 +85,18 @@ function getYouTubeEmbed(url) {
     if (parsed.hostname === "youtu.be") {
       id = parsed.pathname.split("/")[1];
     } else if (
-      ["youtube.com", "www.youtube.com", "m.youtube.com"]
-        .includes(parsed.hostname)
+      [
+        "youtube.com",
+        "www.youtube.com",
+        "m.youtube.com"
+      ].includes(parsed.hostname)
     ) {
       id = parsed.searchParams.get("v") || "";
 
-      if (!id && /^\/(embed|shorts)\//.test(parsed.pathname)) {
+      if (
+        !id &&
+        /^\/(embed|shorts)\//.test(parsed.pathname)
+      ) {
         id = parsed.pathname.split("/")[2];
       }
     }
@@ -98,13 +104,14 @@ function getYouTubeEmbed(url) {
     return /^[a-zA-Z0-9_-]{11}$/.test(id)
       ? `https://www.youtube.com/embed/${id}`
       : "";
+
   } catch {
     return "";
   }
 }
 
 /* =========================================
-   SAFE LINKS
+   SAFE EXTERNAL LINKS
 ========================================= */
 
 function createExternalLink(label, url) {
@@ -113,11 +120,14 @@ function createExternalLink(label, url) {
   try {
     const parsed = new URL(url);
 
-    if (!["https:", "http:"].includes(parsed.protocol)) {
+    if (
+      !["https:", "http:"].includes(parsed.protocol)
+    ) {
       return null;
     }
 
     const link = document.createElement("a");
+
     link.className = "read-more";
     link.href = parsed.href;
     link.target = "_blank";
@@ -125,16 +135,19 @@ function createExternalLink(label, url) {
     link.textContent = label;
 
     return link;
+
   } catch {
     return null;
   }
 }
 
 /* =========================================
-   CATEGORIES
+   BUILD CATEGORIES
 ========================================= */
 
 function buildCategories() {
+  if (!categorySelect) return;
+
   const categories = [
     "All Homelab",
     ...new Set(
@@ -152,10 +165,12 @@ function buildCategories() {
         ? homelab.length
         : homelab.filter(
             h =>
-              (h.category || "Uncategorised") === category
+              (h.category || "Uncategorised") ===
+              category
           ).length;
 
     const option = document.createElement("option");
+
     option.value = category;
     option.textContent = `${category} (${count})`;
 
@@ -174,12 +189,17 @@ function buildCategories() {
 function getFilteredHomelab() {
   let filtered = [...homelab];
 
+  /* CATEGORY FILTER */
+
   if (activeCategory !== "All Homelab") {
     filtered = filtered.filter(
       h =>
-        (h.category || "Uncategorised") === activeCategory
+        (h.category || "Uncategorised") ===
+        activeCategory
     );
   }
+
+  /* SEARCH */
 
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase().trim();
@@ -189,13 +209,16 @@ function getFilteredHomelab() {
         h.title,
         h.description,
         h.category,
-        h.status
+        h.status,
+        h.body
       ]
         .join(" ")
         .toLowerCase()
         .includes(query)
     );
   }
+
+  /* SORT */
 
   filtered.sort((a, b) => {
     const dateA =
@@ -204,7 +227,10 @@ function getFilteredHomelab() {
     const dateB =
       new Date(b.date || 0).getTime() || 0;
 
-    return homelabSort.value === "oldest"
+    const sortOrder =
+      homelabSort ? homelabSort.value : "latest";
+
+    return sortOrder === "oldest"
       ? dateA - dateB
       : dateB - dateA;
   });
@@ -217,7 +243,11 @@ function getFilteredHomelab() {
 ========================================= */
 
 function renderHomelab() {
+  if (!homelabList) return;
+
   homelabList.innerHTML = "";
+
+  /* UPDATE CATEGORY HEADING */
 
   if (selectedCategoryTitle) {
     selectedCategoryTitle.textContent =
@@ -247,6 +277,7 @@ function renderHomelab() {
       wrapper.className = "video-wrapper";
 
       const iframe = document.createElement("iframe");
+
       iframe.src = embed;
       iframe.title = h.title || "Homelab video";
       iframe.loading = "lazy";
@@ -254,8 +285,10 @@ function renderHomelab() {
 
       wrapper.appendChild(iframe);
       card.appendChild(wrapper);
+
     } else if (h.thumbnail) {
       const image = document.createElement("img");
+
       image.src = h.thumbnail;
       image.alt = h.title || "Homelab thumbnail";
       image.loading = "lazy";
@@ -269,6 +302,11 @@ function renderHomelab() {
     const heading = document.createElement("h3");
 
     const titleLink = document.createElement("a");
+
+    // Uses the Markdown filename as the slug.
+    // Example:
+    // home-server.md -> home-server
+
     titleLink.href =
       "homelab-single.html?slug=" +
       encodeURIComponent(h.slug);
@@ -282,6 +320,7 @@ function renderHomelab() {
 
     const meta = document.createElement("p");
     meta.className = "video-meta";
+
     meta.textContent = [
       formatDate(h.date),
       h.category,
@@ -306,24 +345,36 @@ function renderHomelab() {
     const demoLink =
       createExternalLink("Live Demo ↗", h.demo);
 
-    if (githubLink) actions.appendChild(githubLink);
-    if (demoLink) actions.appendChild(demoLink);
+    if (githubLink) {
+      actions.appendChild(githubLink);
+    }
 
-    /* READ MORE */
+    if (demoLink) {
+      actions.appendChild(demoLink);
+    }
+
+    /* READ MORE / SHOW LESS */
 
     const button = document.createElement("button");
+
     button.className = "read-more";
     button.type = "button";
     button.textContent = "Read More ↓";
 
     const body = document.createElement("div");
+
     body.className = "markdown-body";
     body.hidden = true;
 
-    const markdownHTML = marked.parse(h.body || "");
+    if (
+      typeof marked !== "undefined" &&
+      typeof DOMPurify !== "undefined"
+    ) {
+      const markdownHTML = marked.parse(h.body || "");
 
-    if (typeof DOMPurify !== "undefined") {
-      body.innerHTML = DOMPurify.sanitize(markdownHTML);
+      body.innerHTML =
+        DOMPurify.sanitize(markdownHTML);
+
     } else {
       body.textContent = h.body || "";
     }
@@ -348,7 +399,10 @@ function renderHomelab() {
       card.appendChild(actions);
     }
 
-    card.append(button, body);
+    if (h.body && h.body.trim()) {
+      card.append(button, body);
+    }
+
     homelabList.appendChild(card);
   });
 }
@@ -358,6 +412,13 @@ function renderHomelab() {
 ========================================= */
 
 async function loadHomelab() {
+  if (!homelabList) {
+    console.error(
+      "Could not find #homelab-list in HTML."
+    );
+    return;
+  }
+
   homelabList.textContent =
     "Loading homelab projects...";
 
@@ -374,56 +435,108 @@ async function loadHomelab() {
 
     if (!Array.isArray(files)) {
       throw new Error(
-        "Homelab content folder not found"
+        "Homelab content folder not found."
       );
     }
 
+    /* ONLY MARKDOWN FILES */
+
     const markdownFiles = files.filter(
       file =>
+        file.type === "file" &&
         file.name.toLowerCase().endsWith(".md")
     );
 
+    /* FETCH EACH MARKDOWN FILE */
+
     homelab = await Promise.all(
       markdownFiles.map(async file => {
-        const response = await fetch(
+        const fileResponse = await fetch(
           file.download_url
         );
 
-        if (!response.ok) {
+        if (!fileResponse.ok) {
           throw new Error(
             `Failed to load ${file.name}`
           );
         }
 
-        const text = await response.text();
+        const text = await fileResponse.text();
 
         const {
           frontmatter,
           body
         } = parseMarkdownFile(text);
 
+        /* FIXED SLUG */
+
+        const slug = file.name.slice(0, -3);
+
         return {
-          slug: file.name.replace(/\.md$/i, ""),
-          title: getFrontmatterValue(frontmatter, "title"),
-          date: getFrontmatterValue(frontmatter, "date"),
-          category: getFrontmatterValue(frontmatter, "category"),
-          status: getFrontmatterValue(frontmatter, "status"),
-          github: getFrontmatterValue(frontmatter, "github"),
-          demo: getFrontmatterValue(frontmatter, "demo"),
-          youtube: getFrontmatterValue(frontmatter, "youtube"),
-          thumbnail: getFrontmatterValue(frontmatter, "thumbnail"),
-          description: getFrontmatterValue(frontmatter, "description"),
-          visibility: getFrontmatterValue(frontmatter, "visibility"),
-          body
+          slug: slug,
+
+          title: getFrontmatterValue(
+            frontmatter,
+            "title"
+          ),
+
+          date: getFrontmatterValue(
+            frontmatter,
+            "date"
+          ),
+
+          category: getFrontmatterValue(
+            frontmatter,
+            "category"
+          ),
+
+          status: getFrontmatterValue(
+            frontmatter,
+            "status"
+          ),
+
+          github: getFrontmatterValue(
+            frontmatter,
+            "github"
+          ),
+
+          demo: getFrontmatterValue(
+            frontmatter,
+            "demo"
+          ),
+
+          youtube: getFrontmatterValue(
+            frontmatter,
+            "youtube"
+          ),
+
+          thumbnail: getFrontmatterValue(
+            frontmatter,
+            "thumbnail"
+          ),
+
+          description: getFrontmatterValue(
+            frontmatter,
+            "description"
+          ),
+
+          visibility: getFrontmatterValue(
+            frontmatter,
+            "visibility"
+          ),
+
+          body: body
         };
       })
     );
 
-    /* HIDE PRIVATE ENTRIES */
+    /* EXCLUDE PRIVATE ENTRIES */
 
     homelab = homelab.filter(
-      h => h.visibility !== "private"
+      h => h.visibility.toLowerCase() !== "private"
     );
+
+    /* BUILD PAGE */
 
     buildCategories();
     renderHomelab();
@@ -443,26 +556,32 @@ async function loadHomelab() {
    EVENT LISTENERS
 ========================================= */
 
-categorySelect.addEventListener(
-  "change",
-  event => {
-    activeCategory = event.target.value;
-    renderHomelab();
-  }
-);
+if (categorySelect) {
+  categorySelect.addEventListener(
+    "change",
+    event => {
+      activeCategory = event.target.value;
+      renderHomelab();
+    }
+  );
+}
 
-homelabSort.addEventListener(
-  "change",
-  renderHomelab
-);
+if (homelabSort) {
+  homelabSort.addEventListener(
+    "change",
+    renderHomelab
+  );
+}
 
-searchInput.addEventListener(
-  "input",
-  event => {
-    searchQuery = event.target.value;
-    renderHomelab();
-  }
-);
+if (searchInput) {
+  searchInput.addEventListener(
+    "input",
+    event => {
+      searchQuery = event.target.value;
+      renderHomelab();
+    }
+  );
+}
 
 /* =========================================
    INITIALISE
