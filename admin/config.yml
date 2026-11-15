@@ -171,6 +171,101 @@ collections:
 
 
   # =========================================
+  # HOMELAB
+  # =========================================
+  - name: "homelab"
+    label: "Homelab"
+    folder: "content/homelab"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "Linux"
+          - "Docker"
+          - "Networking"
+          - "Virtual Machines"
+          - "Servers"
+          - "Storage"
+          - "Security"
+          - "Automation"
+          - "Monitoring"
+          - "Cloud"
+          - "Hardware"
+          - "Other"
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        required: false
+        options:
+          - "Planned"
+          - "In Progress"
+          - "Completed"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+
+      - label: "GitHub Link"
+        name: "github"
+        widget: "string"
+        required: false
+
+      - label: "Live Demo"
+        name: "demo"
+        widget: "string"
+        required: false
+
+      - label: "YouTube Video URL"
+        name: "youtube"
+        widget: "string"
+        required: false
+
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+
+      - label: "Short Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Homelab Body"
+        name: "body"
+        widget: "markdown"
+
+      - label: "What I Learned"
+        name: "what_i_learned"
+        widget: "markdown"
+        required: false
+
+      - label: "Visibility"
+        name: "visibility"
+        widget: "select"
+        required: false
+        default: "public"
+        options:
+          - "public"
+          - "private"
+
+
+  # =========================================
   # NOTES
   # =========================================
   - name: "notes"
@@ -345,4 +440,3 @@ collections:
         options:
           - "public"
           - "private"
-
