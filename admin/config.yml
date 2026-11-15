@@ -44,6 +44,8 @@ collections:
           - "Homelab"
           - "Cloud"
           - "Tools"
+          - "System Admin"
+          - "IT Support"
           - "Other"
 
       - label: "Tags"
@@ -126,6 +128,7 @@ collections:
           - "Web Dev"
           - "Linux"
           - "System Admin"
+          - "IT Support"
           - "Other"
 
       - label: "Difficulty"
@@ -205,6 +208,8 @@ collections:
           - "Monitoring"
           - "Cloud"
           - "Hardware"
+          - "System Admin"
+          - "IT Support"
           - "Other"
 
       - label: "Status"
@@ -299,6 +304,7 @@ collections:
           - "Cheatsheets"
           - "Ideas"
           - "System Admin"
+          - "IT Support"
           - "Other"
 
       - label: "Tags"
@@ -337,6 +343,26 @@ collections:
         name: "date"
         widget: "datetime"
         required: false
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "Linux"
+          - "Docker"
+          - "Networking"
+          - "Security"
+          - "Java"
+          - "Python"
+          - "Web Development"
+          - "Homelab"
+          - "Cloud"
+          - "Tools"
+          - "Virtual Machines"
+          - "System Admin"
+          - "IT Support"
+          - "Other"
 
       - label: "Status"
         name: "status"
