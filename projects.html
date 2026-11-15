@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,44 +6,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Lewis Barrett Portfolio</title>
-<script src="js/main.js" defer></script>
+
   <link rel="stylesheet" href="styles.css" />
+  <script src="js/main.js" defer></script>
 </head>
 
 <body>
 
   <!-- ================= HEADER ================= -->
   <header class="site-header">
-<div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
   </header>
 
   <!-- ================= MAIN ================= -->
   <main class="container">
 
     <!-- ================= PAGE HEADER ================= -->
-<section class="page-header">
-<h1>Projects</h1>
-<p>A collection of homelab builds, Linux tools, Docker systems, and real-world experiments.</p>
+    <section class="page-header">
 
-<div class="tutorial-cta">
-<p><strong>Looking for a specific build?</strong> If you’re curious about a setup or want to see how I handled a specific project, <a href="contact.html">drop me a message</a>. I’m always happy to share my notes or explain a build in more detail.</p>
-</div>
-</section>
+      <h1>Projects</h1>
 
-    <!-- ================= CATEGORY GRID ================= -->
-    <section class="category-grid" id="project-category-grid">
-      <p>Loading categories...</p>
+      <p>
+        A collection of homelab builds, Linux tools,
+        Docker systems, and real-world experiments.
+      </p>
+
+      <div class="tutorial-cta">
+        <p>
+          <strong>Looking for a specific build?</strong>
+          If you're curious about a setup or want to see
+          how I handled a specific project,
+          <a href="contact.html">drop me a message</a>.
+          I'm always happy to share my notes or explain
+          a build in more detail.
+        </p>
+      </div>
+
     </section>
 
-    <!-- ================= CONTROLS ================= -->
+    <!-- ================= PROJECTS PANEL ================= -->
     <section class="video-panel">
 
       <div class="video-panel-top">
 
-        <h2 id="selected-category-title">Latest Projects</h2>
+        <h2 id="selected-category-title">
+          Latest Projects
+        </h2>
 
+        <!-- ================= FILTER CONTROLS ================= -->
         <div class="sort-bar">
 
+          <!-- CATEGORY FILTER -->
+          <label for="project-category">Category</label>
+
+          <select id="project-category">
+            <option value="all">All Categories</option>
+          </select>
+
+          <!-- SORT FILTER -->
           <label for="project-sort">Sort</label>
 
           <select id="project-sort">
@@ -50,10 +71,10 @@
             <option value="oldest">Oldest first</option>
           </select>
 
-          <!-- SEARCH BAR (same style as notes/tutorials) -->
+          <!-- SEARCH -->
           <input
             id="project-search"
-            type="text"
+            type="search"
             placeholder="Search projects..."
             class="tutorial-search"
           />
