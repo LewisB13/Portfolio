@@ -1,6 +1,6 @@
 ---
 title: RhythmShelf
-date: 2026-05-31T02:16:00
+date: 2026-11-15T17:04:00
 category: Tools
 tags:
   - Python
@@ -11,7 +11,7 @@ tags:
 github: https://github.com/LewisB13/rhythmshelf
 demo: ''
 youtube: https://youtu.be/kjbaEnWJ6oI
-thumbnail: ''
+thumbnail: /images/uploads/download.png
 description: A simple desktop app that helps you clean, organise and manage your music library.
 what_i_learned: ''
 visibility: ''
