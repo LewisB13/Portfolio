@@ -1,6 +1,6 @@
 ---
-title: RhythmShelf
-date: 2026-11-15T17:04:00
+title: 🎵 RhythmShelf – Music Library Cleaner & Organiser
+date: 2026-11-15T17:05:00
 category: Tools
 tags:
   - Python
