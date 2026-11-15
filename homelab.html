@@ -6,62 +6,93 @@
   <meta charset="UTF-8" />
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0" />
-  <title>Homelab | Lewis Barrett</title>
+
+  <title>Homelab | Lewis Barrett Portfolio</title>
+
   <link rel="stylesheet" href="styles.css" />
   <script src="js/main.js" defer></script>
 </head>
 
 <body>
 
-<header class="site-header">
-  <div id="header-placeholder"></div>
-</header>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div id="header-placeholder"></div>
+  </header>
 
-<main class="container">
+  <main class="container">
 
-  <section class="page-header">
-    <h1>Homelab</h1>
-    <p>
-      A collection of my home infrastructure
-      projects, experiments and technical learning.
-    </p>
-  </section>
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+      <h1>Homelab</h1>
 
-  <section class="video-panel">
-    <div class="video-panel-top">
+      <p>
+        A collection of my home infrastructure
+        projects, experiments and technical learning.
+      </p>
 
-      <div class="sort-bar">
-
-        <label for="homelab-category">Category</label>
-        <select id="homelab-category"></select>
-
-        <label for="homelab-sort">Sort</label>
-        <select id="homelab-sort">
-          <option value="latest">Latest first</option>
-          <option value="oldest">Oldest first</option>
-        </select>
-
-        <input
-          id="homelab-search"
-          class="tutorial-search"
-          type="search"
-          placeholder="Search homelab..."
-        />
-
+      <div class="tutorial-cta">
+        <p>
+          <strong>Interested in my Homelab?</strong>
+          Explore my builds, configurations and
+          experiments, or
+          <a href="contact.html">get in touch</a>
+          if you have any questions.
+        </p>
       </div>
-    </div>
-
-    <section id="homelab-list" class="grid">
-      <p>Loading homelab projects...</p>
     </section>
 
-  </section>
+    <!-- HOMELAB PANEL -->
+    <section class="video-panel">
 
-</main>
+      <div class="video-panel-top">
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-<script src="js/homelab-loader.js"></script>
+        <h2 id="selected-category-title">
+          Latest Homelab Projects
+        </h2>
+
+        <div class="sort-bar">
+
+          <label for="homelab-category">
+            Category
+          </label>
+
+          <select id="homelab-category">
+            <option value="All Homelab">
+              All Homelab
+            </option>
+          </select>
+
+          <label for="homelab-sort">Sort</label>
+
+          <select id="homelab-sort">
+            <option value="latest">Latest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+
+          <input
+            id="homelab-search"
+            type="search"
+            placeholder="Search homelab..."
+            class="tutorial-search"
+          />
+
+        </div>
+      </div>
+
+      <!-- HOMELAB CARDS -->
+      <section id="homelab-list" class="grid">
+        <p>Loading homelab projects...</p>
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  <script src="js/homelab-loader.js"></script>
 
 </body>
 </html>
