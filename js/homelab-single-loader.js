@@ -15,20 +15,42 @@ const slug = params.get("slug");
 ========================================= */
 
 function getFrontmatterValue(frontmatter, key) {
-  const line = frontmatter.split(/\r?\n/).find(
-    line => line.trimStart().startsWith(key + ":")
+  const lines = frontmatter.split(/\r?\n/);
+
+  const index = lines.findIndex(line =>
+    line.startsWith(key + ":")
   );
 
-  return line
-    ? line.slice(line.indexOf(":") + 1)
-        .trim()
-        .replace(/^["']|["']$/g, "")
-    : "";
+  if (index === -1) return "";
+
+  const value = lines[index]
+    .slice(key.length + 1)
+    .trim();
+
+  // Support YAML multiline block values
+  if (value === "|" || value === ">" ||
+      value === "|-" || value === ">-") {
+    const content = [];
+
+    for (let i = index + 1; i < lines.length; i++) {
+      const line = lines[i];
+
+      if (line.trim() && !/^\s/.test(line)) {
+        break;
+      }
+
+      content.push(line.replace(/^ {2}/, ""));
+    }
+
+    return content.join("\n").trim();
+  }
+
+  return value.replace(/^["']|["']$/g, "");
 }
 
 function parseMarkdownFile(text) {
   const match = text.match(
-    /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n?/
+    /^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/
   );
 
   return {
@@ -46,7 +68,7 @@ function formatDate(dateString) {
 
   const date = new Date(dateString);
 
-  if (isNaN(date.getTime())) return "";
+  if (Number.isNaN(date.getTime())) return "";
 
   return date.toLocaleDateString("en-IE", {
     day: "numeric",
@@ -70,6 +92,8 @@ function createExternalLink(label, url) {
     }
 
     const link = document.createElement("a");
+
+    link.className = "read-more";
     link.href = parsed.href;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
@@ -92,15 +116,24 @@ function getYouTubeEmbed(url) {
     const parsed = new URL(url);
     let id = "";
 
-    if (parsed.hostname === "youtu.be") {
+    if (
+      parsed.hostname === "youtu.be" ||
+      parsed.hostname === "www.youtu.be"
+    ) {
       id = parsed.pathname.split("/")[1];
     } else if (
-      ["youtube.com", "www.youtube.com", "m.youtube.com"]
-        .includes(parsed.hostname)
+      [
+        "youtube.com",
+        "www.youtube.com",
+        "m.youtube.com"
+      ].includes(parsed.hostname)
     ) {
       id = parsed.searchParams.get("v") || "";
 
-      if (!id && /^\/(embed|shorts)\//.test(parsed.pathname)) {
+      if (
+        !id &&
+        /^\/(embed|shorts|live)\//.test(parsed.pathname)
+      ) {
         id = parsed.pathname.split("/")[2];
       }
     }
@@ -108,8 +141,26 @@ function getYouTubeEmbed(url) {
     return /^[a-zA-Z0-9_-]{11}$/.test(id)
       ? `https://www.youtube.com/embed/${id}`
       : "";
+
   } catch {
     return "";
+  }
+}
+
+/* =========================================
+   MARKDOWN RENDERER
+========================================= */
+
+function renderMarkdown(element, markdown) {
+  if (
+    typeof marked !== "undefined" &&
+    typeof DOMPurify !== "undefined"
+  ) {
+    element.innerHTML = DOMPurify.sanitize(
+      marked.parse(markdown || "")
+    );
+  } else {
+    element.textContent = markdown || "";
   }
 }
 
@@ -118,9 +169,32 @@ function getYouTubeEmbed(url) {
 ========================================= */
 
 async function loadSingleHomelab() {
-  if (!homelabContent) return;
+  if (!homelabContent) {
+    console.error(
+      "Missing #homelab-content element."
+    );
+    return;
+  }
 
-  if (!slug || !/^[a-zA-Z0-9_-]+$/.test(slug)) {
+  /* VALIDATE SLUG
+
+     Supports:
+     - Letters and numbers
+     - Hyphens and underscores
+     - Unicode characters such as –
+     - Spaces
+
+     Rejects path separators and traversal.
+  */
+
+  if (
+    !slug ||
+    slug === "." ||
+    slug === ".." ||
+    slug.includes("/") ||
+    slug.includes("\\") ||
+    /[\u0000-\u001F\u007F]/.test(slug)
+  ) {
     homelabContent.textContent =
       "Invalid homelab project URL.";
     return;
@@ -130,10 +204,14 @@ async function loadSingleHomelab() {
     "Loading homelab project...";
 
   try {
+    /* GITHUB MARKDOWN URL */
+
     const url =
       "https://raw.githubusercontent.com/lewisb13/Portfolio/main/content/homelab/" +
       encodeURIComponent(slug) +
       ".md";
+
+    console.log("Loading Homelab:", url);
 
     const response = await fetch(url);
 
@@ -148,26 +226,47 @@ async function loadSingleHomelab() {
     const { frontmatter, body } =
       parseMarkdownFile(text);
 
+    /* PROJECT DATA */
+
     const project = {
-      title: getFrontmatterValue(frontmatter, "title"),
-      date: getFrontmatterValue(frontmatter, "date"),
-      category: getFrontmatterValue(frontmatter, "category"),
-      status: getFrontmatterValue(frontmatter, "status"),
-      description: getFrontmatterValue(frontmatter, "description"),
-      github: getFrontmatterValue(frontmatter, "github"),
-      demo: getFrontmatterValue(frontmatter, "demo"),
-      youtube: getFrontmatterValue(frontmatter, "youtube"),
-      visibility: getFrontmatterValue(frontmatter, "visibility"),
+      title: getFrontmatterValue(
+        frontmatter, "title"
+      ),
+      date: getFrontmatterValue(
+        frontmatter, "date"
+      ),
+      category: getFrontmatterValue(
+        frontmatter, "category"
+      ),
+      status: getFrontmatterValue(
+        frontmatter, "status"
+      ),
+      description: getFrontmatterValue(
+        frontmatter, "description"
+      ),
+      github: getFrontmatterValue(
+        frontmatter, "github"
+      ),
+      demo: getFrontmatterValue(
+        frontmatter, "demo"
+      ),
+      youtube: getFrontmatterValue(
+        frontmatter, "youtube"
+      ),
+      visibility: getFrontmatterValue(
+        frontmatter, "visibility"
+      ),
       whatILearned: getFrontmatterValue(
-        frontmatter,
-        "what_i_learned"
+        frontmatter, "what_i_learned"
       ),
       body
     };
 
     /* HIDE PRIVATE ENTRIES */
 
-    if (project.visibility === "private") {
+    if (
+      project.visibility.toLowerCase() === "private"
+    ) {
       homelabContent.textContent =
         "This homelab project is not publicly available.";
       return;
@@ -188,6 +287,7 @@ async function loadSingleHomelab() {
     /* TITLE */
 
     const heading = document.createElement("h1");
+
     heading.textContent =
       project.title || "Untitled Homelab Project";
 
@@ -212,51 +312,54 @@ async function loadSingleHomelab() {
 
     if (project.description) {
       const description = document.createElement("p");
-      description.textContent = project.description;
+
+      description.textContent =
+        project.description;
+
       homelabContent.appendChild(description);
     }
 
-    /* GITHUB / DEMO LINKS */
+    /* GITHUB / LIVE DEMO LINKS */
 
     const actions = document.createElement("div");
     actions.className = "note-actions";
 
-    const githubLink =
-      createExternalLink("GitHub ↗", project.github);
+    const githubLink = createExternalLink(
+      "GitHub ↗",
+      project.github
+    );
 
-    const demoLink =
-      createExternalLink("Live Demo ↗", project.demo);
+    const demoLink = createExternalLink(
+      "Live Demo ↗",
+      project.demo
+    );
 
-    if (githubLink) actions.appendChild(githubLink);
-    if (demoLink) actions.appendChild(demoLink);
+    if (githubLink) {
+      actions.appendChild(githubLink);
+    }
+
+    if (demoLink) {
+      actions.appendChild(demoLink);
+    }
 
     if (actions.children.length) {
       homelabContent.appendChild(actions);
     }
 
-    /* MARKDOWN BODY */
+    /* MAIN MARKDOWN CONTENT */
 
     if (project.body.trim()) {
       const article = document.createElement("div");
       article.className = "markdown-body";
 
-      if (
-        typeof marked !== "undefined" &&
-        typeof DOMPurify !== "undefined"
-      ) {
-        article.innerHTML = DOMPurify.sanitize(
-          marked.parse(project.body)
-        );
-      } else {
-        article.textContent = project.body;
-      }
+      renderMarkdown(article, project.body);
 
       homelabContent.appendChild(article);
     }
 
     /* WHAT I LEARNED */
 
-    if (project.whatILearned) {
+    if (project.whatILearned.trim()) {
       const section = document.createElement("section");
       section.className = "markdown-body";
 
@@ -265,18 +368,13 @@ async function loadSingleHomelab() {
 
       const content = document.createElement("div");
 
-      if (
-        typeof marked !== "undefined" &&
-        typeof DOMPurify !== "undefined"
-      ) {
-        content.innerHTML = DOMPurify.sanitize(
-          marked.parse(project.whatILearned)
-        );
-      } else {
-        content.textContent = project.whatILearned;
-      }
+      renderMarkdown(
+        content,
+        project.whatILearned
+      );
 
       section.append(title, content);
+
       homelabContent.appendChild(section);
     }
 
@@ -294,10 +392,19 @@ async function loadSingleHomelab() {
       wrapper.className = "video-wrapper";
 
       const iframe = document.createElement("iframe");
+
       iframe.src = embed;
-      iframe.title = "Homelab video demonstration";
+      iframe.title =
+        "Homelab video demonstration";
+
       iframe.loading = "lazy";
       iframe.allowFullscreen = true;
+
+      iframe.setAttribute(
+        "allow",
+        "accelerometer; autoplay; clipboard-write; " +
+        "encrypted-media; gyroscope; picture-in-picture"
+      );
 
       wrapper.appendChild(iframe);
       section.append(title, wrapper);
@@ -305,17 +412,29 @@ async function loadSingleHomelab() {
       homelabContent.appendChild(section);
     }
 
-    /* PAGE TITLE */
+    /* UPDATE BROWSER PAGE TITLE */
 
     document.title =
       `${project.title || "Homelab"} | Lewis Barrett Portfolio`;
 
   } catch (error) {
-    console.error("Homelab single loader error:", error);
+    console.error(
+      "Homelab single loader error:",
+      error
+    );
 
-    homelabContent.textContent =
+    homelabContent.innerHTML = "";
+
+    const message = document.createElement("p");
+    message.textContent =
       "Could not load this homelab project. " +
-      "Check that the Markdown file exists on GitHub.";
+      "Check that its Markdown file exists on GitHub.";
+
+    const backLink = document.createElement("a");
+    backLink.href = "homelab.html";
+    backLink.textContent = "← Back to Homelab";
+
+    homelabContent.append(message, backLink);
   }
 }
 
