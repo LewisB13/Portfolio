@@ -10,6 +10,7 @@ tags:
   - Desktop App
 github: https://github.com/LewisB13/rhythmshelf
 demo: ''
+youtube: https://youtu.be/kjbaEnWJ6oI
 thumbnail: ''
 description: A simple desktop app that helps you clean, organise and manage your music library.
 what_i_learned: ''
