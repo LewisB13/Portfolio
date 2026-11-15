@@ -1,7 +1,7 @@
 ---
-title: Windows IT Support Home Lab – PowerShell Automation & System Diagnostics
+title: Windows IT Support Home Lab PowerShell Automation And System Diagnostics
 date: 2026-10-26T18:37:00
-category: Other
+category: System Admin
 status: Completed
 tags:
   - Powershell
